@@ -6,17 +6,17 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:37 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/11/29 20:14:10 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/11/30 07:27:14 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	test_print_list(t_arg *arg)
+void	test_print_list(t_node *root)
 {
 	t_node	*tmp;
 
-	tmp = arg->ast_head;
+	tmp = root;
 	while (tmp)
 	{
 		printf("data = %s\n", tmp->data);
@@ -70,7 +70,8 @@ int	main(void)
 		add_history(arg.input.data);
 		check_line(&arg);
 		lexicize(&arg);
-		test_print_list(&arg);
+		test_print_list(arg.ast_head);
+		parser(&arg);
 		free(arg.input.data);
 	}
 	tcsetattr(STDOUT_FILENO, TCSANOW, &original_term);

@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:35 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/11/29 18:28:38 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/11/30 07:27:03 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,15 @@ typedef struct s_arg
 # define T_PARENTHESIS		8
 # define T_SPACE 			9
 
+// tree direction
+# define LEFT				0
+# define RIGHT				1
+
+void	test_print_list(t_node *root);
 void	check_line(t_arg *arg);
 void print_ascii(void);
+
+void	parser(t_arg *arg);
 
 int ft_strlen(const char *str);
 char	*ft_substr(char const *s, int start, int len);

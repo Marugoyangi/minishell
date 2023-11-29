@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 19:49:00 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/11/29 19:54:14 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/11/30 05:10:12 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,15 @@ char	check_ampersand(char c)
 		return (T_OPERATOR);
 }
 
-char	check_operator(char c, int *quote, int *subshell)
+char	check_operator(char c, int *quote)
 {
-	if (c == '|' && *quote == 0 && *subshell == 0)
+	if (c == '|' && *quote == 0)
 		return (T_OPERATOR);
-	else if (c == '&' && *quote == 0 && *subshell == 0)
+	else if (c == '&' && *quote == 0)
 		return (-1);
-	else if (c == '<' && *quote == 0 && *subshell == 0)
+	else if (c == '<' && *quote == 0)
 		return (T_OPERATOR);
-	else if (c == '>' && *quote == 0 && *subshell == 0)
+	else if (c == '>' && *quote == 0)
 		return (T_OPERATOR);
 	else
 		return (T_WORD);
@@ -51,40 +51,39 @@ char	check_literal(char c, int *quote, int *subshell)
 		*subshell = -1;
 		return (-1);
 	}
-	else if ((c == ' ' || c == '\t') && *quote == 0 && *subshell == 0)
+	else if ((c == ' ' || c == '\t') && *quote == 0)
 		return (T_SPACE);
-	else if (c && (*quote == T_SINGLE_QUOTE || *quote == T_DOUBLE_QUOTE \
-	|| *subshell == 1))
+	else if (c && (*quote == T_SINGLE_QUOTE || *quote == T_DOUBLE_QUOTE))
 		return (T_LITERAL);
 	else
 		return (-1);
 }
 
-char	check_quote(char c, int *quote, int *subshell)
+char	check_quote(char c, int *quote)
 {
-	if (c == '\'' && *quote == 0 && *subshell == 0)
+	if (c == '\'' && *quote == 0)
 	{
 		*quote = T_SINGLE_QUOTE;
 		return (T_SINGLE_QUOTE);
 	}
-	else if (c == '\"' && *quote == 0 && *subshell == 0)
+	else if (c == '\"' && *quote == 0)
 	{
 		*quote = T_DOUBLE_QUOTE;
 		return (T_DOUBLE_QUOTE);
 	}
-	else if (c == '\'' && *quote == T_SINGLE_QUOTE && *subshell == 0)
+	else if (c == '\'' && *quote == T_SINGLE_QUOTE)
 	{
 		*quote = 0;
 		return (T_SINGLE_QUOTE);
 	}
-	else if (c == '\"' && *quote == T_DOUBLE_QUOTE && *subshell == 0)
+	else if (c == '\"' && *quote == T_DOUBLE_QUOTE)
 	{
 		*quote = 0;
 		return (T_DOUBLE_QUOTE);
 	}
-	else if (c == '$' && *quote == 0 && *subshell == 0)
+	else if (c == '$' && *quote == 0)
 		return (T_ENV);
-	else if (c == '$' && *quote == 1 && *subshell == 0)
+	else if (c == '$' && *quote == 1)
 		return (T_ENV_QUOTED);
 	return (-1);
 }
@@ -106,11 +105,11 @@ void	check_line(t_arg *arg)
 		return ;
 	while (arg->input.data[i])
 	{
-		arg->input.info[i] = check_quote(arg->input.data[i], &quote, &subshell);
+		arg->input.info[i] = check_quote(arg->input.data[i], &quote);
 		if (arg->input.info[i] == -1)
 			arg->input.info[i] = check_literal(arg->input.data[i], &quote, &subshell);
 		if (arg->input.info[i] == -1)
-			arg->input.info[i] = check_operator(arg->input.data[i], &quote, &subshell);
+			arg->input.info[i] = check_operator(arg->input.data[i], &quote);
 		if (arg->input.info[i] == -1)
 			arg->input.info[i] = check_ampersand(arg->input.data[i + 1]);
 		i++;

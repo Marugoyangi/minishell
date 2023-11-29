@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 03:10:34 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/11/29 20:18:12 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/11/30 07:26:18 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ t_node	*redirection(int *i, t_line *line)
 		(*i)++;
 	position[1] = *i;
 	*i = position[0];
+	// position[1] = expand_vars(position, line); // 아스테리스크, 환경변수, 틸더, 쿼트 처리/제거 // 종료지점을 체크한다음 거기서부터 들어가서 확장
 	return (create_node(ft_substr(line->data, position[0], \
 	position[1] - position[0]), L_REDIRECTION, i));
 }
@@ -104,6 +105,7 @@ void	lexicize(t_arg *arg)	// 왼쪽부터 순서대로 이어진 연결리스트
 			i++;
 	// &가 하나일 때 문자로 변경(과제에서 제외된 기능)
 		tmp->right = check_type(&arg->input, &i);	// 두번째 노드 생성....
+		tmp->right->left = tmp;
 		tmp = tmp->right;
 	}
 }
