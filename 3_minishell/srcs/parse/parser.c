@@ -23,24 +23,18 @@ void	print_preorder(t_node *root)
 }
 
 t_node	*find_redirection(t_node *root) //ls | grep "shell" > a && (ls | grepd "m" || ls | grep "src")
-
 {
 	t_node	*tmp;
 
 	tmp = root;
-	while (tmp)
-	{
-		if (tmp->type == L_REDIRECTION)
-		{
-			if (tmp->left)
-				tmp->left->right = NULL;
-			if (tmp->right)
-				tmp->right->left = NULL;
-			tmp->right = find_redirection(tmp->right);
-			tmp->left = tmp->left;
-			return (tmp);
-		}
+	while (tmp->right)
 		tmp = tmp->right;
+	if (tmp->type == L_REDIRECTION)
+	{
+		if (tmp->left)
+		tmp->left->right = NULL;
+		tmp->left = find_redirection(tmp->left);
+		return (tmp);
 	}
 	return (root); // 명령어 1개만 있는 경우
 }
