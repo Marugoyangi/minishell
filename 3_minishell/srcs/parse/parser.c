@@ -69,6 +69,8 @@ t_node	*find_operator(t_node *root)
 	t_node	*tmp;
 
 	tmp = root;
+	if (root == NULL)
+		return (NULL);
 	while (tmp)
 	{
 		if (tmp->type == L_LOGICAL_OPERATOR)
