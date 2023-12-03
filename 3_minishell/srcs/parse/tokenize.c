@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 19:49:00 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/11/30 05:10:12 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/03 02:10:06 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,9 @@ char	check_operator(char c, int *quote)
 
 char	check_literal(char c, int *quote, int *subshell)
 {
-	if (c == '(' && *quote == 0 && *subshell == 0)
+	if (c == '*' && *quote == 0)
+		return (T_ASTERISK);
+	else if (c == '(' && *quote == 0 && *subshell == 0)
 	{
 		*subshell = 1;
 		return (T_PARENTHESIS);

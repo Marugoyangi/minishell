@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 20:19:14 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/11/30 08:03:52 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/03 09:30:01 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ t_node	*find_redirection(t_node *root) //ls | grep "shell" > a && (ls | grepd "m
 	t_node	*tmp;
 
 	tmp = root;
+	if (root == NULL)
+		return (NULL);
 	while (tmp->right)
 		tmp = tmp->right;
 	if (tmp->type == L_REDIRECTION)
@@ -65,7 +67,7 @@ t_node	*find_pipe(t_node *root)
 }
 
 t_node	*find_operator(t_node *root)
-{
+{ ls > a |z
 	t_node	*tmp;
 
 	tmp = root;

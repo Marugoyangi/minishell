@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:35 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/11/30 07:27:03 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/03 10:48:16 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,14 @@ typedef struct s_line
 	char	*info;
 }			t_line; // 원본이랑 진짜 문자인지 저장
 
+typedef struct s_env
+{
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+}				t_env;
+
+
 typedef struct s_node
 {
 	int				type;
@@ -48,6 +56,10 @@ typedef struct s_arg
 	t_line	input;
 	t_node	*ast_head;
 	t_node	*envp_head;
+	int		last_exit_status;
+	char	*pwd;
+	char	*oldpwd;
+	char	*tilde;
 }			t_arg;
 
 // lexer type
@@ -66,7 +78,8 @@ typedef struct s_arg
 # define T_ENV				6
 # define T_ENV_QUOTED		7
 # define T_PARENTHESIS		8
-# define T_SPACE 			9
+# define T_ASTERISK			9
+# define T_SPACE 			10
 
 // tree direction
 # define LEFT				0
@@ -84,7 +97,19 @@ char* ft_strdup(const char *s1);
 char* ft_strtrim(char const*s, char const *c);
 
 void	lexicize(t_arg *arg);
-
 t_node	*create_node(char *data, int type, int *line_info_index);
 
+int ft_strcmp(const char *s1, const char *s2);
+
+int replace_line(char *value, t_line *line, int start, int end);
+
+void	expand_tilde(int *position, t_line *line, t_arg *arg);
+void	expand_asterisk(int *position, t_line *line);
+t_node	*filter_asterisk(char **line);
+char	**line_split(char *line, char c);
+char	*ft_strjoin(char const *s1, char const *s2);
+void	asterisk_subdir(t_node *result, char **line, char *pwd, int depth);
+t_node	*last_node(t_node *node);
+
+void expand_vars(int *position, t_line *line, t_arg *arg);
 #endif
