@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:35 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/03 10:48:16 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/05 06:33:10 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,15 +47,16 @@ typedef struct s_node
 {
 	int				type;
 	char			*data;
+	char			**argv;
 	struct s_node	*left;
 	struct s_node	*right;
 }				t_node;
 
 typedef struct s_arg
 {
-	t_line	input;
+	t_line	line;
 	t_node	*ast_head;
-	t_node	*envp_head;
+	t_env	*envp_head;
 	int		last_exit_status;
 	char	*pwd;
 	char	*oldpwd;
@@ -105,11 +106,24 @@ int replace_line(char *value, t_line *line, int start, int end);
 
 void	expand_tilde(int *position, t_line *line, t_arg *arg);
 void	expand_asterisk(int *position, t_line *line);
-t_node	*filter_asterisk(char **line);
+t_node	**filter_asterisk(char **line);
 char	**line_split(char *line, char c);
 char	*ft_strjoin(char const *s1, char const *s2);
-void	asterisk_subdir(t_node *result, char **line, char *pwd, int depth);
+void	asterisk_subdir(t_node **result, char **line, char *pwd, int *depth);
 t_node	*last_node(t_node *node);
 
 void expand_vars(int *position, t_line *line, t_arg *arg);
+void	remove_quotes(int *position, t_line *line);
+int	ft_delete_line(int len, t_line *line, int start);
+int	ft_count_words(char *s, char c);
+int	add_line(t_line *data, t_line *line, int start, int end);
+t_line	*node_to_line(t_node *node);
+
+char	**ft_split(char const *s, char c);
+
+t_env	*init_envp(char **envp);
+
+char	*find_env(t_env *envp, char *key);
+void	init_shell_vars(t_arg *arg);
+
 #endif

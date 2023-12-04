@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 19:49:00 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/03 02:10:06 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/05 00:01:48 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,21 +99,21 @@ void	check_line(t_arg *arg)
 	quote = 0;
 	subshell = 0;
 	i = 0;
-	if (arg->input.data[0] == '\0')
+	if (arg->line.data[0] == '\0')
 		return ;
-	arg->input.data = ft_strtrim(arg->input.data, " \t");
-	arg->input.info = ft_strdup(arg->input.data);
-	if (arg->input.info == NULL)
+	arg->line.data = ft_strtrim(arg->line.data, " \t");
+	arg->line.info = ft_strdup(arg->line.data);
+	if (arg->line.info == NULL)
 		return ;
-	while (arg->input.data[i])
+	while (arg->line.data[i])
 	{
-		arg->input.info[i] = check_quote(arg->input.data[i], &quote);
-		if (arg->input.info[i] == -1)
-			arg->input.info[i] = check_literal(arg->input.data[i], &quote, &subshell);
-		if (arg->input.info[i] == -1)
-			arg->input.info[i] = check_operator(arg->input.data[i], &quote);
-		if (arg->input.info[i] == -1)
-			arg->input.info[i] = check_ampersand(arg->input.data[i + 1]);
+		arg->line.info[i] = check_quote(arg->line.data[i], &quote);
+		if (arg->line.info[i] == -1)
+			arg->line.info[i] = check_literal(arg->line.data[i], &quote, &subshell);
+		if (arg->line.info[i] == -1)
+			arg->line.info[i] = check_operator(arg->line.data[i], &quote);
+		if (arg->line.info[i] == -1)
+			arg->line.info[i] = check_ampersand(arg->line.data[i + 1]);
 		i++;
 	}
 	if (quote != 0 || subshell == -1 || subshell == 1)
@@ -123,12 +123,12 @@ void	check_line(t_arg *arg)
 		printf("syntax error\n");
 		return ;
 	}
-	printf("line : %s\n", arg->input.data);
+	printf("line : %s\n", arg->line.data);
 	printf("new_line : ");
 	i = 0;
-	while (arg->input.info[i])
+	while (arg->line.info[i])
 	{
-		printf("[%d]", arg->input.info[i]);
+		printf("[%d]", arg->line.info[i]);
 		i++;
 	}
 	printf("\n");

@@ -12,82 +12,64 @@
 
 #include "minishell.h"
 
-int	is_ending_slash(char *line) // line은 규칙
-{
-	int	i;
-
-	i = 0;
-	while (line[i])
-		i++;
-	if (line[i - 1] == '/')
-		return (1);
-	return (0);
-}
-
-int	check_asterisk(char *filter, char *file) // line은 규칙, file은 파일 또는 디렉토리
+int	check_asterisk(char **filter, char *file, int *depth) // line은 규칙, file은 파일 또는 디렉토리
 {
 	int	i;
 	int	j;
 
 	i = 0; // filter의 인덱스
 	j = 0; // file의 인덱스
-	while (filter[i] && file[j])
+	while (filter[*depth][i] || file[j])
 	{
-		if (filter[i] == -T_ASTERISK) // *이 나오면
+		if (filter[*depth][i] == -T_ASTERISK)
 		{
-			while (filter[i] == -T_ASTERISK) // *이 끝날때까지
+			while (filter[*depth][i] == -T_ASTERISK)
 				i++;
-			while (file[j] && file[j] != filter[i]) // *이 끝난 다음부터 일치할때까지
+			if (filter[*depth][i] == '\0')
+				return (1);
+			j++;
+			while (file[j] && file[j] != filter[*depth][i])
 				j++;
+			if (file[j] == '\0')
+				return (0);
 		}
-		else if (filter[i] == file[j]) // 일치하면
+		else if (filter[*depth][i] == file[j])
 		{
 			i++;
 			j++;
 		}
-		else
-			j++;
+		else 
+			break ;
 	}
-	if (filter[i] == '\0') // 둘다 끝나면
+	if (filter[*depth][i] == '\0' && file[j] == '\0')
 		return (1);
 	return (0);
 }
 
-int	recursive_finder(struct dirent *file, t_node *result, char *pwd, char **line)
+void	filtered_node(struct dirent *file, t_node **result, char *pwd, \
+						char *last_filter)
 {
-	t_node			*tmp;
-	int				depth;
+	t_node	*tmp;
+	char	*tmp_pwd;
 
-	depth = 0;
-	if (!check_asterisk(line[depth], file->d_name))
-		return (0);
-	if (file->d_type == DT_DIR)
-	{
-		depth++;
-		asterisk_subdir(result, line, \
-		ft_strjoin(pwd, ft_strjoin("/", file->d_name)), depth);
-		depth--;
-	}
-	else if (file->d_type == DT_REG && line[depth + 1] == NULL)
-	{
-		tmp = last_node(result);
-		if (tmp == NULL)
-			result = create_node(ft_strjoin(line[0], \
-			ft_strjoin("/", file->d_name)), 0, NULL);
-		else
-			tmp->right = create_node(ft_strjoin(line[0], \
-			ft_strjoin("/", file->d_name)), 0, NULL);
-	}
-	return (depth);
+	if (last_filter && file->d_type == DT_REG)
+		return ;
+	tmp = last_node(*result);
+	tmp_pwd = ft_strjoin(pwd, ft_strjoin("/", file->d_name));
+	if (last_filter)
+		tmp_pwd = ft_strjoin(tmp_pwd, "/");
+	if (tmp == NULL)
+		*result = create_node(tmp_pwd, 0, NULL);
+	else
+		tmp->right = create_node(tmp_pwd, 0, NULL);
 }
 
-
-void	asterisk_subdir(t_node *result, char **line, char *pwd, int depth)
+void	asterisk_subdir(t_node **result, char **line, char *pwd, int *depth)
 {
 	DIR				*dir;
 	struct dirent	*file;
 
-	dir = opendir(line[0]);
+	dir = opendir(pwd);
 	if (dir == NULL)
 		return ;
 	while (1)
@@ -95,33 +77,50 @@ void	asterisk_subdir(t_node *result, char **line, char *pwd, int depth)
 		file = readdir(dir); // 하나씩 읽어감
 		if (file == NULL)
 			break ;
-		depth = recursive_finder(file, result, pwd, line);
-		if (depth == 0)
+		if (!check_asterisk(line, file->d_name, depth))
 			continue ;
+		if (file->d_type == DT_DIR && line[*depth + 1] != NULL)
+		{
+			(*depth)++;
+			if (*depth == 2)
+				asterisk_subdir(result, line, ft_strjoin(pwd, file->d_name), depth);
+			else 
+				asterisk_subdir(result, line, ft_strjoin(pwd, ft_strjoin("/", file->d_name)), depth);
+			(*depth)--;
+		}
+		else if (line[*depth + 1] == NULL && (ft_strcmp(file->d_name, ".") != 0 && \
+			ft_strcmp(file->d_name, "..") != 0))
+			filtered_node(file, result, pwd, line[1]);
 	}
 	closedir(dir);
 }
 
-t_node	*filter_asterisk(char **line)
+t_node	**filter_asterisk(char **line)
 {
 	int		depth;
-	t_node	*result;
+	t_node	**result;
+	int		is_current_pwd;
 	t_node	*tmp;
-	char	*pwd;
 
-	depth = 0;
-	result = NULL;
-	pwd = getcwd(NULL, 0);
+	depth = 2;
+	is_current_pwd = 0;
+	result = (t_node **)malloc(sizeof(t_node *));
+	*result = NULL;
 	if (line[0] == NULL)
-		line[0] = ft_strdup(pwd);
-	asterisk_subdir(result, line, pwd, depth);
-	tmp = result;
-	while ((tmp))
 	{
+		line[0] = getcwd(NULL, 0);
+		is_current_pwd = 1;
+	}
+	printf("pwd %s \n", line[0]);
+	asterisk_subdir(result, line, line[0], &depth);
+	tmp = *result;
+	while (tmp)
+	{
+		if (is_current_pwd == 1)
 		tmp->data = ft_substr(tmp->data, ft_strlen(line[0]) + 1, \
-			ft_strlen(tmp->data) - ft_strlen(line[0]) - 1);
-		printf("final->data : %s\n", tmp->data);
+		ft_strlen(tmp->data) - ft_strlen(line[0]) - 1);
 		tmp = tmp->right;
 	}
+	printf	("\n");
 	return (result);
 }

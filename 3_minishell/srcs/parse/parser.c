@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 20:19:14 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/03 09:30:01 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/04 23:53:34 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ t_node	*find_pipe(t_node *root)
 	t_node	*tmp;
 
 	tmp = root;
+	if (root == NULL)
+		return (NULL);
 	while (tmp)
 	{
 		if (tmp->type == L_PIPELINE)
@@ -67,7 +69,7 @@ t_node	*find_pipe(t_node *root)
 }
 
 t_node	*find_operator(t_node *root)
-{ ls > a |z
+{
 	t_node	*tmp;
 
 	tmp = root;

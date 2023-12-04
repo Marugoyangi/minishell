@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:37 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/11/30 07:27:14 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/05 06:34:33 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,16 @@ void	sig_handler(int signum)
 	rl_redisplay();
 }
 
-int	main(void)
+int	main(int argc, char **argv, char **envp)
 {
 	t_arg			arg;
 	struct termios	term;
 	struct termios	original_term;
 
 	memset(&arg, 0, sizeof(t_arg)); // ft_memset으로 바꾸자
+	if (argc && argv)
+		arg.envp_head = init_envp(envp);
+	init_shell_vars(&arg);
 	tcgetattr(STDOUT_FILENO, &term);
 	original_term = term;
 	term.c_lflag &= ~(ECHOCTL);
@@ -59,20 +62,20 @@ int	main(void)
 	print_ascii();
 	while (1)
 	{
-		arg.input.data = readline("\033[1;34mminishell$ \033[0m");
-		if (!arg.input.data)
+		arg.line.data = readline("\033[1;34mminishell$ \033[0m");
+		if (!arg.line.data)
 		{
 			term.c_lflag &= ~(ECHO);
 			tcsetattr(STDOUT_FILENO, TCSANOW, &term);
 			printf("\033[A\033[11Cexit\n");
 			break ;
 		}
-		add_history(arg.input.data);
+		add_history(arg.line.data);
 		check_line(&arg);
 		lexicize(&arg);
 		test_print_list(arg.ast_head);
 		parser(&arg);
-		free(arg.input.data);
+		free(arg.line.data);
 	}
 	tcsetattr(STDOUT_FILENO, TCSANOW, &original_term);
 }

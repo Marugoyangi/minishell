@@ -112,6 +112,8 @@ int	ft_strlen(const char *s)
 	int	i;
 
 	i = 0;
+	if (s == NULL)
+		return (0);
 	while (s[i])
 		i++;
 	return (i);
@@ -184,8 +186,8 @@ char	*ft_strdup(const char *s)
 
 	i = 0;
 	new_s = (char *)malloc(sizeof(char) * (ft_strlen(s) + 1));
-	if (new_s == NULL)
-		return (NULL);
+	if (s == 0 || new_s == 0)
+		return (0);
 	while (s[i])
 	{
 		new_s[i] = s[i];
