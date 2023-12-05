@@ -12,6 +12,19 @@
 
 #include "minishell.h"
 
+int	asterisk_exceptions(char *filter)
+{
+	int	i;
+
+	i = 0;
+	if (filter[0] != '.')
+		return (0);
+	else if (filter[0] == -T_ASTERISK && filter[1] == '.')
+		return (-1);
+	else
+		return (1);
+}
+
 int	check_asterisk(char **filter, char *file, int *depth) // line은 규칙, file은 파일 또는 디렉토리
 {
 	int	i;
@@ -38,7 +51,7 @@ int	check_asterisk(char **filter, char *file, int *depth) // line은 규칙, fil
 			i++;
 			j++;
 		}
-		else 
+		else
 			break ;
 	}
 	if (filter[*depth][i] == '\0' && file[j] == '\0')
@@ -68,9 +81,13 @@ void	asterisk_subdir(t_node **result, char **line, char *pwd, int *depth)
 {
 	DIR				*dir;
 	struct dirent	*file;
+	int				is_hidden;
 
 	dir = opendir(pwd);
 	if (dir == NULL)
+		return ;
+	is_hidden = asterisk_exceptions(line[*depth]);
+	if (is_hidden == -1)
 		return ;
 	while (1)
 	{
@@ -84,12 +101,13 @@ void	asterisk_subdir(t_node **result, char **line, char *pwd, int *depth)
 			(*depth)++;
 			if (*depth == 2)
 				asterisk_subdir(result, line, ft_strjoin(pwd, file->d_name), depth);
-			else 
+			else
 				asterisk_subdir(result, line, ft_strjoin(pwd, ft_strjoin("/", file->d_name)), depth);
 			(*depth)--;
 		}
-		else if (line[*depth + 1] == NULL && (ft_strcmp(file->d_name, ".") != 0 && \
-			ft_strcmp(file->d_name, "..") != 0))
+		else if (line[*depth + 1] == NULL && is_hidden == 0 && file->d_name[0] != '.')
+			filtered_node(file, result, pwd, line[1]);
+		else if (line[*depth + 1] == NULL && is_hidden == 1 && file->d_name[0] == '.')
 			filtered_node(file, result, pwd, line[1]);
 	}
 	closedir(dir);
