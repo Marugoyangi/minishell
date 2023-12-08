@@ -6,7 +6,7 @@
 #    By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/05 14:27:11 by jeongbpa          #+#    #+#              #
-#    Updated: 2023/12/07 04:46:26 by jeongbpa         ###   ########.fr        #
+#    Updated: 2023/12/08 06:27:30 by jeongbpa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,11 +16,12 @@ SRC_DIR = ./srcs/
 SRCS =	$(addprefix $(SRC_DIR), minishell.c \
 								utils/libft.c utils/ascii_art.c utils/node_ctl.c \
 								parse/tokenize.c parse/lexicize.c parse/parser.c parse/syntax_check.c\
-								parse/syntax_subshell.c \
+								parse/syntax_subshell.c parse/parsing_sort.c\
 								expand/expand.c expand/line_split.c expand/line_ctl.c expand/expand_tilde.c \
 								expand/expand_asterisk.c expand/asterisk_filter.c \
-								envp/envp_init.c envp/shell_var_init.c \
-								error/error.c )
+								initialize/envp_init.c initialize/shell_var_init.c \
+								initialize/init.c \
+								error/error.c)
 OBJS =	$(SRCS:.c=.o)
 
 HEADER = minishell.h
