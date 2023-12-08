@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:35 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/08 11:25:31 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/08 16:49:51 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,7 @@ void	split_red(t_node *node);
 void	append_subshell(t_node *root);
 
 void	terminal_init(t_arg *arg, struct termios *term, struct termios *original_term, char **envp);
-void terminal_default(struct termios *term, struct termios *original_term, int exit);
+void terminal_default(struct termios *term, struct termios *original_term, int exit, t_arg *arg);
 void terminal_interactive(struct termios *term);
 void signal_default(void);
 void signal_interactive(void);
@@ -185,6 +185,7 @@ void    set_exec(t_arg *__DEFINE_CPP_OVERLOAD_SECURE_FUNC_0_2_ARGLIST);
 
 // 2.c
 // 심플커맨드 execve로 실행
+void	check_built_in(t_node *node, t_env *env);
 char	*find_path(char **path, char *command);
 char	*ft_strjoin(char const *s1, char const *s2);
 size_t	ft_strlen2(const char *s);
@@ -194,7 +195,7 @@ void	exec_command(t_node *node, t_env *env, char **path);
 // 빌트인 기능 구현
 void	built_in_cd(char **argv);
 void    built_in_pwd();
-void    exec_exit();
+void    built_in_exit();
 void    built_in_echo(char **argv);
 
 // 4.c
@@ -204,7 +205,7 @@ void	free_list(t_env *env);
 void	built_in_export(t_node *node , t_env *env);
 void	built_in_unset(t_node *node , t_env *env);
 void	built_in_env(t_env *env);
-t_env *dup_list(t_env *env);
+t_env 	*dup_list(t_env *env);
 
 // 5.c
 // 서브쉘과 파이프라인
@@ -223,7 +224,7 @@ void	exec_input(t_node *node, t_env *env, char **path);
 void	exec_heredoc(t_node *node, t_env *env, char **path);
 void	exec_redirection(t_node *node,t_env *env, char **path);
 
-
+void	print_env(t_env *env);
 
 
 #endif
