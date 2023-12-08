@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:35 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/08 10:04:53 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/08 11:25:31 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,63 @@ void terminal_interactive(struct termios *term);
 void signal_default(void);
 void signal_interactive(void);
 char	*get_ps1(t_arg *arg);
+
+
+// 실행부 함수
+// 0.c
+// 기타 유틸 함수
+int	ft_strcmp(const char *s1, const char *s2);
+int	ft_strncmp(const char *s1, const char *s2, size_t n);
+size_t	ft_strlen2(const char *s);
+
+// 1.c
+// 실행부 사전 준비
+// execve를 위한 경로 정리 작업, 히어독 파일 생성, 노드 분기점
+void    set_heredoc(t_node *node);
+char	**set_path(t_env *env);
+void    start_exec(t_node *node, t_env *env, char **path);
+void    set_exec(t_arg *__DEFINE_CPP_OVERLOAD_SECURE_FUNC_0_2_ARGLIST);
+
+// 2.c
+// 심플커맨드 execve로 실행
+char	*find_path(char **path, char *command);
+char	*ft_strjoin(char const *s1, char const *s2);
+size_t	ft_strlen2(const char *s);
+void	exec_command(t_node *node, t_env *env, char **path);
+
+// 3.c
+// 빌트인 기능 구현
+void	built_in_cd(char **argv);
+void    built_in_pwd();
+void    exec_exit();
+void    built_in_echo(char **argv);
+
+// 4.c
+// 환경변수 관련 기능 구현
+void	sort_list(t_env *env);
+void	free_list(t_env *env);
+void	built_in_export(t_node *node , t_env *env);
+void	built_in_unset(t_node *node , t_env *env);
+void	built_in_env(t_env *env);
+t_env *dup_list(t_env *env);
+
+// 5.c
+// 서브쉘과 파이프라인
+// 서브쉘은 단일 포크 생성 자식 프로세스에서 실행, 부모프로세스 대기
+// 파이프는 포크 2번으로 병렬구조 실행, 부모프로세스는 대기만
+void	exec_subshell(t_node *node, t_env *env, char **path);
+void	exec_pipeline(t_node *node, t_env *env, char **path);
+void	exec_logical_operator(t_node *node, t_env *env, char **path);
+
+// 6.c
+// 리다이렉션 분기점
+// 각 리다이렉션에 맞는 fd 연결 후 다음 노드 실행.
+void	exec_output(t_node *node, t_env *env, char **path);
+void	exec_append(t_node *node, t_env *env, char **path);
+void	exec_input(t_node *node, t_env *env, char **path);
+void	exec_heredoc(t_node *node, t_env *env, char **path);
+void	exec_redirection(t_node *node,t_env *env, char **path);
+
 
 
 
