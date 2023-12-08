@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   3.c                                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seungwok <seungwok@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 15:43:41 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/06 20:27:25 by seungwok         ###   ########seoul.kr  */
+/*   Updated: 2023/12/08 13:19:29 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "minishell.h"
 
 void	built_in_cd(char **argv);
 void    built_in_pwd();
@@ -23,16 +23,16 @@ void    built_in_echo(char **argv)
     int i;
 
 	i = 0;
-    if (!strncmp(argv[0], "-n", 2))
+    if (argv && argv[0] && !strncmp(argv[0], "-n", 2))
 		i = 1;
-	while (argv[i]);
+	while (argv[i])
     {
         printf("%s", argv[i]);
         if (!argv[i + 1])
             printf(" ");
         i++;
     }
-	if (strncmp(argv[0], "-n", 2))
+	if (argv && argv[0] && strncmp(argv[0], "-n", 2))
     	printf("\n");
 }
 
@@ -66,7 +66,7 @@ void    built_in_pwd()
 }
 
 // 쉘을 종료.
-void    exec_exit()
+void    built_in_exit()
 {
     exit(0);
 }

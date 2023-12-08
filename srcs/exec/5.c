@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   5.c                                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seungwok <seungwok@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 18:54:16 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/06 20:33:05 by seungwok         ###   ########seoul.kr  */
+/*   Updated: 2023/12/08 16:16:03 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "minishell.h"
 
 void	exec_subshell(t_node *node, t_env *env, char **path);
 void	exec_pipeline(t_node *node, t_env *env, char **path);
@@ -34,9 +34,9 @@ void	exec_logical_operator(t_node *node, t_env *env, char **path)
         // WIFSTATUS, 자식 프로세스의 종료코드 (exit(?))를 추출, WIFEXITED가 참일때만 사용해야한다.
         // 시그널에 의한 종료인지, 정상적인 exit(0) 종료인지 확인을 위해 WIFSTATUS가 필요하다.
         if (node->data[0] == '&' && WIFEXITED(status) && !WEXITSTATUS(status))
-            exec_ast(node->right);
+            start_exec(node->right, env, path);
         if (node->data[0] == '|' && !WIFEXITED(status) && WEXITSTATUS(status))
-            exec_ast(node->right);
+            start_exec(node->right, env, path);
 	}
 }
 

@@ -3,21 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   4.c                                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seungwok <seungwok@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:35:44 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/06 20:28:16 by seungwok         ###   ########seoul.kr  */
+/*   Updated: 2023/12/08 17:02:59 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "minishell.h"
+
 void	sort_list(t_env *env);
 void	free_list(t_env *env);
 void	built_in_export(t_node *node , t_env *env);
 void	built_in_unset(t_node *node , t_env *env);
 void	built_in_env(t_env *env);
 
-t_env *dup_list(t_env *env)
+t_env *duplicate_list(t_env *env)
 {
 	t_env *head;
 	t_env *cur;
@@ -41,6 +42,34 @@ t_env *dup_list(t_env *env)
 	return (head);
 }
 
+t_env *dup_list(t_env *env)
+{
+	t_env *head;
+	t_env *cur;
+	t_env *dup;
+
+	head = (t_env *)malloc(sizeof(t_env));
+	dup = head;
+	cur = env;
+	while(cur)
+	{
+		dup->key = cur->key;
+		dup->value = cur->value;
+		if (cur->next)
+		{
+			dup->next = (t_env *)malloc(sizeof(t_env));
+			cur = cur->next;
+			dup = dup->next;
+		}
+		else
+		{
+			dup->next = 0;
+			break ;
+		}
+	}
+	return (head);
+}
+
 void	sort_list(t_env *env)
 {
 	t_env	*cur;
@@ -48,7 +77,6 @@ void	sort_list(t_env *env)
 	char	*tmp;
 	
 	cur = env;
-	
 	while (cur->next)
 	{
 		target = cur->next;
@@ -90,10 +118,12 @@ void	built_in_export(t_node *node , t_env *env)
 	t_env	*cur;
 	char	**tmp;
 	
-	if (!node->argv[0])
-	{
+	// if (!node->argv[0])
+	// {
+			printf("hi \n");
+	print_env(env);
 		dup = dup_list(env);
-		sort_list(dup);
+		// sort_list(dup);
 		cur = dup;
 		while (cur)
 		{
@@ -102,7 +132,7 @@ void	built_in_export(t_node *node , t_env *env)
 		}
 		free_list(dup);
 		return ;
-	}
+	// }
 	cur = env;
 	while (cur)
 		cur = cur->next;
@@ -114,7 +144,7 @@ void	built_in_export(t_node *node , t_env *env)
 }
 
 void	built_in_unset(t_node *node , t_env *env)
-{
+{	
 	t_env	*cur;
 	t_env	*tmp;
 
