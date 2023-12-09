@@ -233,7 +233,6 @@ char	*ft_strtrim(char const *s1, char const *set)
 	str = ft_malloc(start, end);
 	if (str != 0)
 		ft_strlcpy(str, s1 + start, end - start + 1);
-	free((char *)s1);
 	return (str);
 }
 

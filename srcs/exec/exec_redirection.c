@@ -19,11 +19,11 @@ int exec_heredoc(t_node *node, t_env *env, char **path);
 
 int	exec_redirection(t_node *node,t_env *env, char **path)
 {
-	if (!strcmp(node->data, ">"))
+	if (!ft_strncmp(node->data, ">", 1))
 		return (exec_output(node, env, path));
-	else if (!strcmp(node->data, ">>"))
+	else if (!ft_strcmp(node->data, ">>"))
 		return (exec_append(node, env, path));
-	else if (!strcmp(node->data, "<"))
+	else if (!ft_strcmp(node->data, "<"))
 		return (exec_input(node, env, path));
 	else
 		return (exec_heredoc(node, env, path));
@@ -32,12 +32,12 @@ int	exec_redirection(t_node *node,t_env *env, char **path)
 int	exec_output(t_node *node, t_env *env, char **path)
 {
 	int fd;
-	
+
 	// O_TRUNC 이미 파일이 존재하는경우 해당 파일을 비우기때문에 덮어쓰기 효과.
     fd = open(node->argv[0], O_WRONLY | O_CREAT | O_TRUNC, 0666);
 	dup2(fd, 1);
 	close(fd);
-	if (!start_exec(node->left, env, path))
+	if (!exec_command(node, env, path))
 		return (0);
 	return (1);
 }

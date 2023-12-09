@@ -43,7 +43,6 @@ int	external_command(t_node *node, char **path)
 	pid = fork();
 	if (!pid)
 	{
-		printf("here\n");
 		if (execve(excutable_path, command_option, 0) == -1)	// execve함수를 통한 새로운 프로세서 생성 실패시 perror 에러출력
 			perror("execve");
 		exit(0);
@@ -64,7 +63,7 @@ int	check_built_in(t_node *node, t_env *env)
 	else if (!ft_strcmp(node->data, "pwd"))
 		return (built_in_pwd());
 	else if (!ft_strcmp(node->data, "exit"))
-		built_in_exit();
+		built_in_exit(node);
 	else if (!ft_strcmp(node->data, "export"))
 		return (built_in_export(node, env));
 	else if (!ft_strcmp(node->data, "unset"))

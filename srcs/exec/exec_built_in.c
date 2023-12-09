@@ -15,7 +15,7 @@
 int		built_in_echo(char **argv);
 int		built_in_cd(char **argv);
 int		built_in_pwd();
-void	built_in_exit();
+void	built_in_exit(t_node *node);
 
 // echo, 입력한 인수를 그대로 출력
 // -n 옵션 사용시 개행 미출력
@@ -73,7 +73,13 @@ int	built_in_pwd()
 }
 
 // 쉘을 종료.
-void	built_in_exit()
+void	built_in_exit(t_node *node)
 {
-	exit(0);
+	int exit_num;
+
+	if (node->argv[1])
+		exit_num = ft_atoi(node->argv[1]);
+	else
+		exit_num = 0;
+	exit(exit_num);
 }

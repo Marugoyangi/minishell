@@ -28,13 +28,15 @@ int	built_in_export(t_node *node , t_env *env)
 		return (0);
 	}
 	while (cur)
+	{
 		cur = cur->next;
-	cur = (t_env *)malloc(sizeof(t_env));
-	tmp = ft_split(node->argv[0], '=');
-	cur->key = tmp[0];
-	cur->value = ft_strtrim(tmp[1], "\"");
-	cur->next = 0;
-	free(tmp);
+		cur = (t_env *)malloc(sizeof(t_env));
+		tmp = ft_split(node->argv[0], '=');
+		cur->key = tmp[0];
+		cur->value = ft_strtrim(tmp[1], "\"");
+		cur->next = 0;
+		free(tmp);
+	}
 	return (0);
 }
 
@@ -88,7 +90,7 @@ int	built_in_env(t_env *env)
 	cur = env;
 	while(cur)
 	{
-		printf("%s=%s\n", cur->key, ft_strtrim(cur->value, "\""));
+		printf("%s=%s\n", cur->key, cur->value);
 		cur = cur->next;
 	}
 	return (0);

@@ -203,7 +203,7 @@ int		check_built_in(t_node *node, t_env *env);
 int		built_in_echo(char **argv);
 int		built_in_cd(char **argv);
 int		built_in_pwd();
-void	built_in_exit();
+void	built_in_exit(t_node *node);
 
 // exec_built_in_env.c
 int	built_in_export(t_node *node , t_env *env);
@@ -231,6 +231,7 @@ int exec_input(t_node *node, t_env *env, char **path);
 int exec_heredoc(t_node *node, t_env *env, char **path);
 
 void	print_env(t_env *env);
+int	ft_strncmp(const char *s1, const char *s2, size_t n);
 
 
 #endif
