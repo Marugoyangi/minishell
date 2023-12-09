@@ -62,8 +62,6 @@ void	split_expanded(t_node *node)
 	while (node->line && node->line->info && (node->line->info[i] == T_OPERATOR || \
 	node->line->info[i] == T_SPACE))
 		i++;
-	if (i != 0 && node->line->info[i - 1] == T_OPERATOR)
-		words = 1;
 	while (node->line && node->line->info && node->line->info[i])
 	{
 		while (node->line->info[i] != T_SPACE && node->line->info[i] != '\0')

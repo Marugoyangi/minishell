@@ -28,10 +28,22 @@ char *get_ps1(t_arg *arg)
 void	sig_handler(int signum)
 {
 	(void)signum;
+
 	printf("\n");
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
+}
+
+void	sig_handler_exec(int signum)
+{
+	(void)signum;
+
+	printf("\n");
+	rl_on_new_line();
+	if (signum == SIGQUIT)
+		printf("Quit\n");
+	rl_replace_line("", 0);
 }
 
 void	terminal_default(struct termios *original_term, int exit)
@@ -41,6 +53,8 @@ void	terminal_default(struct termios *original_term, int exit)
 		printf("\033[A\033[11Cexit\n");
 		return ;
 	}
+	signal(SIGQUIT, sig_handler_exec);
+	signal(SIGINT, sig_handler_exec);
 	tcsetattr(STDOUT_FILENO, TCSANOW, original_term);
 }
 
@@ -49,6 +63,7 @@ void	terminal_interactive(struct termios *term)
 	term->c_lflag &= ~(ECHOCTL);
 	tcsetattr(STDOUT_FILENO, TCSANOW, term);
 	signal(SIGINT, sig_handler);
+	signal(SIGQUIT, SIG_IGN);
 }
 
 void	terminal_init(t_arg *arg, struct termios *term, struct termios *original_term, \

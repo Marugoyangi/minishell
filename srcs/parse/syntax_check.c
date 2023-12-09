@@ -67,7 +67,7 @@ void	check_redirection(t_node *node, t_error *error)
 	t_node *right;
 
 	right = node->right;
-	if (!node->argv && !node->right)
+	if (!node->argv[0] && !node->right)
 		error->token = ft_strdup("newline");
 	else if (right && right->type == L_SUBSHELL)
 		error->token = ft_strdup("(");

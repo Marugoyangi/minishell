@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:37 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/10 01:17:03 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/10 07:50:51 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,9 @@ int	main(int argc, char **argv, char **envp)
 		expand_vars(&arg);
 		check_syntax(arg.ast_head, &arg, 0);
 		parser(&arg);
+		terminal_default(&original_term, 0);
 		set_exec(&arg);
 		free(arg.line.data);
+		arg.ast_head = NULL;
 	}
-	terminal_default(&original_term, 0);
 }
