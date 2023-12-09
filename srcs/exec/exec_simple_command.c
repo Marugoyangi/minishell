@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   exec_simple_command.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:35:51 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/10 01:23:12 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/09 04:26:31 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+int		exec_command(t_node *node, t_env *env, char **path);
+int		external_command(t_node *node, char **path);
 char	*find_path(char **path, char *command);
 int		check_built_in(t_node *node, t_env *env);
 
@@ -35,12 +37,13 @@ int	external_command(t_node *node, char **path)
 	pid_t	pid;
 
 	excutable_path = find_path(path, node->data);
-	if (excutable_path)
+	if (!excutable_path)
 		return (1);
 	command_option = node->argv;
 	pid = fork();
 	if (!pid)
 	{
+		printf("here\n");
 		if (execve(excutable_path, command_option, 0) == -1)	// execve함수를 통한 새로운 프로세서 생성 실패시 perror 에러출력
 			perror("execve");
 		exit(0);

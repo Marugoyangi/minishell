@@ -21,7 +21,7 @@ void	exec_pipe_child2(t_node *node, t_env *env, char **path, int *fd);
 // 논리연산자는 포크없이 구현해야한다.
 int	exec_logical_operator(t_node *node, t_env *env, char **path)
 {
-	if (!strcmp(node->data, "&&") == 0)
+	if (!strcmp(node->data, "&&"))
 	{
 		if (!start_exec(node->left, env, path))
 			if (!start_exec(node->right, env, path))

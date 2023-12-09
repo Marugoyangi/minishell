@@ -111,7 +111,11 @@ typedef struct s_arg
 
 void	test_print_list(t_node *root);
 void	tokenize(t_line *line);
-void print_ascii(void);
+void    print_ascii(void);
+void	print_ascii1(void);
+void	print_ascii2(void);
+void	print_ascii3(void);
+void	print_ascii4(void);
 
 void	parser(t_arg *arg);
 
@@ -227,7 +231,6 @@ int exec_input(t_node *node, t_env *env, char **path);
 int exec_heredoc(t_node *node, t_env *env, char **path);
 
 void	print_env(t_env *env);
-
 
 
 #endif
