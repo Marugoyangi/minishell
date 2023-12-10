@@ -77,9 +77,10 @@ void	built_in_exit(t_node *node)
 {
 	int exit_num;
 
+	exit_num = 0;
 	if (node->argv[1])
-		exit_num = ft_atoi(node->argv[1]);
-	else
-		exit_num = 0;
+	{
+	}
+	// 	exit_num = ft_atoi(node->argv[1]);
 	exit(exit_num);
 }

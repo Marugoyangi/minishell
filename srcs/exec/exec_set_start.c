@@ -25,7 +25,6 @@ void	set_exec(t_arg *arg)
 
 	start = arg->ast_head;
 	env = arg->envp_head;
-
 	set_heredoc(start);
 	path = set_path(env);	// execve 함수를 위한 path 경로 저장.
 		
@@ -59,7 +58,7 @@ void	set_heredoc(t_node *node)
 
 	if (!node)
 		return ;
-	if (node->type == L_REDIRECTION && !ft_strcmp(node->data, "<<"))
+	if (node->type == L_REDIRECTION && !ft_strncmp(node->data, "<<", 2))
 	{
 		node->filename = set_heredoc_filename();
 		fd = open(node->filename, O_WRONLY | O_CREAT | O_APPEND, 0666);

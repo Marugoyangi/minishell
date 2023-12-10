@@ -230,6 +230,10 @@ int exec_append(t_node *node, t_env *env, char **path);
 int exec_input(t_node *node, t_env *env, char **path);
 int exec_heredoc(t_node *node, t_env *env, char **path);
 
+// exec_redirection_utils.c
+int	check_built_in_redirection(t_node *node);
+int external_command_redirection(t_node *node, char **path, int fd, int fd_sign);;
+
 void	print_env(t_env *env);
 int	ft_strncmp(const char *s1, const char *s2, size_t n);
 

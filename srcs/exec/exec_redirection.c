@@ -11,48 +11,63 @@
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
 int exec_redirection(t_node *node, t_env *env, char **path);
 int exec_output(t_node *node, t_env *env, char **path);
 int exec_append(t_node *node, t_env *env, char **path);
 int exec_input(t_node *node, t_env *env, char **path);
 int exec_heredoc(t_node *node, t_env *env, char **path);
 
+// 수정할 사항
+// 내장함수 리다이렉션시 무한루프
+// 외장함수 리다이렉션시 fd 서로 공유 안되는듯함.
+
 int	exec_redirection(t_node *node,t_env *env, char **path)
 {
+	printf("here\n");
 	if (!ft_strncmp(node->data, ">", 1))
 		return (exec_output(node, env, path));
-	else if (!ft_strcmp(node->data, ">>"))
+	else if (!ft_strncmp(node->data, ">>", 2))
 		return (exec_append(node, env, path));
-	else if (!ft_strcmp(node->data, "<"))
+	else if (!ft_strncmp(node->data, "<", 1))
 		return (exec_input(node, env, path));
-	else
+	else if (!ft_strncmp(node->data, "<<", 2))
 		return (exec_heredoc(node, env, path));
+	return (1);
 }
 
 int	exec_output(t_node *node, t_env *env, char **path)
 {
-	int fd;
+	int		fd;
 
-	// O_TRUNC 이미 파일이 존재하는경우 해당 파일을 비우기때문에 덮어쓰기 효과.
-    fd = open(node->argv[0], O_WRONLY | O_CREAT | O_TRUNC, 0666);
-	dup2(fd, 1);
-	close(fd);
-	if (!exec_command(node, env, path))
+	fd = open(node->argv[0], O_WRONLY | O_CREAT | O_TRUNC, 0666);
+	node = node->right;
+	if (!node->data) // 하위 명령어가 없어도 노드가 생성되는 오류로 인하여 node대신 data참조
 		return (0);
-	return (1);
+	if (!check_built_in_redirection(node))
+	{
+		dup2(fd, 1);
+		close(fd);
+		return (check_built_in(node, env));
+	}
+	return (external_command_redirection(node, path, fd, 1));
 }
 
 int	exec_append(t_node *node, t_env *env, char **path)
 {
-	int fd;
+	int		fd;
 
-	// O_APPEND 파일이 존재하는 경우 파일 끝에 내용을 추가하기때문에 이어쓰기 효과.
 	fd = open(node->argv[0], O_WRONLY | O_CREAT | O_APPEND, 0666);
-	dup2(fd, 1);
-	close(fd);
-	if (!start_exec(node->left, env, path))
+	node = node->right;
+	if (!node->data)
 		return (0);
-	return (1);
+	if (!check_built_in_redirection(node))
+	{
+		dup2(fd, 1);
+		close(fd);
+		return (check_built_in(node, env));
+	}
+	return (external_command_redirection(node, path, fd, 1));
 }
 
 int	exec_input(t_node *node, t_env *env, char **path)
@@ -60,28 +75,37 @@ int	exec_input(t_node *node, t_env *env, char **path)
 	int fd;
 
 	fd = open(node->argv[0], O_RDONLY);
-	dup2(fd, 0);
-	close(fd);
-	if (!start_exec(node->left, env, path))
+	node = node->right;
+	if (!node->data)
 		return (0);
-	return (1);
+	if (!check_built_in_redirection(node))
+	{
+		dup2(fd, 0);
+		close(fd);
+		return (check_built_in(node, env));
+	}
+	return (external_command_redirection(node, path, fd, 0));
 }
 
 int	exec_heredoc(t_node *node, t_env *env, char **path)
 {
-	int fd;
+	int		fd;
+	int		return_value;
+	t_node	*cur;
 
 	fd = open(node->filename, O_RDONLY);
-	dup2(fd, 0);
-	close(fd);
-	if (!start_exec(node->left, env, path))
-	{
-		unlink(node->filename);
+	cur = node->right;
+	if (!cur->data)
 		return (0);
-	}
-	else
+	if (!check_built_in_redirection(node))
 	{
+		dup2(fd, 0);
+		close(fd);
+		return_value = check_built_in(cur, env);
 		unlink(node->filename);
-		return (1);
+		return (return_value);
 	}
+	return_value = external_command_redirection(cur, path, fd, 0);
+	unlink(node->filename);
+	return (return_value);
 }

@@ -32,18 +32,16 @@ int	exec_command(t_node *node, t_env *env, char **path)
 int	external_command(t_node *node, char **path)
 {
 	char	*excutable_path;
-	char	**command_option;
 	int		status;
 	pid_t	pid;
 
-	excutable_path = find_path(path, node->data);
-	if (!excutable_path)
-		return (1);
-	command_option = node->argv;
 	pid = fork();
 	if (!pid)
 	{
-		if (execve(excutable_path, command_option, 0) == -1)	// execve함수를 통한 새로운 프로세서 생성 실패시 perror 에러출력
+		excutable_path = find_path(path, node->data);
+		if (!excutable_path)
+			return (1);
+		if (execve(excutable_path, node->argv, 0) == -1)	// execve함수를 통한 새로운 프로세서 생성 실패시 perror 에러출력
 			perror("execve");
 		exit(0);
 	}
