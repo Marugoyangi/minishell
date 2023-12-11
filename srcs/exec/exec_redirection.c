@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redirection.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 19:23:09 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/10 01:29:00 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/11 14:24:34 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ int exec_heredoc(t_node *node, t_env *env, char **path);
 
 int	exec_redirection(t_node *node,t_env *env, char **path)
 {
-	printf("here\n");
 	if (!ft_strncmp(node->data, ">", 1))
 		return (exec_output(node, env, path));
 	else if (!ft_strncmp(node->data, ">>", 2))

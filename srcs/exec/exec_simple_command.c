@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_simple_command.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:35:51 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/09 04:26:31 by marvin           ###   ########.fr       */
+/*   Updated: 2023/12/11 15:05:01 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,17 @@ int	external_command(t_node *node, char **path)
 	pid = fork();
 	if (!pid)
 	{
-		excutable_path = find_path(path, node->data);
-		if (!excutable_path)
-			return (1);
-		if (execve(excutable_path, node->argv, 0) == -1)	// execve함수를 통한 새로운 프로세서 생성 실패시 perror 에러출력
-			perror("execve");
+		if (!(execve(node->argv[0], node->argv, 0) == -1))
+			exit(0);
+		else
+		{
+			excutable_path = find_path(path, node->data);
+			if (!excutable_path)
+				return (1);
+			if (execve(excutable_path, node->argv, 0) == -1)	// execve함수를 통한 새로운 프로세서 생성 실패시 perror 에러출력
+				perror("execve");
 		exit(0);
+		}
 	}
 	else
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_set_start.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 18:25:08 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/10 01:25:37 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/11 15:47:48 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,7 @@ void	set_exec(t_arg *arg)
 	start = arg->ast_head;
 	env = arg->envp_head;
 	set_heredoc(start);
-	path = set_path(env);	// execve 함수를 위한 path 경로 저장.
-		
-	// 사전준비 완료 후 노드 순회 시작
+	path = set_path(env);
 	start_exec(start, env, path);
 }
 
@@ -66,7 +64,7 @@ void	set_heredoc(t_node *node)
 		{
 			line = readline("환경변수 처리");	
 			write(fd, line, ft_strlen(line));
-		   if (!ft_strcmp(line, node->argv[0]))
+		   if (!ft_strcmp2(line, node->argv[0]))
 			{
 				free(line);
 				break;

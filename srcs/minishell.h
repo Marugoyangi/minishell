@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:35 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/10 01:22:54 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/11 15:10:18 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,7 +185,7 @@ int		ft_countdigit(int n);
 void	ft_nbrdup(int n, int digit, char *nbr);
 
 // exec_libft.c
-// int	ft_strcmp(const char *s1, const char *s2);
+int	ft_strcmp2(const char *s1, const char *s2);
 
 // exec_set_start.c
 void	set_exec(t_arg *arg);
@@ -236,6 +236,7 @@ int external_command_redirection(t_node *node, char **path, int fd, int fd_sign)
 
 void	print_env(t_env *env);
 int	ft_strncmp(const char *s1, const char *s2, size_t n);
+int	ft_atoi(const char *nptr);
 
 
 #endif

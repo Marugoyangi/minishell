@@ -46,7 +46,7 @@ int	built_in_echo(char **argv)
 // 애초에 chdir이 상대경로던 절대경로던 알아서 인식한다.
 int	built_in_cd(char **argv)
 {
-	if (chdir(argv[0]) == -1)
+	if (chdir(argv[1]) == -1)
 	{
 		perror("chdir");
 		return (1);
@@ -79,8 +79,6 @@ void	built_in_exit(t_node *node)
 
 	exit_num = 0;
 	if (node->argv[1])
-	{
-	}
-	// 	exit_num = ft_atoi(node->argv[1]);
+		exit_num = ft_atoi(node->argv[1]);
 	exit(exit_num);
 }
