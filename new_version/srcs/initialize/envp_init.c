@@ -60,7 +60,7 @@ t_env	*init_envp(char **envp)
 	t_env	*tmp_node;
 
 	i = 0;
-	env_head = create_env("PS1", "\033[1;34mminishell \033[0;33m✗ \033[0m");
+	env_head = create_env("PS1", "\033[0;32m➜  \033[1;36mminishell \033[0;33m✗ \033[0m");
 	tmp_node = env_head;
 	while (tmp_node && envp && envp[i])
 	{
