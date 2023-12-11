@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:37 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/10 23:45:04 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/11 15:30:57 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	main(int argc, char **argv, char **envp)
 		}
 		add_history(arg.line.data);
 		arg.line.data = modified_strtrim(arg.line.data, " \t\n");
-		tokenize(&arg.line);
+		tokenize(&arg.line, &arg);
 		lexicize(&arg);
 		expand_vars(&arg);
 		check_syntax(arg.ast_head, &arg, 0);

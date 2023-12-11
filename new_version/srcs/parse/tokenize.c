@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 19:49:00 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/09 23:23:07 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/11 15:31:38 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ char	check_quote(char c, int *quote)
 	return (-1);
 }
 
-void	tokenize(t_line *line)
+void	tokenize(t_line *line, t_arg *arg)
 {
 	int		quote;
 	int		subshell;
@@ -112,12 +112,10 @@ void	tokenize(t_line *line)
 		i++;
 	}
 	line->info[i] = '\0';
-	if (quote != 0 || subshell == -1 || subshell == 1)
+	if ((quote != 0 || subshell == -1 || subshell == 1 ) && arg)
 	{
-		printf("quote : %d\n", quote);
-		printf("subshell : %d\n", subshell);
-		printf("syntax error\n");
-		return ;
+		arg->error->type = E_UNCLOSED_QUOTES;
+		error_handler(arg);
 	}
 	printf("line : %s\n", line->data);
 	printf("new_line : ");

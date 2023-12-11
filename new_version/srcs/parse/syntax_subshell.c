@@ -19,7 +19,7 @@ int	syntax_subshell(t_node *node, t_arg *arg)
 	memset(&tmp, 0, sizeof(t_arg));
 	tmp.line.data = ft_strdup(node->data);
 	tmp.line.data = ft_strtrim(tmp.line.data, "()");
-	tokenize(&tmp.line);
+	tokenize(&tmp.line, NULL);
 	lexicize(&tmp);
 	if (check_syntax(tmp.ast_head, arg, 1))
 		return (1);

@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 05:51:56 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/11 14:19:52 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/11 15:31:14 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ t_line	*get_line_info(char *env)
 	line = (t_line *)malloc(sizeof(t_line));
 	line->data = ft_strdup(env);
 	line->info = NULL;
-	tokenize(line);
+	tokenize(line, NULL);
 	ft_free((void *)env);
 	return (line);
 }

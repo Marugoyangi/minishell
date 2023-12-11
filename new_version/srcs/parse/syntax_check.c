@@ -67,11 +67,11 @@ void	check_redirection(t_node *node, t_error *error)
 	t_node *right;
 
 	right = node->right;
-	if (!node->argv[0] && !node->right)
+	if (!node->argv && !node->right)
 		error->token = ft_strdup("newline");
 	else if (right && right->type == L_SUBSHELL)
 		error->token = ft_strdup("(");
-	else if (!node->argv[0])
+	else if (!node->argv)
 		error->token = ft_strdup(right->data);
 	else if ((right && (right->type == L_LOGICAL_OPERATOR || right->type == L_REDIRECTION \
 	|| right->type == L_PIPELINE || right->type == L_SIMPLE_COMMAND )) || \

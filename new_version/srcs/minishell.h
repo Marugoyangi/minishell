@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:35 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/11 08:28:44 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/11 15:28:10 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ typedef struct s_arg
 # define E_EXIT_NOT_NUMERIC	-7
 # define E_CD_NO_FILE		-8
 # define E_TOO_MANY_ARG		-9
+# define E_UNCLOSED_QUOTES	-10
 
 //syntax flag
 # define S_OPERATOR			0
@@ -109,7 +110,7 @@ typedef struct s_arg
 # define S_SUBSHELL			0
 
 void	test_print_list(t_node *root);
-void	tokenize(t_line *line);
+void	tokenize(t_line *line, t_arg *arg);
 void    print_ascii(void);
 void	print_ascii2(void);
 void	parser(t_arg *arg);
