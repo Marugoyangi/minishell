@@ -6,7 +6,7 @@
 /*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 18:25:08 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/12 23:40:35 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/13 05:39:15 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ char	*set_heredoc_filename()
 	i = 1;
 	while(1)
 	{
-		filename = ft_itoa(i);
+		filename = ft_strjoin(".", ft_itoa(i));
 		fd = open(filename, O_RDONLY);	// open 성공 = filename 파일 존재
-		if (fd == -1)	// 실패시 해당 filename 사용가능;
+		if (fd == -1)
 			return (filename);
 		free(filename);
 		i++;
@@ -56,12 +56,13 @@ void	set_heredoc(t_node *node)
 		while (1)
 		{
 			line = readline("환경변수 처리");	
-			write(fd, line, ft_strlen(line));
 		   if (!ft_strcmp(line, node->argv[0]))
 			{
 				free(line);
 				break;
 			}
+			write(fd, line, ft_strlen(line));
+			write(fd, "\n", 1);
 			free(line);
 		}
 		close(fd);

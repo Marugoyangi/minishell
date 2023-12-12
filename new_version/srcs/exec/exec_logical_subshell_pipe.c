@@ -6,7 +6,7 @@
 /*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 18:54:16 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/12 23:53:19 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/13 04:46:59 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int		exec_logical_operator(t_node *node, t_arg *arg);
 int		exec_subshell(t_node *node, t_arg *arg);
 int		exec_pipeline(t_node *node, t_arg *arg);
+int		exec_parent(t_arg *arg, int *pid, int *pipe);
 void	exec_pipe_child1(t_node *node, t_arg *arg, int *fd);
 void	exec_pipe_child2(t_node *node, t_arg *arg, int *fd);
 
@@ -56,7 +57,7 @@ int	exec_subshell(t_node *node, t_arg *arg)
 	if (!pid)
 	{
 		start_exec(node->left, arg);
-		exit (0);
+		exec_perror("execve");
 	}
 	else
 		waitpid(pid, &status, 0);
@@ -67,7 +68,6 @@ int	exec_pipeline(t_node *node, t_arg *arg)
 {
 	pid_t	pid[2];
 	int		pipe_fd[2];
-	int		status;
 
 	arg->fork_sign++;
 	if (pipe(pipe_fd) == -1)
@@ -81,14 +81,21 @@ int	exec_pipeline(t_node *node, t_arg *arg)
 		if (!pid[1])
 			exec_pipe_child2(node, arg, pipe_fd);
 		else
-		{
-			waitpid(pid[0], 0, 0);
-			waitpid(pid[1], &status, 0);
-			arg->fork_sign--;
-			return (status);
-		}
+			return (exec_parent(arg, pid, pipe_fd));
 	}
 	return (1); // 이 리턴을 쓰는경우는 자식프로세스가 제대로 종료되지않고 조건문을 나온경우이므로 오류처리.
+}
+
+int	exec_parent(t_arg *arg, int *pid, int *pipe)
+{
+	int		status;
+
+	close(pipe[0]);
+	close(pipe[1]);
+	waitpid(pid[0], 0, 0);
+	waitpid(pid[1], &status, 0);
+	arg->fork_sign--;
+	return (status);
 }
 
 void	exec_pipe_child1(t_node *node, t_arg *arg, int *pipe)
@@ -98,7 +105,6 @@ void	exec_pipe_child1(t_node *node, t_arg *arg, int *pipe)
 	close(pipe[1]);
 	if (start_exec(node->left, arg))
 		exit (1);
-	exit(0);
 }
 
 void	exec_pipe_child2(t_node *node, t_arg *arg, int *pipe)
@@ -108,5 +114,4 @@ void	exec_pipe_child2(t_node *node, t_arg *arg, int *pipe)
 	close(pipe[0]);
 	if (start_exec(node->right, arg))
 		exit (1);
-	exit (0);
 }

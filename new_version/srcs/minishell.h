@@ -6,7 +6,7 @@
 /*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:35 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/13 00:36:55 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/13 05:42:16 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,6 +235,7 @@ void	free_list(t_env *env);
 int		exec_logical_operator(t_node *node, t_arg *arg);
 int		exec_subshell(t_node *node, t_arg *arg);
 int		exec_pipeline(t_node *node, t_arg *arg);
+int		exec_parent(t_arg *arg, int *pid, int *pipe);
 void	exec_pipe_child1(t_node *node, t_arg *arg, int *fd);
 void	exec_pipe_child2(t_node *node, t_arg *arg, int *fd);
 
@@ -244,6 +245,8 @@ int exec_output(t_node *node, t_arg *arg);
 int exec_append(t_node *node, t_arg *arg);
 int exec_input(t_node *node, t_arg *arg);
 int exec_heredoc(t_node *node, t_arg *arg);
+void	exec_redirection_child(t_node *node, t_arg *arg, int fd, int io);
+t_node	*get_redirection_node(t_node *node);
 
 // exec_redirection_utils.c
 int	check_built_in_redirection(t_node *node);
@@ -251,5 +254,6 @@ int	external_command_redirection(t_node *node, t_arg *arg, int fd, int fd_sign);
 
 int	exec_perror(char *str);
 void	exec_check_path(t_node *node, t_arg *arg, char **path);
+int	single_redirection(t_node *node, t_arg *arg);
 
 #endif
