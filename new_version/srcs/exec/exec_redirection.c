@@ -6,7 +6,7 @@
 /*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 19:23:09 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/13 06:17:40 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/13 06:33:09 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,21 @@ t_node	*get_redirection_node(t_node *node)
 	return (node);
 }
 
+int	error_redirection(t_node *node, int fd)
+{
+	if (fd < 0)
+	{
+		printf("minishell: %s: No such file or directory\n", node->argv[0]);
+		return (1);
+	}
+	if (!node)
+	{
+		printf("minishell: syntax error, redirection need two full pairs of fd\n");
+		return (1);
+	}
+	return (0);
+}
+
 int	exec_output(t_node *node, t_arg *arg)
 {
 	int		fd;
@@ -61,6 +76,10 @@ int	exec_output(t_node *node, t_arg *arg)
 
 	fd = open(node->argv[0], O_WRONLY | O_CREAT | O_TRUNC, 0666);
 	node = get_redirection_node(node);
+	if (error_redirection(node, fd))
+		return (0);
+	if (!node)
+		return (0);
 	if (!arg->fork_sign)
 	{
 		arg->fork_sign++;
@@ -87,6 +106,8 @@ int	exec_append(t_node *node, t_arg *arg)
 
 	fd = open(node->argv[0], O_WRONLY | O_CREAT | O_APPEND, 0666);
 	node = get_redirection_node(node);
+	if (error_redirection(node, fd))
+		return (0);
 	if (!arg->fork_sign)
 	{
 		arg->fork_sign++;
@@ -113,6 +134,8 @@ int	exec_input(t_node *node, t_arg *arg)
 
 	fd = open(node->argv[0], O_RDONLY);
 	node = get_redirection_node(node);
+	if (error_redirection(node, fd))
+		return (0);
 	if (!arg->fork_sign)
 	{
 		arg->fork_sign++;
@@ -140,6 +163,8 @@ int	exec_heredoc(t_node *node, t_arg *arg)
 	fd = open(node->filename, O_RDONLY);
 	unlink(node->filename);
 	node = get_redirection_node(node);
+	if (error_redirection(node, fd))
+		return (0);
 	if (!arg->fork_sign)
 	{
 		arg->fork_sign++;
