@@ -35,6 +35,7 @@ void	expand_asterisk(t_line **line, int index)
 	int		start;
 	int		is_asterisk;
 	char	**p;
+	t_line	*filtered_line;
 
 	is_asterisk = 0;
 	i = index;
@@ -64,14 +65,11 @@ void	expand_asterisk(t_line **line, int index)
 				make_line_back((*line), start, i);
 			else
 			{
-				t_line *filtered_line = node_to_line(*result);
+				filtered_line = node_to_line(*result);
 				printf("filtered_line->data: %s\n", filtered_line->data);
 				is_asterisk = replace_line(filtered_line, line, start, i);
 				printf("line->data: %s\n", (*line)->data);
 				i = start + is_asterisk;
-				free(filtered_line->data);
-				free(filtered_line->info);
-				free(filtered_line);
 				while (*result)
 				{
 					t_node *tmp;
