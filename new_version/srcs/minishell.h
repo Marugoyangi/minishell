@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seungwok <seungwok@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:35 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/12 13:47:20 by seungwok         ###   ########seoul.kr  */
+/*   Updated: 2023/12/12 23:13:50 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ typedef struct s_env
 {
 	char			*key;
 	char			*value;
-	char			quote;
 	struct s_env	*next;
 }				t_env;
 
@@ -72,7 +71,6 @@ typedef struct s_arg
 	char	*pwd;
 	char	*oldpwd;
 	char	*tilde;
-	char	**envp;
 }			t_arg;
 
 
@@ -120,16 +118,19 @@ char *ft_strchr(const char *s, int c);
 
 void	*ft_malloc(int size);
 void	ft_free(void *ptr);
-void	free_split(void **ptr);
+void	free_split(char **ptr);
 void	free_node(t_node *node);
 void	free_env(t_env *env);
 void	free_arg(t_arg *arg);
 void	free_ast(t_node *node);
+void	free_node_split(t_node **node);
 char	*modified_strtrim(char const *s1, char const *set);
 char	*modified_strdup(char *s1);
 char	*modified_substr(char *s, int start, int len);
 char	*modified_strjoin(char *s1, char *s2, int free);
 
+void	set_env(t_env *env_head, char *key, char *value);
+void	append_env(t_env *env, char *key, char *value);
 int ft_strlen(const char *str);
 char	*ft_substr(char const *s, int start, int len);
 char* ft_strdup(char *s1);
@@ -145,7 +146,7 @@ int ft_strcmp(const char *s1, const char *s2);
 int replace_line(t_line *data, t_line **line, int start, int end);
 
 void	expand_tilde(t_line **line, t_arg *arg);
-void	expand_asterisk(t_line **line);
+void	expand_asterisk(t_line **line, int index);
 t_node	**filter_asterisk(char **line);
 char	**line_split(char *line, char c);
 char	*ft_strjoin(char const *s1, char const *s2);
@@ -185,7 +186,6 @@ void terminal_interactive(struct termios *term);
 void signal_default(void);
 void signal_interactive(void);
 char	*get_ps1(t_arg *arg);
-
 
 
 // 실행부 함수
@@ -245,8 +245,5 @@ int exec_heredoc(t_node *node, t_arg *arg);
 // exec_redirection_utils.c
 int	check_built_in_redirection(t_node *node);
 int	external_command_redirection(t_node *node, t_arg *arg, int fd, int fd_sign);
-
-void	print_env(t_env *env);
-
 
 #endif
