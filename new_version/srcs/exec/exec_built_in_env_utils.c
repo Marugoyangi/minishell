@@ -11,6 +11,9 @@
 /* ************************************************************************** */
 
 #include "../minishell.h"
+t_env	*dup_list(t_env *env);
+void	sort_list(t_env *env);
+void	free_list(t_env *env);
 
 t_env	*dup_list(t_env *env)
 {
@@ -18,21 +21,14 @@ t_env	*dup_list(t_env *env)
 	t_env *dup;
 
 	head = (t_env *)malloc(sizeof(t_env));
-	if (!head)
-		return (0);
 	dup = head;
 	while(env)
 	{
-		dup->key = ft_strdup(env->key);
-		dup->value = ft_strdup(env->value);
+		dup->key = env->key;
+		dup->value = env->value;
 		if (env->next)
 		{
 			dup->next = (t_env *)malloc(sizeof(t_env));
-			if (!dup->next)
-			{
-				free_list(head);
-				return (0);
-			}
 			dup = dup->next;
 			env = env->next;
 		}

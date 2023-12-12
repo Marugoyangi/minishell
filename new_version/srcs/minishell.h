@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: seungwok <seungwok@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:35 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/12 12:07:12 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/12 13:47:20 by seungwok         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ typedef struct s_arg
 	char	*pwd;
 	char	*oldpwd;
 	char	*tilde;
+	char	**envp;
 }			t_arg;
 
 
@@ -195,27 +196,26 @@ int		ft_countdigit(int n);
 void	ft_nbrdup(int n, int digit, char *nbr);
 
 // exec_libft.c
-int	ft_strcmp2(const char *s1, const char *s2);
-int	ft_strncmp(const char *s1, const char *s2, size_t n);
-int	ft_atoi(const char *nptr);
+int		ft_atoi(const char *nptr);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
 
 // exec_set_start.c
 void	set_exec(t_arg *arg);
 void	set_heredoc(t_node *node);
-char	**set_path(t_env *env);
-int		start_exec(t_node *node, t_env *env, char **path);
+int		start_exec(t_node *node, t_arg *arg);
 
 // exec_simplecommand.c
-int		exec_command(t_node *node, t_env *env, char **path);
-int		external_command(t_node *node, char **path);
+int		exec_command(t_node *node, t_arg *arg);
+int		check_built_in(t_node *node, t_arg *arg);
+char	**set_path(t_env *env);
+int		external_command(t_node *node, t_arg *arg, char **path);
 char	*find_path(char **path, char *command);
-int		check_built_in(t_node *node, t_env *env);
 
 // exec_built_in.c
 int		built_in_echo(char **argv);
 int		built_in_cd(char **argv);
 int		built_in_pwd();
-void	built_in_exit();
+void	built_in_exit(t_node *node);
 
 // exec_built_in_env.c
 int	built_in_export(t_node *node , t_env *env);
@@ -229,22 +229,22 @@ void	sort_list(t_env *env);
 void	free_list(t_env *env);
 
 // exec_logical_subshell_pipe.c
-int		exec_logical_operator(t_node *node, t_env *env, char **path);
-int		exec_subshell(t_node *node, t_env *env, char **path);
-int		exec_pipeline(t_node *node, t_env *env, char **path);
-void	exec_pipe_child1(t_node *node, t_env *env, char **path, int *fd);
-void	exec_pipe_child2(t_node *node, t_env *env, char **path, int *fd);
+int		exec_logical_operator(t_node *node, t_arg *arg);
+int		exec_subshell(t_node *node, t_arg *arg);
+int		exec_pipeline(t_node *node, t_arg *arg);
+void	exec_pipe_child1(t_node *node, t_arg *arg, int *fd);
+void	exec_pipe_child2(t_node *node, t_arg *arg, int *fd);
 
 // exec_redirection.c
-int exec_redirection(t_node *node, t_env *env, char **path);
-int exec_output(t_node *node, t_env *env, char **path);
-int exec_append(t_node *node, t_env *env, char **path);
-int exec_input(t_node *node, t_env *env, char **path);
-int exec_heredoc(t_node *node, t_env *env, char **path);
+int exec_redirection(t_node *node, t_arg *arg);
+int exec_output(t_node *node, t_arg *arg);
+int exec_append(t_node *node, t_arg *arg);
+int exec_input(t_node *node, t_arg *arg);
+int exec_heredoc(t_node *node, t_arg *arg);
 
 // exec_redirection_utils.c
 int	check_built_in_redirection(t_node *node);
-int external_command_redirection(t_node *node, char **path, int fd, int fd_sign);
+int	external_command_redirection(t_node *node, t_arg *arg, int fd, int fd_sign);
 
 void	print_env(t_env *env);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_set_start.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: seungwok <seungwok@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 18:25:08 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/10 01:25:37 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/12 13:45:02 by seungwok         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,12 @@
 
 void	set_exec(t_arg *arg);
 void	set_heredoc(t_node *node);
-char	**set_path(t_env *env);
-int		start_exec(t_node *node, t_env *env, char **path);
+int		start_exec(t_node *node, t_arg *arg);
 
 void	set_exec(t_arg *arg)
 {
-	t_node *start;
-	t_env	*env;
-	char	**path;
-
-	start = arg->ast_head;
-	env = arg->envp_head;
-
-	set_heredoc(start);
-	path = set_path(env);	// execve 함수를 위한 path 경로 저장.
-		
-	// 사전준비 완료 후 노드 순회 시작
-	start_exec(start, env, path);
+	set_heredoc(arg->ast_head);
+	start_exec(arg->ast_head, arg);
 }
 
 char	*set_heredoc_filename()
@@ -80,31 +69,22 @@ void	set_heredoc(t_node *node)
 	set_heredoc(node->right);
 }
 
-// PATH 환경변수 찾아서, 경로배열 스플릿 후 반환.
-char	**set_path(t_env *env)
-{
-	t_env *cur;
 
-	cur = env;
-	while (strcmp("PATH", cur->key))
-		cur = cur->next;
-	return (ft_split(cur->value, ':'));
-}
 
-int	start_exec(t_node *node, t_env *env, char **path)
+int	start_exec(t_node *node, t_arg *arg)
 {
 	if (!node)
 		return (0);
 	if (node->type == L_SUBSHELL)
-		return (exec_subshell(node, env, path));
+		return (exec_subshell(node, arg));
 	else if (node->type == L_LOGICAL_OPERATOR)
-		return (exec_logical_operator(node, env, path));
+		return (exec_logical_operator(node, arg));
 	else if (node->type == L_PIPELINE)
-		return (exec_pipeline(node, env, path));
+		return (exec_pipeline(node, arg));
 	else if (node->type == L_REDIRECTION)
-		return (exec_redirection(node, env, path));
+		return (exec_redirection(node, arg));
 	else if (node->type == L_SIMPLE_COMMAND)
-		return (exec_command(node, env, path));
+		return (exec_command(node, arg));
 	else
 		return (1);	// 노드가 비어있지않은데 위 분기에 없다면 오류.
 }
