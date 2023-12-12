@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:35 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/12 23:13:50 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/13 00:20:51 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,11 @@ typedef struct s_arg
 	t_line	line;
 	t_node	*ast_head;
 	t_env	*envp_head;
+	char	**envp;
 	t_error	*error;
 	int		last_exit_status;
 	int		is_interactive;
+	int		is_subshell;
 	char	*pwd;
 	char	*oldpwd;
 	char	*tilde;
