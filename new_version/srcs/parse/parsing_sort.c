@@ -95,7 +95,6 @@ t_node	**sort_node(t_node *root, int type)
 	t_node	*node;
 	int	i;
 
-	printf("sort node_type_numbers: %d\n", node_type_numbers(root, type));
 	if (node_type_numbers(root, type) == 0)
 		return (NULL);
 	node = root;
@@ -155,7 +154,6 @@ t_node *append_cmd(t_node *root, int type)
 	int		j;
 
 	node = root;
-	printf("append cmd node_type_numbers: %d\n", node_type_numbers(root, type));
 	if (node_type_numbers(root, type) == 0)
 		return (NULL);
 	tmp = malloc (sizeof(char *) * (node_type_numbers(root, type) + 1));
@@ -173,7 +171,6 @@ t_node *append_cmd(t_node *root, int type)
 			j = 0;
 			while (node->argv && node->argv[j])
 			{
-				printf("node->argv[%d]: %s\n", j, node->argv[j]);
 				tmp[i] = ft_strdup(node->argv[j]);
 				i++;
 				j++;
