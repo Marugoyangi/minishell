@@ -6,7 +6,7 @@
 /*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 19:23:09 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/13 06:06:47 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/13 06:17:40 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,7 @@ int	exec_heredoc(t_node *node, t_arg *arg)
 	pid_t	pid;
 
 	fd = open(node->filename, O_RDONLY);
+	unlink(node->filename);
 	node = get_redirection_node(node);
 	if (!arg->fork_sign)
 	{
