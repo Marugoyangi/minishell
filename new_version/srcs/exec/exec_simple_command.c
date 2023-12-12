@@ -6,7 +6,7 @@
 /*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:35:51 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/13 01:05:58 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/13 07:46:12 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	exec_check_path(t_node *node, t_arg *arg, char **path)
 {
 	char	*excutable_path;
 
-	if (!ft_strncmp(node->data, "./", 2) || !ft_strncmp(node->data, "../", 3 || !ft_strncmp(node->data, "/", 1)))
+	if (ft_strncmp(node->data, "./", 2) || ft_strncmp(node->data, "../", 3 || ft_strncmp(node->data, "/", 1)))
 	{
 		excutable_path = find_path(path, node->data);
 		if (!excutable_path)
