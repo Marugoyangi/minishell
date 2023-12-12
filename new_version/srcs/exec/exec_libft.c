@@ -3,17 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   exec_libft.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seungwok <seungwok@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 18:54:11 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/12 12:56:31 by seungwok         ###   ########seoul.kr  */
+/*   Updated: 2023/12/13 00:23:34 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+int	exec_perror(char *str);
 int	ft_atoi(const char *nptr);
 int	ft_strncmp(const char *s1, const char *s2, size_t n);
+
+int	exec_perror(char *str)
+{
+	perror(str);
+	if (strcmp(str, "execve"))
+		exit(1);
+	return (1);
+}
 
 int	ft_atoi(const char *nptr)
 {

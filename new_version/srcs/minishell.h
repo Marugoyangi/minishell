@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:35 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/13 00:20:51 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/13 00:36:55 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ typedef struct s_arg
 	int		last_exit_status;
 	int		is_interactive;
 	int		is_subshell;
+	int		fork_sign;
 	char	*pwd;
 	char	*oldpwd;
 	char	*tilde;
@@ -247,5 +248,8 @@ int exec_heredoc(t_node *node, t_arg *arg);
 // exec_redirection_utils.c
 int	check_built_in_redirection(t_node *node);
 int	external_command_redirection(t_node *node, t_arg *arg, int fd, int fd_sign);
+
+int	exec_perror(char *str);
+void	exec_check_path(t_node *node, t_arg *arg, char **path);
 
 #endif

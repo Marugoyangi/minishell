@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_set_start.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seungwok <seungwok@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 18:25:08 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/12 13:45:02 by seungwok         ###   ########seoul.kr  */
+/*   Updated: 2023/12/12 23:40:35 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int		start_exec(t_node *node, t_arg *arg);
 void	set_exec(t_arg *arg)
 {
 	set_heredoc(arg->ast_head);
+	arg->fork_sign = 0;
 	start_exec(arg->ast_head, arg);
 }
 

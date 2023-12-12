@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_logical_subshell_pipe.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seungwok <seungwok@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 18:54:16 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/12 12:58:39 by seungwok         ###   ########seoul.kr  */
+/*   Updated: 2023/12/12 23:53:19 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ int		exec_pipeline(t_node *node, t_arg *arg);
 void	exec_pipe_child1(t_node *node, t_arg *arg, int *fd);
 void	exec_pipe_child2(t_node *node, t_arg *arg, int *fd);
 
-// 논리연산자는 포크없이 구현해야한다.
 int	exec_logical_operator(t_node *node, t_arg *arg)
 {
 	if (!strcmp(node->data, "&&"))
@@ -48,6 +47,11 @@ int	exec_subshell(t_node *node, t_arg *arg)
 {
 	pid_t	pid;
 	int		status;
+	
+	if (!node->left)
+		node = node->right;
+	else
+		node = node->left;
 	pid = fork();
 	if (!pid)
 	{
@@ -65,11 +69,9 @@ int	exec_pipeline(t_node *node, t_arg *arg)
 	int		pipe_fd[2];
 	int		status;
 
+	arg->fork_sign++;
 	if (pipe(pipe_fd) == -1)
-	{
-		perror("pipe");
-		return (1);
-	}
+		return (exec_perror("pipe"));
 	pid[0] = fork();
 	if (!pid[0])
 		exec_pipe_child1(node, arg, pipe_fd);
@@ -82,6 +84,7 @@ int	exec_pipeline(t_node *node, t_arg *arg)
 		{
 			waitpid(pid[0], 0, 0);
 			waitpid(pid[1], &status, 0);
+			arg->fork_sign--;
 			return (status);
 		}
 	}

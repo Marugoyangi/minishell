@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redirection.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seungwok <seungwok@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 19:23:09 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/12 13:03:52 by seungwok         ###   ########seoul.kr  */
+/*   Updated: 2023/12/13 00:31:37 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,87 +20,122 @@ int exec_heredoc(t_node *node, t_arg *arg);
 
 int	exec_redirection(t_node *node, t_arg *arg)
 {
-	if (!ft_strcmp(node->data, ">"))
-		return (exec_output(node, arg));
-	else if (!ft_strcmp(node->data, ">>"))
+	if (!ft_strcmp(node->data, ">>"))
 		return (exec_append(node, arg));
-	else if (!ft_strcmp(node->data, "<"))
-		return (exec_input(node, arg));
+	else if (!ft_strcmp(node->data, ">"))
+		return (exec_output(node, arg));
 	else if (!ft_strcmp(node->data, "<<"))
 		return (exec_heredoc(node, arg));
+	else if (!ft_strcmp(node->data, "<"))
+		return (exec_input(node, arg));
 	return (1);
 }
 
 int	exec_output(t_node *node, t_arg *arg)
 {
 	int		fd;
+	int		status;
+	pid_t	pid;
 
 	fd = open(node->argv[0], O_WRONLY | O_CREAT | O_TRUNC, 0666);
-	node = node->right;
-	if (!node->data) // 하위 명령어가 없어도 노드가 생성되는 오류로 인하여 node대신 data참조
-		return (0);
-	if (!check_built_in_redirection(node))
+	if (!node->left)
+		node = node->right;
+	else
+		node = node->left;
+	arg->fork_sign++;
+	pid = fork();
+	if (!pid)
 	{
 		dup2(fd, 1);
 		close(fd);
-		return (check_built_in(node, arg));
+		start_exec(node, arg);
 	}
-	return (external_command_redirection(node, arg, fd, 1));
+	else
+	{
+		waitpid(pid, &status, 0);
+		arg->fork_sign--;
+	}
+	return (status);
 }
 
 int	exec_append(t_node *node, t_arg *arg)
 {
 	int		fd;
+	int		status;
+	pid_t	pid;
 
 	fd = open(node->argv[0], O_WRONLY | O_CREAT | O_APPEND, 0666);
-	node = node->right;
-	if (!node->data)
-		return (0);
-	if (!check_built_in_redirection(node))
+	if (!node->left)
+		node = node->right;
+	else
+		node = node->left;
+	arg->fork_sign++;
+	pid = fork();
+	if (!pid)
 	{
 		dup2(fd, 1);
 		close(fd);
-		return (check_built_in(node, arg));
+		start_exec(node, arg);
 	}
-	return (external_command_redirection(node, arg, fd, 1));
+	else
+	{
+		waitpid(pid, &status, 0);
+		arg->fork_sign--;
+	}
+	return (status);
 }
 
 int	exec_input(t_node *node, t_arg *arg)
 {
-	int fd;
+	int		fd;
+	int		status;
+	pid_t	pid;
 
 	fd = open(node->argv[0], O_RDONLY);
-	node = node->right;
-	if (!node->data)
-		return (0);
-	if (!check_built_in_redirection(node))
+	if (!node->left)
+		node = node->right;
+	else
+		node = node->left;
+	arg->fork_sign++;
+	pid = fork();
+	if (!pid)
 	{
-		dup2(fd, 0);
+		dup2(fd, 1);
 		close(fd);
-		return (check_built_in(node, arg));
+		start_exec(node, arg);
 	}
-	return (external_command_redirection(node, arg, fd, 0));
+	else
+	{
+		waitpid(pid, &status, 0);
+		arg->fork_sign--;
+	}
+	return (status);
 }
 
 int	exec_heredoc(t_node *node, t_arg *arg)
 {
 	int		fd;
-	int		return_value;
-	t_node	*cur;
+	int		status;
+	pid_t	pid;
 
 	fd = open(node->filename, O_RDONLY);
-	cur = node->right;
-	if (!cur->data)
-		return (0);
-	if (!check_built_in_redirection(node))
+	if (!node->left)
+		node = node->right;
+	else
+		node = node->left;
+	arg->fork_sign++;
+	pid = fork();
+	if (!pid)
 	{
-		dup2(fd, 0);
+		dup2(fd, 1);
 		close(fd);
-		return_value = check_built_in(cur, arg);
-		unlink(node->filename);
-		return (return_value);
+		start_exec(node, arg);
 	}
-	return_value = external_command_redirection(cur, arg, fd, 0);
-	unlink(node->filename);
-	return (return_value);
+	else
+	{
+		waitpid(pid, &status, 0);
+		unlink(node->filename);
+		arg->fork_sign--;
+	}
+	return (status);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_simple_command.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seungwok <seungwok@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:35:51 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/12 13:46:02 by seungwok         ###   ########seoul.kr  */
+/*   Updated: 2023/12/13 00:31:15 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int		exec_command(t_node *node, t_arg *arg);
 int		check_built_in(t_node *node, t_arg *arg);
 char	**set_path(t_env *env);
+void	exec_check_path(t_node *node, t_arg *arg, char **path);
 int		external_command(t_node *node, t_arg *arg, char **path);
 char	*find_path(char **path, char *command);
 
@@ -45,33 +46,46 @@ char	**set_path(t_env *env)
 	return (ft_split(cur->value, ':'));
 }
 
-
-int	external_command(t_node *node, t_arg *arg, char **path)
+void	exec_check_path(t_node *node, t_arg *arg, char **path)
 {
 	char	*excutable_path;
-	int		status;
-	pid_t	pid;
 
-	pid = fork();
-	if (!pid)
+	if (!ft_strncmp(node->data, "./", 2) || !ft_strncmp(node->data, "../", 3 || !ft_strncmp(node->data, "/", 1)))
 	{
-		if (!(execve(node->argv[0], node->argv, arg->envp) == -1))
-			exit(0);
-		else
-		{
-			excutable_path = find_path(path, node->data);
-			if (!excutable_path)
-				return (1);
-			if (execve(excutable_path, node->argv, arg->envp) == -1)	// execve함수를 통한 새로운 프로세서 생성 실패시 perror 에러출력
-				perror("execve");
-			exit(0);
-		}
+		excutable_path = find_path(path, node->data);
+		if (!excutable_path)
+			exec_perror("execve");
+		execve(excutable_path, node->argv, arg->envp);
+		exec_perror("execve");
 	}
 	else
 	{
-		waitpid(pid, &status, 0);	// 부모 프로세서는 status에 자식프로세스의 종료상태를 담아서 반환.
+		execve(node->argv[0], node->argv, arg->envp);
+		excutable_path = find_path(path, node->data);
+		if (!excutable_path)
+			exec_perror("execve");
+		execve(excutable_path, node->argv, arg->envp);
+		exec_perror("execve");
+	}
+}
+
+int	external_command(t_node *node, t_arg *arg, char **path)
+{
+	int		status;
+	pid_t	pid;
+
+	if (!arg->fork_sign)
+	{
+		pid = fork();
+		if (!pid)
+			exec_check_path(node, arg, path);
+		else
+			waitpid(pid, &status, 0);	// 부모 프로세서는 status에 자식프로세스의 종료상태를 담아서 반환.
 		return (status);
 	}
+	else
+		exec_check_path(node, arg, path);
+	return (1);
 }
 
 int	check_built_in(t_node *node, t_arg *arg)
