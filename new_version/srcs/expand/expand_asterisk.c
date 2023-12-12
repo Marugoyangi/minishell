@@ -28,20 +28,23 @@ void	make_line_back(t_line *line, int start, int end)
 	}
 }
 
-void	expand_asterisk(t_line **line)
+void	expand_asterisk(t_line **line, int index)
 {
 	t_node	**result;
 	int		i;
 	int		start;
 	int		is_asterisk;
+	char	**p;
 
 	is_asterisk = 0;
-	i = 0;
+	i = index;
+	printf("index: %d\n", index);
 	while ((*line) && (*line)->info && (*line)->info[i])
 	{
 		while ((*line)->info[i] == T_SPACE)
 			i++;
 		start = i;
+		printf("start: %d\n", start);
 		while ((*line)->info[i] && (*line)->info[i] != T_SPACE)
 		{
 			if ((*line)->info[i] == T_ASTERISK)
@@ -53,9 +56,10 @@ void	expand_asterisk(t_line **line)
 		}
 		if (is_asterisk == 1)
 		{
-			char **p = line_split((*line)->data, '/');
+			printf("hi\n");
+			p = line_split((*line)->data + index, '/');
 			result = filter_asterisk(p);
-			free_split((void **)p);
+			free_split(p);
 			if (*result == NULL)
 				make_line_back((*line), start, i);
 			else

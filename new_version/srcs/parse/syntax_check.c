@@ -65,13 +65,23 @@ void	check_pipeline(t_node *node, t_error *error, int *found_type)
 void	check_redirection(t_node *node, t_error *error)
 {
 	t_node *right;
+	int		i;
 
+	i = 0;
 	right = node->right;
-	if (!node->argv && !node->right)
+	while (node->data[i] == '>' || node->data[i] == '<' || node->data[i] == ' ')
+		i++;
+	if (!node->argv && (node->data[i] == '\"' || node->data[i] == '\''))
+		error->token = ft_strdup("\'");
+	else if ((!node->argv && node->data[i] == '$'))
+		error->token = ft_strdup(node->data + i);
+	else if (node->argv && node->argv[1])
+		error->token = ft_strdup("");
+	else if (!node->argv && node->data[i] == '\0' && !node->right)
 		error->token = ft_strdup("newline");
 	else if (right && right->type == L_SUBSHELL)
 		error->token = ft_strdup("(");
-	else if (!node->argv)
+	else if (!node->argv && right)
 		error->token = ft_strdup(right->data);
 	else if ((right && (right->type == L_LOGICAL_OPERATOR || right->type == L_REDIRECTION \
 	|| right->type == L_PIPELINE || right->type == L_SIMPLE_COMMAND )) || \
@@ -160,12 +170,15 @@ int check_syntax(t_node *head, t_arg *arg, int flag)
 	{
 		if (flag == 1 && !ft_strcmp(arg->error->token, "newline"))
 		{
-			ft_free((void *)arg->error->token);
+			free(arg->error->token);
 			arg->error->token = ft_strdup(")");
 		}
-		arg->error->type = E_WRONG_SYNTAX;
-		arg->error->code = 2;
-		error_handler(arg);
+		else
+		{
+			arg->error->type = E_WRONG_SYNTAX;
+			arg->error->code = 2;
+			error_handler(arg);
+		}
 		return (1);
 	}
 	return (0);

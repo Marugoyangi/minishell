@@ -14,10 +14,16 @@
 
 void	init_shell_vars(t_arg *arg)
 {
-	// if (find_env(arg->envp_head, "TERM"))
-	// 	arg->term = find_env(arg->envp_head, "TERM");
-	// else
-	// 	arg->term = "xterm-256color";
+	char	*tmp;
+
+	if (find_env(arg->envp_head, "SHLVL"))
+	{
+		tmp = ft_itoa(ft_atoi(find_env(arg->envp_head, "SHLVL")) + 1);
+		set_env(arg->envp_head, "SHLVL", tmp);
+		free(tmp);
+	}
+	else
+		append_env(arg->envp_head, "SHLVL", "1");
 	if (find_env(arg->envp_head, "HOME"))
 		arg->tilde = ft_strdup(find_env(arg->envp_head, "HOME"));
 	else if (find_env(arg->envp_head, "USER"))

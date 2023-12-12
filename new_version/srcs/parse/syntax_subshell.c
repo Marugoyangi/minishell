@@ -18,10 +18,18 @@ int	syntax_subshell(t_node *node, t_arg *arg)
 
 	memset(&tmp, 0, sizeof(t_arg));
 	tmp.line.data = ft_strdup(node->data);
-	tmp.line.data = ft_strtrim(tmp.line.data, "()");
+	tmp.line.data = modified_strtrim(tmp.line.data, "()");
 	tokenize(&tmp.line, NULL);
 	lexicize(&tmp);
 	if (check_syntax(tmp.ast_head, arg, 1))
+	{
+		free(tmp.line.data);
+		free(tmp.line.info);
+		free_node(tmp.ast_head);
 		return (1);
+	}
+	free(tmp.line.data);
+	free(tmp.line.info);
+	free_node(tmp.ast_head);
 	return (0);
 }

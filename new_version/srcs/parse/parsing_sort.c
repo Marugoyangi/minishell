@@ -49,18 +49,15 @@ void	sort_free(t_node **node)
 	{
 		if (node[i]->data)
 			free(node[i]->data);
-		node[i]->data = NULL;
 		if (node[i]->argv)
-			free_split((void **)node[i]->argv);
+			free_split(node[i]->argv);
 		if (node[i]->line)
 		{
 			free(node[i]->line->data);
 			free(node[i]->line->info);
 			free(node[i]->line);
 		}
-		node[i]->line = NULL;
 		free(node[i]);
-		node[i] = NULL;
 		i++;
 	}
 	free (node);
@@ -139,7 +136,8 @@ void	append_subshell(t_node *root)
 	i = 0;
 	red_str = modified_strjoin(ft_substr(root->data, 0, 1), red_str, 0);
 	red_str = modified_strjoin(red_str, " ", 1);
-	red_str = modified_strjoin(red_str, ft_substr(root->data, 1, ft_strlen(root->data) - 1), 2);
+	red_str = modified_strjoin(red_str, ft_substr(root->data, 1, ft_strlen(root->data) - 1), 0);
+	free(root->data);
 	root->data = ft_strdup(red_str);
 	free (red_str);
 	sort_free(red);

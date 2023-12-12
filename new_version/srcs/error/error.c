@@ -20,9 +20,21 @@ void	error_handler(t_arg *arg)
 	}
 	else if (arg->error->type == E_WRONG_SYNTAX)
 	{
-		printf("minishell: syntax error near unexpected token `%s'\n", arg->error->token);
-		ft_free((void *)arg->error->token);
-		exit (2);
+		if (arg->error->token[0] == '$')
+			printf("minishell: %s: ambiguous redirect\n", arg->error->token);
+		else if (arg->error->token[0] == '\'')
+			printf("minishell: No such file or directory\n");
+		else if (arg->error->token[0] == '\0')
+			printf("minishell: ambiguous redirect\n");
+		else
+			printf("minishell: syntax error near unexpected token `%s'\n", arg->error->token);
+		free_node(arg->ast_head);
+		arg->ast_head = NULL;
+		ft_free((void *)arg->line.data);
+		arg->line.data = NULL;
+		ft_free((void *)arg->line.info);
+		arg->line.info = NULL;
+
 	}
 	else if (arg->error->type == E_FD)
 	{

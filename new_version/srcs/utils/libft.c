@@ -277,7 +277,7 @@ char	*modified_strtrim(char const *s1, char const *set)
 	str = ft_malloc(end - start + 1);
 	if (str != 0)
 		ft_strlcpy(str, s1 + start, end - start + 1);
-	ft_free((void *)s1);
+	free((char *)s1);
 	return (str);
 }
 

@@ -100,7 +100,9 @@ void	asterisk_subdir(t_node **result, char **line, char *pwd, int *depth)
 			break ;
 		if (!check_asterisk(line, file->d_name, depth))
 			continue ;
-		if (file->d_type == DT_DIR && line[*depth + 1] != NULL && ((is_hidden == 0 && file->d_name[0] != '.') || \
+		if (line[*depth + 1] == NULL && ((is_hidden == 0 && file->d_name[0] != '.') || is_hidden == 1))
+			filtered_node(file, result, ft_strdup(pwd), line[1]);
+		else if (file->d_type == DT_DIR && line[*depth + 1] != NULL && ((is_hidden == 0 && file->d_name[0] != '.') || \
 			is_hidden == 1))
 		{
 			(*depth)++;
@@ -110,8 +112,6 @@ void	asterisk_subdir(t_node **result, char **line, char *pwd, int *depth)
 				asterisk_subdir(result, line, modified_strjoin(pwd, ft_strjoin("/", file->d_name), 2), depth);
 			(*depth)--;
 		}
-		else if (line[*depth + 1] == NULL && ((is_hidden == 0 && file->d_name[0] != '.') || is_hidden == 1))
-			filtered_node(file, result, ft_strdup(pwd), line[1]);
 	}
 	free(pwd);
 	closedir(dir);

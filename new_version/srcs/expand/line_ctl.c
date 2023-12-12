@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 03:56:07 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/11 08:45:38 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/12 21:40:43 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,7 +253,10 @@ int	replace_line(t_line *data, t_line **line, int start, int end) //길이 줄�
 	new_info[i] = '\0';
 	free((*line)->data);
 	free((*line)->info);
+	free((data->data));
+	free((data->info));
+	free(data);
 	(*line)->data = new_data;
 	(*line)->info = new_info;
-	return (ft_strlen(data->info));
+	return (j);
 }

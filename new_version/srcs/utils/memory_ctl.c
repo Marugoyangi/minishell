@@ -12,6 +12,33 @@
 
 #include "minishell.h"
 
+void	free_node_split(t_node **node)
+{
+	int		i;
+
+	i = 0;
+	if (!node)
+		return ;
+	while (node[i])
+	{
+		if (node[i]->data)
+			free(node[i]->data);
+		if (node[i]->line)
+		{
+			if (node[i]->line->data)
+				free(node[i]->line->data);
+			if (node[i]->line->info)
+				free(node[i]->line->info);
+			free(node[i]->line);
+		}
+		if (node[i]->argv)
+			free_split(node[i]->argv);
+		free(node[i]);
+		i++;
+	}
+	free(node);
+}
+
 void	free_env(t_env *env)
 {
 	t_env	*tmp;
@@ -33,7 +60,8 @@ void	free_env(t_env *env)
 void	free_arg(t_arg *arg)
 {
 	ft_free((void *)arg->tilde);
-	ft_free((void *)arg->error->token);
+	if (arg->error->token)
+		free(arg->error->token);
 	ft_free((void *)arg->error);
 	if (arg->envp_head)
 		free_env(arg->envp_head);
@@ -45,17 +73,16 @@ void	free_ast(t_node *node)
 		return ;
 	free_ast(node->left);
 	free_ast(node->right);
-	if (node->data && node->type != L_PIPELINE && node->type && node->type != L_LOGICAL_OPERATOR)
-		ft_free((void *)node->data);
+	if (node->data && node->type != L_PIPELINE && node->type != L_LOGICAL_OPERATOR)
+		free(node->data);
 	if (node->line)
 	{
-		ft_free((void *)node->line->data);
-		ft_free((void *)node->line->info);
-	}
-	if (node->line)
+		free(node->line->data);
+		free(node->line->info);
 		free(node->line);
+	}
 	if (node->argv)
-		free_split((void **)node->argv);
+		free_split(node->argv);
 	free(node);
 }
 
@@ -63,10 +90,12 @@ void	free_node(t_node *node)
 {
 	t_node	*tmp;
 
+	if (!node)
+		return ;
 	while (node)
 	{
 		tmp = node->right;
-		if (node->data)
+		if (node->data && node->type != L_PIPELINE &&  node->type != L_LOGICAL_OPERATOR)
 			free(node->data);
 		if (node->line)
 		{
@@ -74,21 +103,21 @@ void	free_node(t_node *node)
 				free(node->line->data);
 			if (node->line->info)
 				free(node->line->info);
+			free(node->line);
 		}
-		free(node->line);
 		if (node->argv)
-			free_split((void **)node->argv);
-		ft_free((void *)node);
+			free_split(node->argv);
+		free(node);
 		node = tmp;
 	}
 }
 
-void	free_split(void **split)
+void	free_split(char **split)
 {
 	int		i;
 
 	i = 0;
-	if (split == NULL)
+	if (!split)
 		return ;
 	while (split[i])
 	{

@@ -110,7 +110,7 @@ void	sig_handler_exec(int signum)
 
 void	terminal_default(struct termios *original_term, int exit, t_arg *arg)
 {
-	int	ps1_len;
+	int		ps1_len;
 
 	if (exit)
 	{

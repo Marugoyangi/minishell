@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 03:23:22 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/11 09:22:32 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/12 22:02:30 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,14 +118,12 @@ t_node	*create_node(char *data, t_line *line, int type)
 	new_node = (t_node *)malloc(sizeof(t_node));
 	if (new_node == NULL)
 		return (NULL);
+	new_node->line = NULL;
+	new_node->data = NULL;
 	if (data)
 		new_node->data = data;
-	else
-		new_node->data = NULL;
 	if (line)
 		new_node->line = line;
-	else
-		new_node->line = NULL;
 	new_node->type = type;
 	new_node->argv = NULL;
 	new_node->left = NULL;

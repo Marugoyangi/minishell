@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 20:19:14 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/12 13:47:02 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/12 21:37:59 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ t_node	*find_redirection(t_node *root)
 	cmds = sort_node(root, L_SIMPLE_COMMAND);
 	tmp_red = sort_redirection(reds);
 	sort_free(cmds);
+	free(reds);
 	if (!tmp_cmd)
 		return (tmp_red);
 	else if (tmp_cmd && tmp_red)

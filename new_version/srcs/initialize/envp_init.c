@@ -12,6 +12,23 @@
 
 #include "minishell.h"
 
+void	set_env(t_env *env_head, char *key, char *value)
+{
+	t_env	*tmp;
+
+	tmp = env_head;
+	while (tmp)
+	{
+		if (ft_strcmp(tmp->key, key) == 0)
+		{
+			free(tmp->value);
+			tmp->value = ft_strdup(value);
+			return ;
+		}
+		tmp = tmp->next;
+	}
+}
+
 char	*find_env(t_env *env_head, char *key)
 {
 	t_env	*tmp;
@@ -52,6 +69,17 @@ t_env	*create_env(char *key, char *value)
 	return (env);
 }
 
+void	append_env(t_env *env_head, char *key, char *value)
+{
+	t_env	*tmp;
+
+	tmp = env_head;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = create_env(key, value);
+}
+
+
 t_env	*init_envp(char **envp)
 {
 	int		i;
@@ -66,7 +94,7 @@ t_env	*init_envp(char **envp)
 	{
 		tmp_split = ft_split(envp[i], '=');
 		tmp_node->next = create_env(tmp_split[0], tmp_split[1]);
-		free_split((void **)tmp_split);
+		free_split(tmp_split);
 		tmp_node = tmp_node->next;
 		i++;
 	}

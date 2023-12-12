@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 03:10:34 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/10 21:07:13 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/12 19:54:46 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ t_node	*redirection(int *i, t_line *line)
 	else if (line->data[*i] == '<')
 		redirection = ft_strdup("<");
 	*i = *i + ft_strlen(redirection);
+	free(redirection);
 	while (line->info[*i] == T_SPACE)
 		(*i)++;
 	while (line->info[*i] == T_DOUBLE_QUOTE || line->info[*i] == T_SINGLE_QUOTE \

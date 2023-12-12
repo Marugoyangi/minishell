@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 05:51:56 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/11 15:31:14 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/12 19:53:48 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,20 +119,19 @@ void	expand_node(t_line **line, t_arg *arg, int *i, int *start)
 {
 	t_line	*env_line;
 	char	*env;
+	char	*tmp;
 
 	while ((*line)->info[*i] && (is_not_delimiter((*line)->data[*i]) || \
 		is_number((*line)->data[*i])))
 		(*i)++;
 	if (*start != -1)
 	{
-		env = ft_substr((*line)->data, *start + 1, *i - *start - 1);
-		if (!ft_strcmp(env, "?"))
-		{	
-			free(env);
+		tmp = ft_substr((*line)->data, *start + 1, *i - *start - 1);
+		if (!ft_strcmp(tmp, "?"))
 			env = ft_itoa(arg->last_exit_status);
-		}
 		else
-			env = ft_strdup(find_env(arg->envp_head, env));
+			env = ft_strdup(find_env(arg->envp_head, tmp));
+		free(tmp);
 		if (!env)
 		{
 			ft_delete_line(*i -  *start, line, *i);
@@ -179,7 +178,9 @@ void print_expanded(t_arg *arg)
 	tmp = arg->ast_head;
 	while (tmp)
 	{
-		printf("itoa : %s\n", ft_itoa(1));
+		char *c = ft_itoa(1);
+		printf("itoa : %s\n", c);
+		free(c);
 		printf("data: %s\n", tmp->data);
 		int i = 0;
 		while(tmp->argv && tmp->argv[i])
@@ -195,6 +196,7 @@ void print_expanded(t_arg *arg)
 void	expand_vars(t_arg *arg)
 {
 	t_node	*tmp;
+	int		i;
 
 	tmp = arg->ast_head;
 	while (tmp)
@@ -202,7 +204,16 @@ void	expand_vars(t_arg *arg)
 		expand_envp(&tmp->line, arg);
 		expand_tilde(&tmp->line, arg);
 		remove_quotes(&tmp->line);
-		expand_asterisk(&tmp->line);
+	
+		if (tmp->type == L_REDIRECTION)
+		{
+			i = 0;
+			while(tmp->line->info[i] == T_SPACE || tmp->line->info[i] == T_OPERATOR)
+				i++;
+			expand_asterisk(&tmp->line, i);
+		}
+		else 
+			expand_asterisk(&tmp->line, 0);
 		split_expanded(tmp);
 		tmp = tmp->right;
 	}
