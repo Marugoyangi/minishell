@@ -6,7 +6,7 @@
 /*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:35 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/13 05:42:16 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/13 08:11:46 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ typedef struct s_arg
 	t_line	line;
 	t_node	*ast_head;
 	t_env	*envp_head;
-	char	**envp;
 	t_error	*error;
 	int		last_exit_status;
 	int		is_interactive;
@@ -255,5 +254,6 @@ int	external_command_redirection(t_node *node, t_arg *arg, int fd, int fd_sign);
 int	exec_perror(char *str);
 void	exec_check_path(t_node *node, t_arg *arg, char **path);
 int	single_redirection(t_node *node, t_arg *arg);
+char **make_envp(t_env *envp_head);
 
 #endif

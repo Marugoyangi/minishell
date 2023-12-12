@@ -6,7 +6,7 @@
 /*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:35:51 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/13 07:46:12 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/13 08:12:45 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,16 +55,16 @@ void	exec_check_path(t_node *node, t_arg *arg, char **path)
 		excutable_path = find_path(path, node->data);
 		if (!excutable_path)
 			exec_perror("execve");
-		execve(excutable_path, node->argv, arg->envp);
+		execve(excutable_path, node->argv, make_envp(arg->envp_head));
 		exec_perror("execve");
 	}
 	else
 	{
-		execve(node->argv[0], node->argv, arg->envp);
+		execve(node->argv[0], node->argv, make_envp(arg->envp_head));
 		excutable_path = find_path(path, node->data);
 		if (!excutable_path)
 			exec_perror("execve");
-		execve(excutable_path, node->argv, arg->envp);
+		execve(excutable_path, node->argv, make_envp(arg->envp_head));
 		exec_perror("execve");
 	}
 }
