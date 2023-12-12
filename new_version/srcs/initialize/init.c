@@ -84,8 +84,8 @@ void	sig_handler(int signum)
 	(void)signum;
 
 	printf("\n");
-	rl_on_new_line();
 	rl_replace_line("", 0);
+	rl_on_new_line();
 	rl_redisplay();
 }
 
@@ -96,12 +96,16 @@ void	sig_handler_exec(int signum)
 	printf("\n");
 	rl_on_new_line();
 	if (signum == SIGQUIT)
+	{
 		printf("Quit\n");
-	rl_replace_line("", 0);
-	if (signum == SIGQUIT)
-		exit (131);
+		rl_replace_line("", 0);
+		rl_on_new_line();
+	}
 	else if (signum == SIGINT)
-		exit (130);
+	{
+		rl_replace_line("", 0);
+		rl_on_new_line();
+	}
 }
 
 void	terminal_default(struct termios *original_term, int exit, t_arg *arg)
@@ -117,7 +121,7 @@ void	terminal_default(struct termios *original_term, int exit, t_arg *arg)
 	}
 	tcsetattr(STDOUT_FILENO, TCSANOW, original_term);
 	signal(SIGQUIT, sig_handler_exec);
-	signal(SIGINT, sig_handler);
+	signal(SIGINT, sig_handler_exec);
 }
 
 void	terminal_interactive(struct termios *term)

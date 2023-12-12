@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 20:19:14 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/11 14:13:52 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/12 13:47:02 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,6 @@ t_node	*find_redirection(t_node *root)
 	t_node	**reds;
 	t_node	**cmds;
 
-	printf("find_redirection\n");
-	printf("root->type: %d\n", root->type);
-	printf("root->data: %s\n", root->data);
 	if (root == NULL)
 		return (NULL);
 	if (root->type == L_SUBSHELL)
