@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 05:51:56 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/12 19:53:48 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/12 23:54:08 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	alloc_expanded(t_node *node, char **argv)
 			j++;
 		}
 		node->data[j] = '\0';
+		node->data = modified_strtrim(node->data, " ");
 	}
 	while (node->line && node->line->info[i])
 	{
@@ -208,7 +209,7 @@ void	expand_vars(t_arg *arg)
 		if (tmp->type == L_REDIRECTION)
 		{
 			i = 0;
-			while(tmp->line->info[i] == T_SPACE || tmp->line->info[i] == T_OPERATOR)
+			while(tmp->line->info[i] == T_OPERATOR)
 				i++;
 			expand_asterisk(&tmp->line, i);
 		}
