@@ -6,7 +6,7 @@
 /*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 18:25:08 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/13 05:39:15 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/13 06:49:26 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,32 +41,35 @@ char	*set_heredoc_filename()
 	}
 }
 
-// heredoc 찾아서 입력값 받은 후 파일에 저장하기
-void	set_heredoc(t_node *node)
+void	init_file_for_heredoc(t_node *node)
 {
 	int		fd;
 	char	*line;
 
+	node->filename = set_heredoc_filename();
+	fd = open(node->filename, O_WRONLY | O_CREAT | O_APPEND, 0666);
+	while (1)
+	{
+		line = readline("환경변수 처리");	
+	   if (!ft_strcmp(line, node->argv[0]))
+		{
+			free(line);
+			break;
+		}
+		write(fd, line, ft_strlen(line));
+		write(fd, "\n", 1);
+		free(line);
+	}
+	close(fd);
+}
+
+// heredoc 찾아서 입력값 받은 후 파일에 저장하기
+void	set_heredoc(t_node *node)
+{
 	if (!node)
 		return ;
 	if (node->type == L_REDIRECTION && !ft_strcmp(node->data, "<<"))
-	{
-		node->filename = set_heredoc_filename();
-		fd = open(node->filename, O_WRONLY | O_CREAT | O_APPEND, 0666);
-		while (1)
-		{
-			line = readline("환경변수 처리");	
-		   if (!ft_strcmp(line, node->argv[0]))
-			{
-				free(line);
-				break;
-			}
-			write(fd, line, ft_strlen(line));
-			write(fd, "\n", 1);
-			free(line);
-		}
-		close(fd);
-	}
+		init_file_for_heredoc(node);
 	set_heredoc(node->left);
 	set_heredoc(node->right);
 }
