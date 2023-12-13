@@ -12,14 +12,6 @@
 
 #include "minishell.h"
 
-char *get_ps1(t_arg *arg)
-{
-	char	*tmp;
-
-	tmp = find_env(arg->envp_head, "PS1");
-	return (tmp);
-}
-
 int filterUTF8(const char* str)
 {
 	unsigned char byte;
@@ -80,11 +72,6 @@ int	ps_len(char *ps1)
 }
 
 
-void 	sig_ign(int signum)
-{
-	(void)signum;
-}
-
 void	sig_handler(int signum)
 {
 	(void)signum;
@@ -100,17 +87,11 @@ void	sig_handler_heredoc(int signum)
 	(void)signum;
 
 	if (signum == SIGQUIT)
-	{
-		rl_on_new_line();
-		printf("\nQuit\n");
 		rl_replace_line("", 0);
-		exit (1);
-	}
 	else if (signum == SIGINT)
 	{
 		printf("\n");
 		rl_replace_line("", 0);
-		rl_redisplay();
 		rl_on_new_line();
 		exit (1);
 	}
@@ -128,7 +109,7 @@ void	sig_handler_exec(int signum)
 	if (signum == SIGQUIT)
 	{
 		rl_on_new_line();
-		printf("Quit\n");
+		printf("Quit: 3\n");
 		rl_replace_line("", 0);
 		if (g_signal_fork == 1)
 			exit (131);
@@ -151,11 +132,11 @@ void	terminal_default(int exit, t_arg *arg)
 		g_signal_fork = 0;
 	else if (g_signal_fork == 0)
 	{
-		tcsetattr(STDOUT_FILENO, TCSANOW, &arg->original_term);	
+		tcsetattr(STDOUT_FILENO, TCSANOW, &arg->original_term);
 		signal(SIGINT, sig_handler_exec);
 		signal(SIGQUIT, sig_handler_exec);
 	}
-	if (exit)
+	else if (exit)
 	{
 		ps1_len = ps_len(find_env(arg->envp_head, "PS1"));
 		ps1_len = ps1_len - filterUTF8(find_env(arg->envp_head, "PS1"));
@@ -192,4 +173,5 @@ void	terminal_init(t_arg *arg, char **envp)
 	arg->error->token = NULL;
 	arg->envp_head = init_envp(envp);
 	init_shell_vars(arg);
+	terminal_interactive(arg);
 }

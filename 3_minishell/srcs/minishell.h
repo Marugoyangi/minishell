@@ -6,14 +6,15 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:35 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/13 16:10:46 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/14 06:57:15 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <stdio.h> 		// printf, strerror
+# include <errno.h>			// perror
+# include <stdio.h>			// printf, strerror
 # include <stdlib.h>		// malloc, free, fork, exit, getenv
 # include <unistd.h>		// write, access, read, getcwd, chdir, unlink, pipe
 							//  execve, dup, dup2, isatty, ttyname, ttyslot
@@ -68,8 +69,8 @@ typedef struct s_arg
 	t_node	*ast_head;
 	t_env	*envp_head;
 	t_error	*error;
-	struct termios original_term;
 	struct termios term;
+	struct termios original_term;
 	int		last_exit_status;
 	int		is_interactive;
 	int		is_subshell;
@@ -125,9 +126,13 @@ void	sig_handler_heredoc(int signo);
 void	sig_handler(int signum);
 void	sig_handler_exec(int signum);
 int		ft_strstr(char *str, char *to_find);
+void	expand_envp(t_line **line, t_arg *arg);
+void get_heredoc_filename(t_node *root, int *i);
+char *set_heredoc_filename(int *i);
+
+void	terminal_noninteractive(t_arg *arg);
 
 void	*ft_malloc(int size);
-void	ft_free(void *ptr);
 void	free_split(char **ptr);
 void	free_node(t_node *node);
 void	free_env(t_env *env);
@@ -197,6 +202,9 @@ void signal_default(void);
 void signal_interactive(void);
 char	*get_ps1(t_arg *arg);
 
+void expand_heredoc(t_arg *arg);
+void get_heredoc(t_arg *arg);
+
 
 // 실행부 함수
 // 실행부의 모든 함수는 정상종료시 0, 그 외의 경우 1 및 종료 status를 반환한다.
@@ -211,7 +219,7 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n);
 
 // exec_set_start.c
 void	set_exec(t_arg *arg);
-void	set_heredoc(t_node *node, t_arg *arg);
+void	set_heredoc(t_node *node, t_arg *arg, int *count, int *i);
 int		start_exec(t_node *node, t_arg *arg);
 
 // exec_simplecommand.c

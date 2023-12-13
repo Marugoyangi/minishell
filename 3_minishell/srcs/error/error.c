@@ -28,21 +28,16 @@ void	error_handler(t_arg *arg)
 			printf("minishell: ambiguous redirect\n");
 		else
 			printf("minishell: syntax error near unexpected token `%s'\n", arg->error->token);
-		free_node(arg->ast_head);
-		arg->ast_head = NULL;
-		ft_free((void *)arg->line.data);
-		arg->line.data = NULL;
-		ft_free((void *)arg->line.info);
-		arg->line.info = NULL;
-
+		arg->error->code = 2;
 	}
 	else if (arg->error->type == E_FD)
 	{
 		write (2, "minishell: invalid file descriptor\n", 35);
+		arg->error->code = 1;
 	}
 	else if (arg->error->type == E_UNCLOSED_QUOTES)
 	{
 		write (2, "minishell: syntax error either unclosed quotes or parenthesis found\n", 69);
-		exit (2);
+		arg->error->code = 2;
 	}
 }

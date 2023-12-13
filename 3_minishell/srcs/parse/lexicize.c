@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 03:10:34 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/12 19:54:46 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/13 18:46:39 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,14 @@ t_node	*redirection(int *i, t_line *line)
 	char	*redirection;
 
 	position[0] = *i;
+	redirection = NULL;
 	if (line->data[*i] == '>' && line->data[*i + 1] == '>' && line->info[*i + 1] == T_OPERATOR)
 		redirection = ft_strdup(">>");
 	else if (line->data[*i] == '<' && line->data[*i + 1] == '<' && line->info[*i + 1] == T_OPERATOR)
 		redirection = ft_strdup("<<");
-	else if (line->data[*i] == '>')
+	else if (line->data[*i] == '>' && line->data[*i + 1] != '>')
 		redirection = ft_strdup(">");
-	else if (line->data[*i] == '<')
+	else if (line->data[*i] == '<' && line->data[*i + 1] != '<')
 		redirection = ft_strdup("<");
 	*i = *i + ft_strlen(redirection);
 	free(redirection);

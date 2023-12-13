@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 03:56:07 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/12 21:40:43 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/14 08:35:12 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ int	store_data(char *word, t_line *line, int i, char c)
 		i++;
 	}
 	word[i] = '\0';
-	printf("word: %s\n", word);
 	return (1);
 }
 

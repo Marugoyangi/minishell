@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 18:25:08 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/13 15:37:33 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/14 08:48:35 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,45 +14,111 @@
 
 int		start_exec(t_node *node, t_arg *arg);
 
-void	set_exec(t_arg *arg)
+void	get_heredoc(t_arg *arg)
 {
-		set_heredoc(arg->ast_head, arg);
-		arg->fork_sign = 0;
-		start_exec(arg->ast_head, arg);
-}
+	int	pid;
+	int	count;
+	int	i;
+	int	status;
 
-char	*set_heredoc_filename()
-{
-	int		fd;
-	int		i;
-	char	*filename;
-
+	status = 0;
+	pid = 0;
+	count = 0;
 	i = 1;
-	while(1)
+	get_heredoc_filename(arg->ast_head, &i);
+	i = 1;
+	pid = fork();
+	if (!pid)
 	{
-		filename = ft_strjoin(".", ft_itoa(i));
-		fd = open(filename, O_RDONLY);	// open 성공 = filename 파일 존재
-		if (fd == -1)
-			return (filename);
-		free(filename);
-		i++;
+		signal(SIGINT, sig_handler_heredoc);
+		signal(SIGQUIT, sig_handler_heredoc);
+		set_heredoc(arg->ast_head, arg, &count, &i);
+		exit (0);
+	}
+	else
+	{
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status) == 1)
+		{
+			arg->last_exit_status = WEXITSTATUS(status);
+			arg->error->code = WEXITSTATUS(status);
+		}
+		terminal_interactive(arg);
 	}
 }
 
-void	init_file_for_heredoc(t_node *node)
+void	set_exec(t_arg *arg)
+{
+	arg->fork_sign = 0;
+	start_exec(arg->ast_head, arg);
+}
+
+char	*set_heredoc_filename(int *i)
+{
+	int		fd;
+	char	*filename;
+
+	while (1)
+	{
+		filename = modified_strjoin(".", ft_itoa(*i), 2);
+		fd = open(filename, O_RDONLY);	// open 성공 = filename 파일 존재
+		if (fd == -1)
+		{
+			(*i)++;
+			return (filename);
+		}
+		close(fd);
+		free(filename);
+		(*i)++;
+	}
+}
+
+void	init_file_for_heredoc(t_node *node, int *count, int *i)
 {
 	int		fd;
 	char	*line;
+	char	*tmp;
+	char	*tmp_cursor;
+	int		k;
 
-	node->filename = set_heredoc_filename();
+	k = 0;
+	*count = *count + 1;
 	fd = open(node->filename, O_WRONLY | O_CREAT | O_APPEND, 0666);
 	while (1)
 	{
-		line = readline("환경변수 처리");	
-	   if (!ft_strcmp(line, node->argv[0]))
+		k = 0;
+		tmp_cursor = modified_strjoin("\033[", ft_itoa(*i - *count), 2);
+		tmp_cursor = modified_strjoin(tmp_cursor, "A\033[K> ", 1);
+		tmp = ft_strdup(tmp_cursor);
+		while (k < *i)
+		{
+			tmp = modified_strjoin(tmp, ft_strdup("> "), 0);
+			k++;
+		}
+		line = readline(tmp);
+		if (!ft_strcmp(line, node->argv[0]))
 		{
 			free(line);
-			break;
+			break ;
+		}
+		else if (line)
+		{
+			*i = 0;
+			*count = 0;
+		}
+		else if (!line)
+		{
+			if (*i == *count)
+				*i = *i + 1;
+			else
+			{
+				*i = 0;
+				*count -= 1;
+			}
+			close (fd);
+			return ;
 		}
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
@@ -62,36 +128,16 @@ void	init_file_for_heredoc(t_node *node)
 }
 
 // heredoc 찾아서 입력값 받은 후 파일에 저장하기
-void	set_heredoc(t_node *node, t_arg *arg)
+void	set_heredoc(t_node *node, t_arg *arg, int *count, int *i)
 {
-	int		pid;
-	int		status;
-	
 	if (!node)
 		return ;
 	if (node->type == L_REDIRECTION && !ft_strcmp(node->data, "<<"))
-	{
-		pid = fork();
-		if (!pid)
-		{
-			signal(SIGINT, sig_handler_heredoc);
-			signal(SIGQUIT, sig_handler_heredoc);
-			init_file_for_heredoc(node);
-			exit (0);
-		}
-		else
-		{
-			signal(SIGINT, SIG_IGN);
-			signal(SIGQUIT, SIG_IGN);
-			waitpid(pid, &status, 0);
-			terminal_interactive(arg);
-		}
-	}
-	set_heredoc(node->left, arg);
-	set_heredoc(node->right, arg);
+		init_file_for_heredoc(node, count, i);
+	set_heredoc(node->left, arg, count, i);
+	set_heredoc(node->right, arg, count, i);
+	exit (0);
 }
-
-
 
 int	start_exec(t_node *node, t_arg *arg)
 {

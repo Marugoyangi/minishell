@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 18:54:16 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/13 10:32:42 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/13 18:50:13 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ int	exec_subshell(t_node *node, t_arg *arg)
 	pid_t	pid;
 	int		status;
 	
+	pid = 0;
+	status = 0;
 	if (!node->left)
 		node = node->right;
 	else

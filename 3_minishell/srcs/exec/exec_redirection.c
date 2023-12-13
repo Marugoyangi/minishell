@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redirection.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
+/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 19:23:09 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/13 06:33:09 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/13 19:45:29 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,8 +163,8 @@ int	exec_heredoc(t_node *node, t_arg *arg)
 	fd = open(node->filename, O_RDONLY);
 	unlink(node->filename);
 	node = get_redirection_node(node);
-	if (error_redirection(node, fd))
-		return (0);
+	// if (error_redirection(node, fd))
+	// 	return (0);
 	if (!arg->fork_sign)
 	{
 		arg->fork_sign++;

@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:37 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/13 16:07:49 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/14 08:29:39 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,16 @@ int	g_signal_fork;
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_arg 			arg;
+	t_arg			arg;
 	
 	(void )argc;
 	terminal_init(&arg, envp);
-	terminal_interactive(&arg);
 	print_ascii();
 	while (1)
 	{
 		if (!arg.is_subshell)
 		{
-			arg.line.data = readline(get_ps1(&arg));
+			arg.line.data = readline(find_env(arg.envp_head, "PS1"));
 			if (!arg.line.data)
 			{
 				terminal_default(1, &arg);
@@ -43,9 +42,21 @@ int	main(int argc, char **argv, char **envp)
 		tokenize(&arg.line, &arg);
 		lexicize(&arg);
 		expand_vars(&arg);
-		if (check_syntax(arg.ast_head, &arg, 0))
-			continue ; 
+		check_syntax(arg.ast_head, &arg, 0);
 		parser(&arg);
+		get_heredoc(&arg);
+		if (arg.error->code)
+		{
+			arg.error->code = 0;
+			free(arg.line.data);
+			arg.line.data = NULL;
+			free(arg.line.info);
+			arg.line.info = NULL;
+			free_ast(arg.ast_head);
+			arg.ast_head = NULL;
+			continue ;
+		}
+		expand_heredoc(&arg);
 		set_exec(&arg);
 		free(arg.line.data);
 		arg.line.data = NULL;
@@ -57,4 +68,5 @@ int	main(int argc, char **argv, char **envp)
 			exit (0);
 	}
 	free_arg(&arg);
+	tcsetattr(STDOUT_FILENO, TCSANOW, &arg.original_term);
 }

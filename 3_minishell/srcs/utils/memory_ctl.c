@@ -49,9 +49,9 @@ void	free_env(t_env *env)
 	{
 		tmp = tmp_env->next;
 		if (tmp_env->key)
-			ft_free((void *)tmp_env->key);
+			free(tmp_env->key);
 		if (tmp_env->value)
-			ft_free((void *)tmp_env->value);
+			free(tmp_env->value);
 		free(tmp_env);
 		tmp_env = tmp;
 	}
@@ -59,10 +59,10 @@ void	free_env(t_env *env)
 
 void	free_arg(t_arg *arg)
 {
-	ft_free((void *)arg->tilde);
+	free(arg->tilde);
 	if (arg->error->token)
 		free(arg->error->token);
-	ft_free((void *)arg->error);
+	free(arg->error);
 	if (arg->envp_head)
 		free_env(arg->envp_head);
 }
@@ -71,8 +71,8 @@ void	free_ast(t_node *node)
 {
 	if (!node)
 		return ;
-	free_ast(node->left);
 	free_ast(node->right);
+	free_ast(node->left);
 	if (node->data && node->type != L_PIPELINE && node->type != L_LOGICAL_OPERATOR)
 		free(node->data);
 	if (node->line)
@@ -83,7 +83,14 @@ void	free_ast(t_node *node)
 	}
 	if (node->argv)
 		free_split(node->argv);
+	if (node->filename != NULL)
+	{
+		unlink(node->filename);
+		free(node->filename);
+		node->filename = NULL;
+	}
 	free(node);
+	node = NULL;
 }
 
 void	free_node(t_node *node)
@@ -138,10 +145,4 @@ void	*ft_malloc(int size)
 		exit(1);
 	}
 	return (ptr);
-}
-
-void	ft_free(void *ptr)
-{
-	if (ptr)
-		free(ptr);
 }

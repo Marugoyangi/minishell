@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 19:49:00 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/11 15:31:38 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/14 08:32:09 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,13 +117,13 @@ void	tokenize(t_line *line, t_arg *arg)
 		arg->error->type = E_UNCLOSED_QUOTES;
 		error_handler(arg);
 	}
-	printf("line : %s\n", line->data);
-	printf("new_line : ");
-	i = 0;
-	while (line->info[i])
-	{
-		printf("[%d]", line->info[i]);
-		i++;
-	}
-	printf("\n");
+	// printf("line : %s\n", line->data);
+	// printf("new_line : ");
+	// i = 0;
+	// while (line->info[i])
+	// {
+	// 	printf("[%d]", line->info[i]);
+	// 	i++;
+	// }
+	// printf("\n");
 }

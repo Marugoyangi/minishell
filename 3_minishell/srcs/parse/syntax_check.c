@@ -112,7 +112,7 @@ void	check_subshell(t_node *node, t_error *error, t_arg *arg, int *found_type)
 	else if (right->type == L_LOGICAL_OPERATOR || right->type == L_REDIRECTION \
 	|| right->type == L_PIPELINE)
 		return ;
-	else 
+	else
 		error->token = ft_strdup(right->data);
 }
 
@@ -163,7 +163,7 @@ int check_syntax(t_node *head, t_arg *arg, int flag)
 		else if (tmp->type == L_LOGICAL_OPERATOR)
 			check_logical_operator(tmp, arg->error, found_type);
 		if (arg->error->token)
-			break ;	
+			break ;
 		tmp = tmp->right;
 	}
 	if (arg->error->token)

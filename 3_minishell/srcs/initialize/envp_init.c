@@ -36,7 +36,7 @@ char	*find_env(t_env *env_head, char *key)
 	tmp = env_head;
 	while (tmp)
 	{
-		if (ft_strcmp(tmp->key, key) == 0)
+		if (!ft_strcmp(tmp->key, key))
 			return (tmp->value);
 		tmp = tmp->next;
 	}

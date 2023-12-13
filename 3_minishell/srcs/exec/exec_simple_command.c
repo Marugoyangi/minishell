@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_simple_command.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
+/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:35:51 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/13 17:06:09 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/14 07:03:51 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,9 @@ int	external_command(t_node *node, t_arg *arg, char **path)
 	int		status;
 	pid_t	pid;
 
+	status = 0;
 	if (!arg->fork_sign)
 	{
-		signal(SIGINT, SIG_IGN);
-		signal(SIGQUIT, SIG_IGN);
 		if (ft_strstr(node->data, "./minishell"))
 			g_signal_fork = 1;
 		pid = fork();
@@ -96,7 +95,7 @@ int	external_command(t_node *node, t_arg *arg, char **path)
 			g_signal_fork = 0;
 			terminal_interactive(arg);
 		}
-		return (status);
+		return (WEXITSTATUS(status));
 	}
 	else
 		exec_check_path(node, arg, path);

@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 20:19:14 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/12 21:37:59 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/14 08:32:16 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	print_preorder(t_node *root)
 		}
 		printf("\n");
 	}
-	printf("-------------------------\n");
 	print_preorder(root->left);
 	print_preorder(root->right);
 }
@@ -129,6 +128,5 @@ void	parser(t_arg *arg)
 
 	root = find_operator(arg->ast_head);
 	arg->ast_head = root;
-		printf("-------------------------\n");
-	print_preorder(arg->ast_head);
+	// print_preorder(arg->ast_head);
 }

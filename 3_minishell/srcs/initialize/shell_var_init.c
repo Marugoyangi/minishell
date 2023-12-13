@@ -19,7 +19,6 @@ void	init_shell_vars(t_arg *arg)
 	if (find_env(arg->envp_head, "SHLVL"))
 	{
 		tmp = ft_itoa(ft_atoi(find_env(arg->envp_head, "SHLVL")) + 1);
-		printf("tmp: %s\n", tmp);
 		set_env(arg->envp_head, "SHLVL", tmp);
 	}
 	else

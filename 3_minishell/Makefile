@@ -6,7 +6,7 @@
 #    By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/05 14:27:11 by jeongbpa          #+#    #+#              #
-#    Updated: 2023/12/11 19:05:16 by jeongbpa         ###   ########.fr        #
+#    Updated: 2023/12/14 02:05:46 by jeongbpa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ SRCS =	$(addprefix $(SRC_DIR), minishell.c \
 								exec/exec_set_start.c exec/exec_simple_command.c exec/exec_libft.c \
 								exec/exec_built_in.c exec/exec_built_in_env.c exec/exec_built_in_env_utils.c \
 								exec/exec_logical_subshell_pipe.c exec/exec_redirection.c \
-								exec/exec_redirection_utils.c \
+								exec/exec_redirection_utils.c exec/exec_heredoc.c\
 								error/error.c)
 
 # exec/exe_set_start.c exec/exec_simple_command.c exec/exec_libft.c \

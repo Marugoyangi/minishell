@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:35:44 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/13 10:36:11 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/14 04:15:47 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	built_in_env(t_env *env);
 int	built_in_export(t_node *node , t_env *env)
 {
 	char	**tmp;
-	
+
 	if (!node->argv[1])
 	{
 		export_none_arg(env);

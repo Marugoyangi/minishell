@@ -82,7 +82,7 @@ char	*ft_itoa(int n)
 	return (ft_strrev(str));
 }
 
-char	*modified_strjoin(char *s1, char *s2, int free)
+char	*modified_strjoin(char *s1, char *s2, int flag)
 {
 	char	*str;
 	int		i;
@@ -106,14 +106,14 @@ char	*modified_strjoin(char *s1, char *s2, int free)
 		k++;
 	}
 	str[i + k] = 0;
-	if (free == 1)
-		ft_free((void *)s1);
-	else if (free == 2)
-		ft_free((void *)s2);
-	else if (free == 0)
+	if (flag == 1)
+		free(s1);
+	else if (flag == 2)
+		free(s2);
+	else if (flag == 0)
 	{
-		ft_free((void *)s1);
-		ft_free((void *)s2);
+		free(s1);
+		free(s2);
 	}
 	return (str);
 }
@@ -178,7 +178,7 @@ char	*modified_substr(char *s, int start, int len)
 		i++;
 	}
 	str[i] = 0;
-	ft_free((void *)s);
+	free(s);
 	return (str);
 }
 
@@ -320,7 +320,7 @@ char	*modified_strdup(char *s)
 		i++;
 	}
 	new_s[i] = s[i];
-	ft_free((void *)s);
+	free(s);
 	return (new_s);
 }
 
