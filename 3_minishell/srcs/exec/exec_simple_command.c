@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_simple_command.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:35:51 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/13 16:22:33 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/13 17:06:09 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ int	exec_command(t_node *node, t_arg *arg)
 		path = set_path(arg->envp_head);
 		status = external_command(node, arg, path);
 	}
+	else if (!(status == -1) && arg->fork_sign == 1)
+		exit(status);
 	return (status);
 }
 
