@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_logical_subshell_pipe.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 18:54:16 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/13 18:50:13 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/15 02:16:11 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,25 +44,41 @@ int	exec_logical_operator(t_node *node, t_arg *arg)
 	return (1); // 위 두 경우가 아니라면 오류
 }
 
+void	set_subshell(t_node *node)
+{
+	int i;
+	
+	node->data = modified_strtrim(node->data, "(");
+	node->data = modified_strtrim(node->data, ")");
+	node->data = modified_strjoin("./minishell ", node->data, 2);
+	i = 0;
+	while (argv)
+	ft_split(node->data, ' ');
+	while
+	
+}
+
 int	exec_subshell(t_node *node, t_arg *arg)
 {
 	pid_t	pid;
 	int		status;
+	char	**path;	
 	
 	pid = 0;
 	status = 0;
-	if (!node->left)
-		node = node->right;
-	else
-		node = node->left;
+	arg->fork_sign++;
 	pid = fork();
 	if (!pid)
 	{
-		start_exec(node->left, arg);
-		exec_perror("execve");
+		path = set_path(arg->envp_head);
+		set_subshell(node);
+		exec_check_path(node, arg, path);
 	}
 	else
+	{
 		waitpid(pid, &status, 0);
+		arg->fork_sign--;
+	}
 	return (status);
 }
 
@@ -107,6 +123,8 @@ void	exec_pipe_child1(t_node *node, t_arg *arg, int *pipe)
 	close(pipe[1]);
 	if (start_exec(node->left, arg))
 		exit (1);
+	else
+		exit (0);	// 사실상 의미없는 줄이지만 혹시몰라서 넣어둠.
 }
 
 void	exec_pipe_child2(t_node *node, t_arg *arg, int *pipe)
@@ -116,4 +134,6 @@ void	exec_pipe_child2(t_node *node, t_arg *arg, int *pipe)
 	close(pipe[0]);
 	if (start_exec(node->right, arg))
 		exit (1);
+	else
+		exit (0);
 }

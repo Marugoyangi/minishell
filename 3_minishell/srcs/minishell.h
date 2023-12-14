@@ -6,7 +6,7 @@
 /*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:35 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/15 00:00:39 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/15 02:18:07 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,6 +204,9 @@ char	*get_ps1(t_arg *arg);
 
 void expand_heredoc(t_arg *arg);
 void get_heredoc(t_arg *arg);
+int exec_redirection(t_node *node, t_arg *arg);
+t_node *get_input(t_node *node, int *fd);
+t_node *get_output(t_node *node, int *fd);
 
 
 // 실행부 함수
@@ -272,5 +275,6 @@ int	exec_perror(char *str);
 void	exec_check_path(t_node *node, t_arg *arg, char **path);
 int	single_redirection(t_node *node, t_arg *arg);
 char **make_envp(t_env *envp_head);
+void	set_subshell(t_node *node);
 
 #endif

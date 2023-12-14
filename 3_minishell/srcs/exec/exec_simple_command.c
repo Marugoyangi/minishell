@@ -6,7 +6,7 @@
 /*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:35:51 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/15 00:13:37 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/15 00:29:25 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,9 @@ char	**set_path(t_env *env)
 {
 	t_env *cur;
 
-	printf("here\n");
 	cur = env;
-	printf("here\n");
 	while (cur && strcmp("PATH", cur->key))
 		cur = cur->next;
-	printf("here\n");
 	if (!cur)
 		return (0);
 	return (ft_split(cur->value, ':'));

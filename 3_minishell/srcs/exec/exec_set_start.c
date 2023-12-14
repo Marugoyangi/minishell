@@ -6,7 +6,7 @@
 /*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 18:25:08 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/14 23:06:25 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/15 00:42:27 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	get_heredoc(t_arg *arg)
 void	set_exec(t_arg *arg)
 {
 	arg->fork_sign = 0;
-	start_exec(arg->ast_head, arg);
+	arg->last_exit_status = start_exec(arg->ast_head, arg);
 }
 
 char	*set_heredoc_filename(int *i)
