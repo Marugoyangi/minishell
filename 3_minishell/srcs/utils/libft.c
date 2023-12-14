@@ -124,8 +124,10 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	int		i;
 	int		k;
 
-	if (s1 == 0 || s2 == 0)
-		return (0);
+	if (s1 == 0 && s2 != 0)
+		return (ft_strdup((char *)s2));
+	if (s2 == 0 && s1 != 0)
+		return (ft_strdup((char *)s1));
 	str = (char *)malloc(sizeof (char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (str == 0)
 		return (0);
