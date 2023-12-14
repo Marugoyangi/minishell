@@ -14,6 +14,14 @@
 t_env	*dup_list(t_env *env);
 void	sort_list(t_env *env);
 void	free_list(t_env *env);
+void	free_env_node(t_env *env);
+
+void	free_env_node(t_env *env)
+{
+	free(env->key);
+	free(env->value);
+	free(env);
+}
 
 t_env	*dup_list(t_env *env)
 {
@@ -77,7 +85,7 @@ void	free_list(t_env *env)
 	while(cur)
 	{
 		tmp = cur->next;
-		free(cur);
+		free_env_node(cur);
 		cur = tmp;
 	}
 }

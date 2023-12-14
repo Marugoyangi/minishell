@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:35 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/14 06:57:15 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/15 00:00:39 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,13 +238,14 @@ void	built_in_exit(t_node *node);
 // exec_built_in_env.c
 int	built_in_export(t_node *node , t_env *env);
 int	export_none_arg(t_env *env);
-int	built_in_unset(t_node *node , t_env *env);
+int	built_in_unset(t_node *node , t_arg *arg);
 int	built_in_env(t_env *env);
 
 // exec_built_in_env_utils.c
 t_env	*dup_list(t_env *env);
 void	sort_list(t_env *env);
 void	free_list(t_env *env);
+void	free_env_node(t_env *env);
 
 // exec_logical_subshell_pipe.c
 int		exec_logical_operator(t_node *node, t_arg *arg);

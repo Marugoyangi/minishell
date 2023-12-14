@@ -6,7 +6,7 @@
 /*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:35:44 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/14 16:30:05 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/14 23:53:55 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	built_in_export(t_node *node , t_env *env);
 int	export_none_arg(t_env *env);
-int	built_in_unset(t_node *node , t_env *env);
+int	built_in_unset(t_node *node , t_arg *arg);
 int	built_in_env(t_env *env);
 
 // export, unset 노드 생성시 args 인덱스값 설정의 의도성여부에 따른 수정필요
@@ -28,7 +28,7 @@ int	built_in_export(t_node *node , t_env *env)
 		return (0);
 	}
 	tmp = ft_split(node->argv[1], '=');
-	while (env->next)
+	while (env->next || !strcmp(env->key, tmp[0]))
 	{
 		if (!strcmp(env->key, tmp[0]))
 		{
@@ -61,24 +61,44 @@ int	export_none_arg(t_env *env)
 	return (0);
 }
 
-int	built_in_unset(t_node *node , t_env *env)
+int	built_in_unset(t_node *node , t_arg *arg)
 {	
 	t_env	*tmp;
-
+	t_env	*cur;
+	int		i;
+	
+	cur = arg->envp_head;
 	if (!node->argv[1])
-		free_list(env);
+	{
+		free_list(cur);
+		arg->envp_head = 0;
+	}
 	else
 	{
-		while (env)
+		i = 1;
+		while(node->argv[i])
 		{
-			if (!strcmp(env->next->key, node->argv[1]))
+			if (!strcmp(cur->key, node->argv[i]))
 			{
-				tmp = env->next->next;
-				free(env->next);
-				env->next = tmp;
-				break ;
+				tmp = cur->next;
+				free_env_node(cur);
+				arg->envp_head = tmp;
 			}
-			env = env->next;
+			else
+			{
+				while (cur->next)
+				{
+					if (!strcmp(cur->next->key, node->argv[i]))
+					{
+						tmp = cur->next->next;
+						free_env_node(cur->next);
+						cur->next = tmp;
+						break ;
+					}
+					cur = cur->next;
+				}
+			}
+			i++;
 		}
 	}
 	return (0);
@@ -96,3 +116,4 @@ int	built_in_env(t_env *env)
 	}
 	return (0);
 }
+

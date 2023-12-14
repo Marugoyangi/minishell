@@ -57,7 +57,6 @@ void	expand_asterisk(t_line **line, int index)
 		}
 		if (is_asterisk == 1)
 		{
-			printf("hi\n");
 			p = line_split((*line)->data + index, '/');
 			result = filter_asterisk(p);
 			free_split(p);

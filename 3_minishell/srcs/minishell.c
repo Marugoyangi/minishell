@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:37 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/14 08:29:39 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/15 00:00:41 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	g_signal_fork;
 int	main(int argc, char **argv, char **envp)
 {
 	t_arg			arg;
+	char			*prompt;
 	
 	(void )argc;
 	terminal_init(&arg, envp);
@@ -25,7 +26,10 @@ int	main(int argc, char **argv, char **envp)
 	{
 		if (!arg.is_subshell)
 		{
-			arg.line.data = readline(find_env(arg.envp_head, "PS1"));
+			prompt = find_env(arg.envp_head, "PS1");
+			if (!prompt)
+				prompt = ">";
+			arg.line.data = readline(prompt);
 			if (!arg.line.data)
 			{
 				terminal_default(1, &arg);

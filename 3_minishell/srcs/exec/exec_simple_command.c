@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_simple_command.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:35:51 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/14 07:03:51 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/15 00:00:27 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ int	check_built_in(t_node *node, t_arg *arg)
 	else if (!ft_strcmp(node->data, "export"))
 		return (built_in_export(node, arg->envp_head));
 	else if (!ft_strcmp(node->data, "unset"))
-		return (built_in_unset(node, arg->envp_head));
+		return (built_in_unset(node, arg))
 	else if (!ft_strcmp(node->data, "env"))
 		return (built_in_env(arg->envp_head));
 	return (-1);
