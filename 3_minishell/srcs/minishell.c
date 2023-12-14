@@ -6,13 +6,33 @@
 /*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:37 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/15 00:00:41 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/15 03:43:23 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int	g_signal_fork;
+
+void	set_minishell_path(t_arg *arg, char *path)
+{
+	char	*tmp1;
+	char	*tmp2;
+	char	*tmp3;
+	
+	tmp1 = ft_strdup(path);
+	if (tmp1[0] == '~' || tmp1[0] == '/')
+		arg->minishell_path = tmp1;
+	else
+	{
+		tmp2 = getcwd(NULL, 0);
+		if (tmp1[0] == '.' && tmp1[1] == '/')
+			tmp3 = modified_strtrim(tmp1, ".");
+		else
+			tmp3 = ft_strjoin("/", tmp1);
+		arg->minishell_path = modified_strjoin(tmp2, tmp3, 0);
+	}
+}
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -22,6 +42,7 @@ int	main(int argc, char **argv, char **envp)
 	(void )argc;
 	terminal_init(&arg, envp);
 	print_ascii();
+	set_minishell_path(&arg, argv[0]);
 	while (1)
 	{
 		if (!arg.is_subshell)

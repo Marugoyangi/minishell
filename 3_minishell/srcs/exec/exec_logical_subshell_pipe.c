@@ -6,7 +6,7 @@
 /*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 18:54:16 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/15 02:16:11 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/15 04:04:21 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,18 +44,26 @@ int	exec_logical_operator(t_node *node, t_arg *arg)
 	return (1); // 위 두 경우가 아니라면 오류
 }
 
-void	set_subshell(t_node *node)
+void	set_subshell(t_node *node, t_arg *arg)
 {
 	int i;
-	
+	char *tmp1;
+	char **tmp2;
+
 	node->data = modified_strtrim(node->data, "(");
 	node->data = modified_strtrim(node->data, ")");
-	node->data = modified_strjoin("./minishell ", node->data, 2);
-	i = 0;
-	while (argv)
-	ft_split(node->data, ' ');
-	while
-	
+	tmp1 = ft_strjoin(arg->minishell_path, " /n ");
+	tmp1 = ft_strjoin(tmp1, node->data);
+	free(node->data);
+	node->data = "./minishell";
+	tmp2 = ft_split(tmp1, ' ');
+	i = -1;
+	free(tmp1);
+	i = -1;
+	while (node->argv[++i])
+		free(node->argv[i]);
+	free(node->argv);
+	node->argv = tmp2;
 }
 
 int	exec_subshell(t_node *node, t_arg *arg)
@@ -71,7 +79,7 @@ int	exec_subshell(t_node *node, t_arg *arg)
 	if (!pid)
 	{
 		path = set_path(arg->envp_head);
-		set_subshell(node);
+		set_subshell(node, arg);
 		exec_check_path(node, arg, path);
 	}
 	else

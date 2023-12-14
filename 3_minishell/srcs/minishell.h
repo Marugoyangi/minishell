@@ -6,7 +6,7 @@
 /*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:35 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/15 02:18:07 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/15 02:28:21 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ typedef struct s_arg
 	char	*pwd;
 	char	*oldpwd;
 	char	*tilde;
+	char	*minishell_path;
 }			t_arg;
 
 
@@ -275,6 +276,6 @@ int	exec_perror(char *str);
 void	exec_check_path(t_node *node, t_arg *arg, char **path);
 int	single_redirection(t_node *node, t_arg *arg);
 char **make_envp(t_env *envp_head);
-void	set_subshell(t_node *node);
+void	set_subshell(t_node *node, t_arg *arg);
 
 #endif
