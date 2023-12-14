@@ -6,7 +6,7 @@
 /*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:35:51 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/15 00:00:27 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/15 00:13:37 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,11 @@ int	exec_command(t_node *node, t_arg *arg)
 	if (status == -1)
 	{
 		path = set_path(arg->envp_head);
+		if (!path)
+		{
+			printf("minishell: %s: 그런 파일이나 디렉터리가 없습니다.\n", node->data);
+			return (127);
+		}
 		status = external_command(node, arg, path);
 	}
 	else if (!(status == -1) && arg->fork_sign == 1)
@@ -42,9 +47,14 @@ char	**set_path(t_env *env)
 {
 	t_env *cur;
 
+	printf("here\n");
 	cur = env;
-	while (strcmp("PATH", cur->key))
+	printf("here\n");
+	while (cur && strcmp("PATH", cur->key))
 		cur = cur->next;
+	printf("here\n");
+	if (!cur)
+		return (0);
 	return (ft_split(cur->value, ':'));
 }
 
@@ -115,7 +125,7 @@ int	check_built_in(t_node *node, t_arg *arg)
 	else if (!ft_strcmp(node->data, "export"))
 		return (built_in_export(node, arg->envp_head));
 	else if (!ft_strcmp(node->data, "unset"))
-		return (built_in_unset(node, arg))
+		return (built_in_unset(node, arg));
 	else if (!ft_strcmp(node->data, "env"))
 		return (built_in_env(arg->envp_head));
 	return (-1);
