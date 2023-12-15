@@ -6,22 +6,23 @@
 /*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:35:44 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/14 23:53:55 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/15 14:40:01 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	built_in_export(t_node *node , t_env *env);
+int	built_in_export(t_node *node, t_env *env);
 int	export_none_arg(t_env *env);
-int	built_in_unset(t_node *node , t_arg *arg);
+int	built_in_unset(t_node *node, t_arg *arg);
+void	built_in_unset_iter(t_node *node, t_env	*cur, t_arg *arg, int i);
 int	built_in_env(t_env *env);
 
 // export, unset 노드 생성시 args 인덱스값 설정의 의도성여부에 따른 수정필요
-int	built_in_export(t_node *node , t_env *env)
+int	built_in_export(t_node *node, t_env *env)
 {
 	char	**tmp;
-	
+
 	if (!node->argv[1])
 	{
 		export_none_arg(env);
@@ -49,7 +50,7 @@ int	built_in_export(t_node *node , t_env *env)
 int	export_none_arg(t_env *env)
 {
 	t_env	*dup;
-	
+
 	dup = dup_list(env);
 	sort_list(dup);
 	while (dup)
@@ -61,12 +62,11 @@ int	export_none_arg(t_env *env)
 	return (0);
 }
 
-int	built_in_unset(t_node *node , t_arg *arg)
-{	
-	t_env	*tmp;
+int	built_in_unset(t_node *node, t_arg *arg)
+{
 	t_env	*cur;
 	int		i;
-	
+
 	cur = arg->envp_head;
 	if (!node->argv[1])
 	{
@@ -76,32 +76,39 @@ int	built_in_unset(t_node *node , t_arg *arg)
 	else
 	{
 		i = 1;
-		while(node->argv[i])
+		while (node->argv[i])
 		{
-			if (!strcmp(cur->key, node->argv[i]))
-			{
-				tmp = cur->next;
-				free_env_node(cur);
-				arg->envp_head = tmp;
-			}
-			else
-			{
-				while (cur->next)
-				{
-					if (!strcmp(cur->next->key, node->argv[i]))
-					{
-						tmp = cur->next->next;
-						free_env_node(cur->next);
-						cur->next = tmp;
-						break ;
-					}
-					cur = cur->next;
-				}
-			}
+			built_in_unset_iter(node, cur, arg, i);
 			i++;
 		}
 	}
 	return (0);
+}
+
+void	built_in_unset_iter(t_node *node, t_env	*cur, t_arg *arg, int i)
+{
+	t_env	*tmp;
+
+	if (!strcmp(cur->key, node->argv[i]))
+	{
+		tmp = cur->next;
+		free_env_node(cur);
+		arg->envp_head = tmp;
+	}
+	else
+	{
+		while (cur->next)
+		{
+			if (!strcmp(cur->next->key, node->argv[i]))
+			{
+				tmp = cur->next->next;
+				free_env_node(cur->next);
+				cur->next = tmp;
+				break ;
+			}
+			cur = cur->next;
+		}
+	}
 }
 
 int	built_in_env(t_env *env)
@@ -109,11 +116,10 @@ int	built_in_env(t_env *env)
 	t_env	*cur;
 
 	cur = env;
-	while(cur)
+	while (cur)
 	{
 		printf("%s=%s\n", cur->key, cur->value);
 		cur = cur->next;
 	}
 	return (0);
 }
-

@@ -1,71 +1,84 @@
-// /* ************************************************************************** */
-// /*                                                                            */
-// /*                                                        :::      ::::::::   */
-// /*   exec_redirection_utils.c                           :+:      :+:    :+:   */
-// /*                                                    +:+ +:+         +:+     */
-// /*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
-// /*                                                +#+#+#+#+#+   +#+           */
-// /*   Created: 2023/12/12 12:15:31 by seungwok          #+#    #+#             */
-// /*   Updated: 2023/12/12 22:29:50 by woopinbell       ###   ########.fr       */
-// /*                                                                            */
-// /* ************************************************************************** */
+/* ************************************************************************** */
+/*																			*/
+/*														:::	  ::::::::   */
+/*   exec_redirection_utils.c						   :+:	  :+:	:+:   */
+/*													+:+ +:+		 +:+	 */
+/*   By: woopinbell <woopinbell@student.42.fr>	  +#+  +:+	   +#+		*/
+/*												+#+#+#+#+#+   +#+		   */
+/*   Created: 2023/12/04 19:23:09 by seungwok		  #+#	#+#			 */
+/*   Updated: 2023/12/15 13:09:58 by woopinbell	   ###   ########.fr	   */
+/*																			*/
+/* ************************************************************************** */
 
-// #include "../minishell.h"
+#include "../minishell.h"
 
-// int	check_built_in_redirection(t_node *node);
-// int external_command_redirection(t_node *node, t_arg *arg, int fd, int fd_sign);
-// int	external_command_redirection_child(t_node *node, t_arg *arg, int fd, int fd_sign);
+t_node	*get_input_node(t_node *node, int *fd);
+t_node	*get_output_node(t_node *node, int *fd);
+int		get_input_fd(t_node *node);
+int		get_output_fd(t_node *node);
+int		error_input_fd(t_node *node);
 
+t_node	*get_input_node(t_node *node, int *fd)
+{
+	t_node	*input_node;
 
-// int	check_built_in_redirection(t_node *node)
-// {
-// 	if (!ft_strcmp(node->data, "echo") 
-// 		|| !ft_strcmp(node->data, "cd")
-// 		|| !ft_strcmp(node->data, "pwd")
-// 		|| !ft_strcmp(node->data, "exit")
-// 		|| !ft_strcmp(node->data, "export")
-// 		|| !ft_strcmp(node->data, "unset")
-// 		|| !ft_strcmp(node->data, "env"))
-// 		return (0);
-// 	return (1);
-// }
+	fd[0] = 0;
+	input_node = 0;
+	while (node)
+	{
+		if (!ft_strcmp(node->data, "<") || !ft_strcmp(node->data, "<<"))
+		{
+			if (!ft_strcmp(node->data, "<"))
+				fd[0] = open(node->argv[0], O_RDONLY);
+			else if (!ft_strcmp(node->data, "<<"))
+				fd[0] = open(node->filename, O_RDONLY);
+			input_node = node;
+			if (fd[0] == -1)
+				return (input_node);
+			close(fd[0]);
+		}
+		node = node->left;
+	}
+	return (input_node);
+}
 
-// int external_command_redirection(t_node *node, t_arg *arg, int fd, int fd_sign)
-// {
-// 	int		status;
-// 	pid_t	pid;
+t_node	*get_output_node(t_node *node, int *fd)
+{
+	t_node	*output_node;
 
-// 	status = 0;
-// 	pid = fork();
-// 	if (!pid)
-// 		external_command_redirection_child(node, arg, fd, fd_sign);
-// 	else
-// 		waitpid(pid, &status, 0);	// 부모 프로세서는 status에 자식프로세스의 종료상태를 담아서 반환.
-// 	return (status);
-// }
+	output_node = 0;
+	fd[1] = 0;
+	while (node)
+	{
+		if (!ft_strcmp(node->data, ">") || !ft_strcmp(node->data, ">>"))
+		{
+			fd[1] = open(node->argv[0], O_WRONLY | O_CREAT | O_TRUNC, 0666);
+			output_node = node;
+			close (fd[1]);
+		}
+		node = node->left;
+	}
+	return (output_node);
+}
 
-// int	external_command_redirection_child(t_node *node, t_arg *arg, int fd, int fd_sign)
-// {
-// 	char	**path;
-// 	char	*excutable_path;
+int	get_input_fd(t_node *node)
+{
+	if (!ft_strcmp(node->data, "<"))
+		return (open(node->argv[0], O_RDONLY));
+	else
+		return (open(node->filename, O_RDONLY));
+}
 
-// 	path = set_path(arg->envp_head);
-// 	dup2(fd, fd_sign);
-// 	close(fd);
+int	get_output_fd(t_node *node)
+{
+	if (!ft_strcmp(node->data, ">"))
+		return (open(node->argv[0], O_WRONLY | O_CREAT | O_TRUNC, 0666));
+	else
+		return (open(node->argv[0], O_WRONLY | O_CREAT | O_APPEND, 0666));
+}
 
-// 	// if (!ft_strncmp(node->data, "./", 2) || !ft_strncmp(node->data, "../", 3 || !ft_strncmp(node->data, "/", 1))) 파일명만 들어온경우 path에서만 검색하도록 수정 필요.
-// 	if (!(execve(node->argv[0], node->argv, arg->envp) == -1))
-// 		exit(0);
-// 	else
-// 	{
-// 		excutable_path = find_path(path, node->data);
-// 		if (!excutable_path)
-// 			exit (1);
-// 		if (execve(excutable_path, node->argv, arg->envp) == -1)	// execve함수를 통한 새로운 프로세서 생성 실패시 perror 에러출력
-// 		{
-// 			perror("execve");
-// 			exit (1);
-// 		}
-// 		exit (0);
-// 	}
-// }
+int	error_input_fd(t_node *node)
+{
+	printf("minishell: No such file or directory: %s\n", node->argv[0]);
+	return (1);
+}

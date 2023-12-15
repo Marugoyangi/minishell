@@ -3,55 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   exec_libft.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 18:54:11 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/13 10:12:24 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/15 14:20:49 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	exec_perror(char *str);
 int	ft_atoi(const char *nptr);
 int	ft_strncmp(const char *s1, const char *s2, size_t n);
-
-char **make_envp(t_env *envp_head)
-{
-	int		i;
-	char	**envp;
-	t_env	*cur;
-
-	i = 0;
-	cur = envp_head;
-	while (cur)
-	{
-		cur = cur->next;
-		i++;
-	}
-	envp = (char **)malloc(sizeof(char *) * (i + 1));
-	if (!envp)
-		return (NULL);
-	i = 0;
-	cur = envp_head;
-	while (cur)
-	{
-		envp[i] = ft_strjoin(cur->key, "=");
-		envp[i] = ft_strjoin(envp[i], cur->value);
-		cur = cur->next;
-		i++;
-	}
-	envp[i] = NULL;
-	return (envp);
-}
-
-int	exec_perror(char *str)
-{
-	perror(str);
-	if (strcmp(str, "execve"))
-		exit(1);
-	return (1);
-}
 
 int	ft_atoi(const char *nptr)
 {

@@ -142,3 +142,27 @@ t_node	*append_cmd(t_node *root, int type)
 	result->argv = tmp;
 	return (result);
 }
+
+void    sort_free(t_node **node)
+{
+    int i;
+    i = 0;
+    if (node == NULL)
+        return ;
+    while (node[i])
+    {
+        if (node[i]->data)
+            free(node[i]->data);
+        if (node[i]->argv)
+            free_split(node[i]->argv);
+        if (node[i]->line)
+        {
+            free(node[i]->line->data);
+            free(node[i]->line->info);
+            free(node[i]->line);
+        }
+        free(node[i]);
+        i++;
+    }
+    free (node);
+}

@@ -6,7 +6,7 @@
 /*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:35 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/15 02:28:21 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/15 15:31:55 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,13 @@ typedef struct s_node
 	struct s_node	*left;
 	struct s_node	*right;
 }				t_node;
+
+typedef struct s_redirection
+{
+	t_node	*exec_node;
+	t_node	*input_node;
+	t_node	*output_node;
+}			t_redirection;
 
 typedef struct s_error
 {
@@ -218,31 +225,62 @@ int		ft_countdigit(int n);
 void	ft_nbrdup(int n, int digit, char *nbr);
 
 // exec_libft.c
-int		ft_atoi(const char *nptr);
-int		ft_strncmp(const char *s1, const char *s2, size_t n);
+int	ft_atoi(const char *nptr);
+int	ft_strncmp(const char *s1, const char *s2, size_t n);
 
 // exec_set_start.c
 void	set_exec(t_arg *arg);
-void	set_heredoc(t_node *node, t_arg *arg, int *count, int *i);
 int		start_exec(t_node *node, t_arg *arg);
 
-// exec_simplecommand.c
+// exec_logical_operator.c
+int		exec_logical_operator(t_node *node, t_arg *arg);
+
+// exec_pipeline.c
+int		exec_pipeline(t_node *node, t_arg *arg);
+int		exec_parent(t_arg *arg, int *pid, int *pipe);
+void	exec_pipe_child1(t_node *node, t_arg *arg, int *pipe);
+void	exec_pipe_child2(t_node *node, t_arg *arg, int *pipe);
+
+// exec_redirection.c
+int		exec_redirection(t_node *node, t_arg *arg);
+void	exec_redirection_child(t_redirection *node, t_arg *arg, int *fd);
+void	exec_redirection_parent(t_arg *arg, pid_t pid, int *status);
+
+// exec_redirection_utils.c
+t_node	*get_input_node(t_node *node, int *fd);
+t_node	*get_output_node(t_node *node, int *fd);
+int		get_input_fd(t_node *node);
+int		get_output_fd(t_node *node);
+int		error_input_fd(t_node *node);
+
+// exec_subshell.c
+int		exec_subshell(t_node *node, t_arg *arg);
+void	set_subshell(t_node *node, t_arg *arg);
+
+// exec_simple_command.c
 int		exec_command(t_node *node, t_arg *arg);
-int		check_built_in(t_node *node, t_arg *arg);
-char	**set_path(t_env *env);
 int		external_command(t_node *node, t_arg *arg, char **path);
+void	external_command_child(t_node *node, t_arg *arg, char **path);
+void	exec_check_path(t_node *node, t_arg *arg, char **path);
+
+// exec_simplecommand_utils.c
+int		exec_perror(char *str);
+char	**set_path(t_env *env);
 char	*find_path(char **path, char *command);
+char	**make_envp(t_env *envp_head);
 
 // exec_built_in.c
+int		check_built_in(t_node *node, t_arg *arg);
 int		built_in_echo(char **argv);
 int		built_in_cd(char **argv);
-int		built_in_pwd();
+int		built_in_pwd(void);
 void	built_in_exit(t_node *node);
 
 // exec_built_in_env.c
-int	built_in_export(t_node *node , t_env *env);
+int	built_in_export(t_node *node, t_env *env);
 int	export_none_arg(t_env *env);
-int	built_in_unset(t_node *node , t_arg *arg);
+int	built_in_unset(t_node *node, t_arg *arg);
+void	built_in_unset_iter(t_node *node, t_env	*cur, t_arg *arg, int i);
 int	built_in_env(t_env *env);
 
 // exec_built_in_env_utils.c
@@ -251,31 +289,10 @@ void	sort_list(t_env *env);
 void	free_list(t_env *env);
 void	free_env_node(t_env *env);
 
-// exec_logical_subshell_pipe.c
-int		exec_logical_operator(t_node *node, t_arg *arg);
-int		exec_subshell(t_node *node, t_arg *arg);
-int		exec_pipeline(t_node *node, t_arg *arg);
-int		exec_parent(t_arg *arg, int *pid, int *pipe);
-void	exec_pipe_child1(t_node *node, t_arg *arg, int *fd);
-void	exec_pipe_child2(t_node *node, t_arg *arg, int *fd);
-
-// exec_redirection.c
-int exec_redirection(t_node *node, t_arg *arg);
-int exec_output(t_node *node, t_arg *arg);
-int exec_append(t_node *node, t_arg *arg);
-int exec_input(t_node *node, t_arg *arg);
-int exec_heredoc(t_node *node, t_arg *arg);
-void	exec_redirection_child(t_node *node, t_arg *arg, int fd, int io);
-t_node	*get_redirection_node(t_node *node);
-
-// exec_redirection_utils.c
-int	check_built_in_redirection(t_node *node);
-int	external_command_redirection(t_node *node, t_arg *arg, int fd, int fd_sign);
-
-int	exec_perror(char *str);
-void	exec_check_path(t_node *node, t_arg *arg, char **path);
-int	single_redirection(t_node *node, t_arg *arg);
-char **make_envp(t_env *envp_head);
-void	set_subshell(t_node *node, t_arg *arg);
+void	get_heredoc_filename(t_node *root, int *i);
+char	*set_heredoc_filename(int *i);
+void	init_file_for_heredoc(t_node *node, int *count, int *i);
+void	set_heredoc(t_node *node, t_arg *arg, int *count, int *i);
+void	get_heredoc(t_arg *arg);
 
 #endif

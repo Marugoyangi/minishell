@@ -11,26 +11,20 @@
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
 t_env	*dup_list(t_env *env);
 void	sort_list(t_env *env);
 void	free_list(t_env *env);
 void	free_env_node(t_env *env);
 
-void	free_env_node(t_env *env)
-{
-	free(env->key);
-	free(env->value);
-	free(env);
-}
-
 t_env	*dup_list(t_env *env)
 {
-	t_env *head;
-	t_env *dup;
+	t_env	*head;
+	t_env	*dup;
 
 	head = (t_env *)malloc(sizeof(t_env));
 	dup = head;
-	while(env)
+	while (env)
 	{
 		dup->key = env->key;
 		dup->value = env->value;
@@ -54,7 +48,7 @@ void	sort_list(t_env *env)
 	t_env	*cur;
 	t_env	*comparison;
 	char	*tmp;
-	
+
 	cur = env;
 	while (cur->next)
 	{
@@ -78,14 +72,21 @@ void	sort_list(t_env *env)
 
 void	free_list(t_env *env)
 {
-	t_env *cur;
-	t_env *tmp;
+	t_env	*cur;
+	t_env	*tmp;
 
 	cur = env;
-	while(cur)
+	while (cur)
 	{
 		tmp = cur->next;
 		free_env_node(cur);
 		cur = tmp;
 	}
+}
+
+void	free_env_node(t_env *env)
+{
+	free(env->key);
+	free(env->value);
+	free(env);
 }
