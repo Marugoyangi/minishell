@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:35 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/16 04:17:32 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/16 04:36:14 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,9 @@ typedef struct s_arg
 	struct termios	term;
 	struct termios	original_term;
 	int				last_exit_status;
-	int				is_interactive;
 	int				is_subshell;
 	int				fork_sign;
 	char			*minishell_path;
-	char			*oldpwd;
 	char			*tilde;
 }					t_arg;
 
