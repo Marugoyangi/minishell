@@ -31,7 +31,7 @@ void	init_shell_vars(t_arg *arg)
 	else if (find_env(arg->envp_head, "USER"))
 		arg->tilde = ft_strjoin("/home/", find_env(arg->envp_head, "USER"));
 	else
-		arg->tilde = getcwd(NULL, 0);
+		arg->tilde = ft_strdup(find_env(arg->envp_head, "PWD"));
 	arg->last_exit_status = 0;
 }
 
