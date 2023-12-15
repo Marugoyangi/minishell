@@ -81,10 +81,13 @@ t_env	*init_envp(char **envp)
 	while (tmp_node && envp && envp[++i])
 	{
 		split = ft_split(envp[i], '=');
-		if (ft_strcmp(split[0], "PS1") && ft_strcmp(split[0], "PS2"))
+		if (ft_strcmp(split[0], "PS1") && ft_strcmp(split[0], "PS2")
+			&& ft_strcmp(split[0], "OLDPWD"))
+		{
 			tmp_node->next = create_env(split[0], split[1]);
+			tmp_node = tmp_node->next;
+		}
 		free_split(split);
-		tmp_node = tmp_node->next;
 	}
 	return (head);
 }
