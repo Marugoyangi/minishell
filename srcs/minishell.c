@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:37 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/16 04:14:16 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/16 04:46:45 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,10 @@ int	main(int argc, char **argv, char **envp)
 			add_history(arg.line.data);
 			arg.line.data = modified_strtrim(arg.line.data, " \t\n");
 		}
-		if (lex(&arg))
+		if (lex(&arg) && !arg.is_subshell)
 			continue ;
+		else if (arg.is_subshell)
+			exit (E_WRONG_SYNTAX);
 		expand_heredoc(&arg);
 		set_exec(&arg);
 		free_read_line(&arg);
