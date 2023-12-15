@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:35 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/16 04:40:51 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/16 06:15:07 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,9 +259,13 @@ char	**make_envp(t_env *envp_head);
 // exec_built_in.c
 int		check_built_in(t_node *node, t_arg *arg);
 int		built_in_echo(char **argv);
-int		built_in_cd(t_env *env, char **argv);
 int		built_in_pwd(void);
 void	built_in_exit(t_node *node);
+
+// exec_built_in_cd.c
+void	built_in_cd_set_env(t_env *env);
+int	    built_in_cd_oldpwd(t_env *env, char **argv);
+int 	built_in_cd(t_env *env, char **argv);
 
 // exec_built_in_env.c
 int	built_in_export(t_node *node, t_env *env);

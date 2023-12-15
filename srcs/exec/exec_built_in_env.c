@@ -6,19 +6,18 @@
 /*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:35:44 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/15 14:40:01 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/16 05:24:48 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	built_in_export(t_node *node, t_env *env);
-int	export_none_arg(t_env *env);
-int	built_in_unset(t_node *node, t_arg *arg);
+int		built_in_export(t_node *node, t_env *env);
+int		export_none_arg(t_env *env);
+int		built_in_unset(t_node *node, t_arg *arg);
 void	built_in_unset_iter(t_node *node, t_env	*cur, t_arg *arg, int i);
-int	built_in_env(t_env *env);
+int		built_in_env(t_env *env);
 
-// export, unset 노드 생성시 args 인덱스값 설정의 의도성여부에 따른 수정필요
 int	built_in_export(t_node *node, t_env *env)
 {
 	char	**tmp;

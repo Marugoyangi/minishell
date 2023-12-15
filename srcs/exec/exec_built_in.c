@@ -14,7 +14,6 @@
 
 int		check_built_in(t_node *node, t_arg *arg);
 int		built_in_echo(char **argv);
-int		built_in_cd(t_env *env, char **argv);
 int		built_in_pwd(void);
 void	built_in_exit(t_node *node);
 
@@ -59,30 +58,6 @@ int	built_in_echo(char **argv)
 	}
 	if (argv[1] && strcmp(argv[1], "-n"))
 		printf("\n");
-	return (0);
-}
-
-// 상대경로, 절대경로만 인식하는 cd
-// 애초에 chdir이 상대경로던 절대경로던 알아서 인식한다.
-int	built_in_cd(t_env *env, char **argv)
-{
-	t_env	*cur;
-
-	cur = env;
-	while (cur && ft_strcmp(cur->key, "OLDPWD"))
-		cur = cur->next;
-	if (cur)
-		cur->value = getcwd(0, 0);
-	if (chdir(argv[1]) == -1)
-	{
-		perror("chdir");
-		return (1);
-	}
-	cur = env;
-	while (cur && ft_strcmp(cur->key, "PWD"))
-		cur = cur->next;
-	if (cur)
-		cur->value = getcwd(0, 0);
 	return (0);
 }
 

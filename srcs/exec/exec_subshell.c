@@ -6,7 +6,7 @@
 /*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 12:32:45 by woopinbell        #+#    #+#             */
-/*   Updated: 2023/12/15 14:24:21 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/16 06:24:21 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,21 +42,16 @@ int	exec_subshell(t_node *node, t_arg *arg)
 void	set_subshell(t_node *node, t_arg *arg)
 {
 	int		i;
-	char	*tmp1;
-	char	**tmp2;
 
-	node->data = modified_strtrim(node->data, "(");
-	node->data = modified_strtrim(node->data, ")");
-	tmp1 = ft_strjoin(arg->minishell_path, " /n ");
-	tmp1 = ft_strjoin(tmp1, node->data);
-	free(node->data);
-	node->data = "./minishell";
-	tmp2 = ft_split(tmp1, ' ');
-	i = -1;
-	free(tmp1);
+	node->data = modified_strtrim(node->data, " ()");
 	i = -1;
 	while (node->argv[++i])
 		free(node->argv[i]);
 	free(node->argv);
-	node->argv = tmp2;
+	node->argv = ft_malloc(sizeof(char **) * 4);
+	node->argv[0] = arg->minishell_path;
+	node->argv[1] = "\n";
+	node->argv[2] = node->data;
+	node->argv[3] = NULL;
+	node->data = "./minishell";
 }
