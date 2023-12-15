@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-
 int	node_type_numbers(t_node *root, int type)
 {
 	t_node	*tmp;
@@ -38,66 +37,36 @@ int	node_type_numbers(t_node *root, int type)
 	return (i);
 }
 
-void	sort_free(t_node **node)
-{
-	int	i;
-
-	i = 0;
-	if (node == NULL)
-		return ;
-	while (node[i])
-	{
-		if (node[i]->data)
-			free(node[i]->data);
-		if (node[i]->argv)
-			free_split(node[i]->argv);
-		if (node[i]->line)
-		{
-			free(node[i]->line->data);
-			free(node[i]->line->info);
-			free(node[i]->line);
-		}
-		free(node[i]);
-		i++;
-	}
-	free (node);
-}
-
 t_node	*sort_redirection(t_node **node)
 {
 	int	i;
-	int	last;
 
 	i = 0;
 	if (node == NULL)
 		return (NULL);
-	while (node[i])
-		i++;
-	last = --i;
-	while (node[i] && i > 0)
+	while (node[i + 1])
 	{
-		node[i]->left = node[i - 1];
+		node[i]->left = node[i + 1];
 		node[i]->right = NULL;
-		i--;
+		i++;
 	}
-	node[0]->left = NULL;
-	node[0]->right = NULL;
-	node[last]->right = NULL;
-	return (node[last]);
+	node[i]->left = NULL;
+	node[i]->right = NULL;
+	return (node[0]);
 }
 
 t_node	**sort_node(t_node *root, int type)
 {
 	t_node	**tmp;
 	t_node	*node;
-	int	i;
+	int		i;
 
 	if (node_type_numbers(root, type) == 0)
 		return (NULL);
 	node = root;
-	tmp = calloc(sizeof(t_node *), (node_type_numbers(root, type) + 1)); //ft로 바꿀것
-	if (tmp == NULL)
-		return (NULL);
+	tmp = ft_malloc(sizeof(t_node *) * (node_type_numbers(root, type) + 1));
+	tmp = memset(tmp, 0, sizeof(t_node *) * (node_type_numbers(root, type) + 1));
+	tmp[node_type_numbers(root, type)] = NULL;
 	i = 0;
 	while (node)
 	{
@@ -108,45 +77,41 @@ t_node	**sort_node(t_node *root, int type)
 		}
 		node = node->right;
 	}
-	tmp[node_type_numbers(root, type)] = NULL;
 	return (tmp);
 }
 
 void	append_subshell(t_node *root)
 {
-	t_node	*tmp;
 	t_node	**red;
-	char	*red_str;
+	char	*str;
 	int		i;
 
-	i = 0;
-	tmp = root;
-	if (tmp == NULL)
-		return ;
-	red_str = ft_strdup("");
-	red = sort_node(tmp, L_REDIRECTION);
+	i = -1;
+	red = sort_node(root, L_REDIRECTION);
 	if (red == NULL)
 		return ;
-	while (red[i])
+	str = ft_strdup("");
+	while (red[++i])
 	{
-		red_str = modified_strjoin(red_str, red[i]->data, 1);
-		red_str = modified_strjoin(red_str, red[i]->argv[0], 1);
-		i++;
+		str = modified_strjoin(str, red[i]->data, 1);
+		str = modified_strjoin(str, red[i]->argv[0], 1);
 	}
-	i = 0;
-	red_str = modified_strjoin(ft_substr(root->data, 0, 1), red_str, 0);
-	red_str = modified_strjoin(red_str, " ", 1);
-	red_str = modified_strjoin(red_str, ft_substr(root->data, 1, ft_strlen(root->data) - 1), 0);
+	str = modified_strjoin(ft_substr(root->data, 0, 1), str, 0);
+	str = modified_strjoin(str, " ", 1);
+	str = modified_strjoin(str, ft_substr(root->data, 1, \
+	ft_strlen(root->data) - 1), 0);
 	free(root->data);
-	root->data = ft_strdup(red_str);
-	free (red_str);
+	free(root->line->data);
+	free(root->line->info);
+	free(root->line);
+	root->data = modified_strdup(str);
 	sort_free(red);
 }
 
-t_node *append_cmd(t_node *root, int type)
+t_node	*append_cmd(t_node *root, int type)
 {
-	t_node	*node;
 	t_node	*result;
+	t_node	*node;
 	char	**tmp;
 	int		i;
 	int		j;
@@ -154,13 +119,9 @@ t_node *append_cmd(t_node *root, int type)
 	node = root;
 	if (node_type_numbers(root, type) == 0)
 		return (NULL);
-	tmp = malloc (sizeof(char *) * (node_type_numbers(root, type) + 1));
-	if (tmp == NULL)
-		return (NULL);
-	tmp [node_type_numbers(root, type)] = NULL;
+	tmp = ft_malloc(sizeof(char *) * (node_type_numbers(root, type) + 1));
+	tmp[node_type_numbers(root, type)] = NULL;
 	result = create_node(NULL, NULL, type);
-	if (result == NULL)
-		return (NULL);
 	i = 0;
 	while (node)
 	{
