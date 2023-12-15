@@ -24,6 +24,8 @@ void	init_shell_vars(t_arg *arg)
 	}
 	else
 		append_env(arg->envp_head, "SHLVL", "1");
+	if (!find_env(arg->envp_head, "OLDPWD"))
+		append_env(arg->envp_head, "OLDPWD", "");
 	if (find_env(arg->envp_head, "HOME"))
 		arg->tilde = ft_strdup(find_env(arg->envp_head, "HOME"));
 	else if (find_env(arg->envp_head, "USER"))
