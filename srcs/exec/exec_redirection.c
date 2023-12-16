@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redirection.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seungwok <seungwok@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/04 19:23:09 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/16 17:31:16 by seungwok         ###   ########seoul.kr  */
+/*   Created: 2023/12/17 02:15:38 by woopinbell        #+#    #+#             */
+/*   Updated: 2023/12/17 02:37:17 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 int		exec_redirection(t_node *node, t_arg *arg);
 int		check_built_in_redirection(t_node *node);
+int		built_in_redirection_fd(t_redirection *node, t_arg *arg, int *fd);
 void	exec_redirection_child(t_redirection *node, t_arg *arg, int *fd);
-void	exec_redirection_parent(t_arg *arg, pid_t pid, int *status);
+void	exec_redirection_parent(t_arg *arg, pid_t pid, int *status, int *fd);
 
 int	exec_redirection(t_node *node, t_arg *arg)
 {
@@ -35,49 +36,37 @@ int	exec_redirection(t_node *node, t_arg *arg)
 	if (redirection_node.output_node)
 		fd[1] = get_output_fd(redirection_node.output_node);
 	if (!check_built_in_redirection(redirection_node.exec_node))
-		return (check_built_in(redirection_node.exec_node, arg));
+		return (built_in_redirection_fd(&redirection_node, arg, fd));
 	arg->fork_sign++;
 	pid = fork();
 	if (!pid)
 		exec_redirection_child(&redirection_node, arg, fd);
 	else
-		exec_redirection_parent(arg, pid, &status);
+	{
+		if (redirection_node.input_node)
+			close(fd[0]);
+		if (redirection_node.output_node)
+			close(fd[1]);
+		exec_redirection_parent(arg, pid, &status, fd);
+	}
 	return (WEXITSTATUS(status));
 }
 
 void	exec_redirection_child(t_redirection *node, t_arg *arg, int *fd)
 {
 	if (node->input_node)
-	{
-		dup2(fd[0], 0);
-		close(fd[0]);
-	}
+		dup_with_close(fd[0], 0);
 	if (node->output_node)
-	{
-		dup2(fd[1], 1);
-		close(fd[1]);
-	}
+		dup_with_close(fd[1], 1);
 	if (start_exec(node->exec_node, arg))
 		exit (1);
 	else
 		exit (0);
 }
 
-void	exec_redirection_parent(t_arg *arg, pid_t pid, int *status)
+void	exec_redirection_parent(t_arg *arg, pid_t pid, int *status, int *fd)
 {
+	fd = fd;
 	waitpid(pid, status, 0);
 	arg->fork_sign--;
-}
-
-int	check_built_in_redirection(t_node *node)
-{
-	if (!ft_strcmp(node->data, "echo")
-		|| !ft_strcmp(node->data, "cd")
-		|| !ft_strcmp(node->data, "pwd")
-		|| !ft_strcmp(node->data, "exit")
-		|| !ft_strcmp(node->data, "export")
-		|| !ft_strcmp(node->data, "unset")
-		|| !ft_strcmp(node->data, "env"))
-		return (0);
-	return (1);
 }

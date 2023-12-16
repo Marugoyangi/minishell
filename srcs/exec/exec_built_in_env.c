@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_built_in_env.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
+/*   By: seungwok <seungwok@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:35:44 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/16 05:24:48 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/16 18:35:10 by seungwok         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,7 @@ int	built_in_unset(t_node *node, t_arg *arg)
 	int		i;
 
 	cur = arg->envp_head;
-	if (!node->argv[1])
-	{
-		free_list(cur);
-		arg->envp_head = 0;
-	}
-	else
+	if (node->argv[1])
 	{
 		i = 1;
 		while (node->argv[i])

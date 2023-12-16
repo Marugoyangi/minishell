@@ -67,7 +67,10 @@ int	built_in_cd(t_env *env, char **argv)
 	if (chdir(argv[1]) == -1)
 	{
 		if (cur)
+		{
 			free(cur->value);
+			cur->value = ft_strdup("");
+		}
 		perror("minishell");
 		return (1);
 	}

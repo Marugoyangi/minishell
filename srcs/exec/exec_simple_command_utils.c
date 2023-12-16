@@ -20,7 +20,7 @@ char	**make_envp(t_env *envp_head);
 int	exec_perror(char *str)
 {
 	perror("minishell");
-	if (strcmp(str, "execve"))
+	if (!ft_strcmp(str, "execve"))
 		exit(1);
 	return (1);
 }

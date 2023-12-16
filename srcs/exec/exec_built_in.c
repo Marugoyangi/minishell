@@ -94,9 +94,9 @@ void	built_in_exit(t_node *node)
 	if (node->argv[1] && node->argv[2])
 	{
 		printf("minishell: exit: too many arguments\n");
-		exit (1);		
+		exit (1);
 	}
-	if (node->argv && node->argv[1])
+	if (node->argv[1])
 		exit_num = ft_atoi(node->argv[1]);
 	exit(exit_num);
 }

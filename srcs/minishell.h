@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seungwok <seungwok@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:35 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/16 17:30:02 by seungwok         ###   ########seoul.kr  */
+/*   Updated: 2023/12/17 02:32:44 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,8 +248,15 @@ void	exec_pipe_child2(t_node *node, t_arg *arg, int *pipe);
 // exec_redirection.c
 int		exec_redirection(t_node *node, t_arg *arg);
 int		check_built_in_redirection(t_node *node);
+int		built_in_redirection_fd(t_redirection *node, t_arg *arg, int *fd);
 void	exec_redirection_child(t_redirection *node, t_arg *arg, int *fd);
-void	exec_redirection_parent(t_arg *arg, pid_t pid, int *status);
+void	exec_redirection_parent(t_arg *arg, pid_t pid, int *status, int *fd);
+
+// exec_redirection_built_in.c
+void	dup_with_close(int fd1, int fd2);
+int		check_built_in_redirection(t_node *node);
+int		built_in_redirection_fd(t_redirection *node, t_arg *arg, int *fd);
+int		built_in_redirection_fd2(t_redirection *node, t_arg *arg);
 
 // exec_redirection_utils.c
 t_node	*get_input_node(t_node *node, int *fd);

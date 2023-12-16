@@ -48,7 +48,7 @@ int	exec_parent(t_arg *arg, int *pid, int *pipe)
 	waitpid(pid[0], 0, 0);
 	waitpid(pid[1], &status, 0);
 	arg->fork_sign--;
-	return (status);
+	return (WEXITSTATUS(status));
 }
 
 void	exec_pipe_child1(t_node *node, t_arg *arg, int *pipe)

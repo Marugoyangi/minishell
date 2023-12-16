@@ -6,7 +6,7 @@
 /*   By: seungwok <seungwok@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:35:51 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/16 17:32:34 by seungwok         ###   ########seoul.kr  */
+/*   Updated: 2023/12/16 18:31:08 by seungwok         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	exec_command(t_node *node, t_arg *arg)
 	int		status;
 	char	**path;
 
+	status = 0;
 	status = check_built_in(node, arg);
 	if (status == -1)
 	{
