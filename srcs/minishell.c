@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:37 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/16 12:54:21 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/16 15:30:15 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,10 @@ int	lex(t_arg *arg)
 	if (arg->error->code)
 	{
 		free_read_line(arg);
-		return (1);
+		if (!arg->is_subshell)
+			return (1);
+		else if (arg->is_subshell)
+			exit (1);
 	}
 	return (0);
 }
@@ -86,12 +89,7 @@ int	main(int argc, char **argv, char **envp)
 		else
 			arg.line.data = ft_strdup(argv[2]);
 		if (lex(&arg))
-		{
-			if (!arg.is_subshell)
-				continue ;
-			if (arg.is_subshell)
-				exit (1);
-		}
+			continue ;
 		expand_heredoc(&arg);
 		set_exec(&arg);
 		free_read_line(&arg);

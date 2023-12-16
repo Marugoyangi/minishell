@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:35 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/16 12:14:22 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/16 16:22:34 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 # include <sys/ioctl.h>		// ioctl
 # include <sys/stat.h>		// stat, lstat, fstat
 
+// gloabal variable for signal handler
 extern int g_signal_fork;
 
 typedef struct s_line
@@ -121,91 +122,116 @@ typedef struct s_arg
 # define S_SIMPLE_COMMAND	0
 # define S_SUBSHELL			0
 
+//------------------------------//
+//		parsing functions		//
+//------------------------------//
 
-// parsing functions
-void	*ft_malloc(int size);
-void	test_print_list(t_node *root);
+// Tokenization
 void	tokenize(t_line *line, t_arg *arg);
-void	print_ascii(void);
-void	print_ascii2(void);
 void	parser(t_arg *arg);
-int		is_number(char c);
-char	*ft_strchr(const char *s, int c);
-void	sig_handler_heredoc(int signo);
-void	sig_handler(int signum);
-void	sig_handler_exec(int signum);
-void	expand_envp(t_line **line, t_arg *arg);
-void	get_heredoc_filename(t_node *root, int *i, t_arg *arg);
-char	*set_heredoc_filename(int *i);
-void	terminal_noninteractive(t_arg *arg);
+void	lexicize(t_arg *arg);
+void	expand_vars(t_arg *arg);
+t_node	*create_ast_node(t_line *line, int start, int end, int type);
+
+// Memory Management
+void	error_handler(t_arg *arg, int type);
+void	*ft_malloc(int size);
 void	free_split(char **ptr);
 void	free_node(t_node *node);
 void	free_env(t_env *env);
 void	free_arg(t_arg *arg);
 void	free_ast(t_node *node);
+void	free_line(t_line *line);
+
+// String Manipulation
 char	*modified_strtrim(char const *s1, char const *set);
 char	*modified_strdup(char *s1);
 char	*modified_substr(char *s, int start, int len);
 char	*modified_strjoin(char *s1, char *s2, int free);
+
+// Environment Variables
 void	set_env(t_env *env_head, char *key, char *value);
 void	append_env(t_env *env, char *key, char *value);
-t_line	*subline(t_line *line, int start, int end);
-void	lexicize(t_arg *arg);
+
+// Line Manipulation
 t_node	*create_node(char *data, t_line *line, int type);
+t_node	**filter_asterisk(char **line);
+t_node	*last_node(t_node *node);
 t_line	*get_line_info(char *env);
+t_line	*node_to_line(t_node *node);
+t_line	*subline(t_line *line, int start, int end);
 int		replace_line(t_line *data, t_line **line, int start, int end);
+
+char	**line_split(char *line, char c);
+char	*set_heredoc_filename(int *i);
+void	remove_quotes(t_line **line);
+void	expand_envp(t_line **line, t_arg *arg);
 void	expand_tilde(t_line **line, t_arg *arg);
 void	expand_asterisk(t_line **line, int index);
-t_node	**filter_asterisk(char **line);
-char	**line_split(char *line, char c);
-char	*ft_strjoin(char const *s1, char const *s2);
 void	asterisk_subdir(t_node **result, char **line, char *pwd, int *depth);
-t_node	*last_node(t_node *node);
-void 	expand_vars(t_arg *arg);
-void	remove_quotes(t_line **line);
-int     ft_delete_line(int len, t_line **line, int start);
+int		ft_delete_line(int len, t_line **line, int start);
 int		ft_count_words(char *s, char c);
-int		add_line(t_line *data, t_line *line, int start, int end);
-t_line	*node_to_line(t_node *node);
+
+// Environment Initialization
 t_env	*init_envp(char **envp);
 char	*find_env(t_env *envp, char *key);
 void	init_shell_vars(t_arg *arg);
-char	**line_to_data(t_line *line, int start, int end);
-t_node	*create_ast_node(t_line *line, int start, int end, int type);
-void	error_handler(t_arg *arg, int type);
+
+// Syntax Checking
+t_node	**sort_node(t_node *root, int type);
+t_node	*sort_redirection(t_node **root);
+t_node	*append_cmd(t_node *root, int type);
 int		syntax_subshell(t_node *head, t_arg *arg);
 int		check_syntax(t_node *head, t_arg *arg, int flag);
-t_node  **sort_node(t_node *root, int type);
-t_node	*sort_redirection(t_node **root);
 void	sort_free(t_node **root);
-t_node	*append_cmd(t_node *root, int type);
 void	split_expanded(t_node *node);
 void	append_subshell(t_node *root);
+
+// Terminal Initialization and Handling
 void	terminal_init(t_arg *arg, char **envp, char **argv);
 void	terminal_default(int exit, t_arg *arg);
-void 	terminal_interactive(t_arg *arg);
-void 	signal_default(void);
-void 	signal_interactive(void);
+void	terminal_interactive(t_arg *arg);
+void	signal_default(void);
+void	signal_interactive(void);
+
+// Signal Handlers
+void	sig_handler_heredoc(int signo);
+void	sig_handler(int signum);
+void	sig_handler_exec(int signum);
+
+// Heredoc Expansion
 void	expand_heredoc(t_arg *arg);
-void 	get_heredoc(t_arg *arg);
-int	filter_utf8(const char	*str);
-int		ps_len(char *ps);
-int		check_double_command(int *found_type, int index);
+void	get_heredoc(t_arg *arg);
+void	get_heredoc_filename(t_node *root, int *i, t_arg *arg);
+
+// Miscellaneous
 void	check_subshell(t_node *node, t_error *error, int *type, t_arg *arg);
 void	check_command(t_node *node, t_error *error, int *found_type);
-int		is_not_delimiter(char c);
-int		is_number(char c);
 void	set_minishell_path(t_arg *arg, char *argv);
+void	print_ascii(void);
+void	print_ascii2(void);
+int		filter_utf8(const char *str);
+int		ps_len(char *ps);
+int		is_number(char c);
+int		check_double_command(int *found_type, int index);
+int		is_not_delimiter(char c);
+int		node_type_numbers(t_node *root, int type);
+int		check_asterisk(char **filter, char *file, int *depth);
+int		asterisk_exceptions(DIR *dir, char **line, int *depth);
 
-// excution functions
+
+//------------------------------//
+//		excution functions		//
+//------------------------------//
+
 // ft_itoa.c
 char	*ft_itoa(int n);
 int		ft_countdigit(int n);
 void	ft_nbrdup(int n, int digit, char *nbr);
 
 // exec_libft.c
-int	ft_atoi(const char *nptr);
-int	ft_strncmp(const char *s1, const char *s2, int n);
+int		ft_atoi(const char *nptr);
+int		ft_strncmp(const char *s1, const char *s2, int n);
 
 // exec_set_start.c
 void	set_exec(t_arg *arg);
@@ -256,25 +282,31 @@ void	built_in_exit(t_node *node);
 
 // exec_built_in_cd.c
 void	built_in_cd_set_env(t_env *env);
-int	    built_in_cd_oldpwd(t_env *env, char **argv);
-int 	built_in_cd(t_env *env, char **argv);
+int		built_in_cd_oldpwd(t_env *env, char **argv);
+int		built_in_cd(t_env *env, char **argv);
 
 // exec_built_in_env.c
-int	built_in_export(t_node *node, t_env *env);
-int	export_none_arg(t_env *env);
-int	built_in_unset(t_node *node, t_arg *arg);
+int		built_in_export(t_node *node, t_env *env);
+int		export_none_arg(t_env *env);
+int		built_in_unset(t_node *node, t_arg *arg);
 void	built_in_unset_iter(t_node *node, t_env	*cur, t_arg *arg, int i);
-int	built_in_env(t_env *env);
+int		built_in_env(t_env *env);
 
 // exec_built_in_env_utils.c
 t_env	*dup_list(t_env *env);
 void	sort_list(t_env *env);
 void	free_list(t_env *env);
 void	free_env_node(t_env *env);
-void	get_heredoc_filename(t_node *root, int *i, t_arg *arg);
-char	*set_heredoc_filename(int *i);
+
+// exec_heredoc.c
 void	init_file_for_heredoc(t_node *node, int *row, int *i, t_arg *arg);
 void	set_heredoc(t_node *node, t_arg *arg, int *row, int *i);
 void	get_heredoc(t_arg *arg);
+void	init_file_heredoc_iter(int *i, int *row, char *line, int fd);
+char	*find_heredoc_prefix(t_arg *arg, int *i, int *row);
+
+// exec_heredoc_file.c
+char	*set_heredoc_filename(int *i);
+void	get_heredoc_filename(t_node *root, int *i, t_arg *arg);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 07:12:27 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/16 03:41:46 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/16 15:06:06 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ void	terminal_default(int exit_flag, t_arg *arg)
 		signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
 	}
-
 	else if (g_signal_fork == 0)
 	{
 		tcsetattr(STDOUT_FILENO, TCSANOW, &arg->original_term);

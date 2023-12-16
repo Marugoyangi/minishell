@@ -12,31 +12,6 @@
 
 #include "minishell.h"
 
-void	sort_free(t_node **node)
-{
-	int	i;
-
-	i = 0;
-	if (node == NULL)
-		return ;
-	while (node[i])
-	{
-		if (node[i]->data)
-			free(node[i]->data);
-		if (node[i]->argv)
-			free_split(node[i]->argv);
-		if (node[i]->line)
-		{
-			free(node[i]->line->data);
-			free(node[i]->line->info);
-			free(node[i]->line);
-		}
-		free(node[i]);
-		i++;
-	}
-	free (node);
-}
-
 void	free_env(t_env *env)
 {
 	t_env	*tmp;

@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 13:34:34 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/16 07:43:12 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/16 15:05:12 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	*ft_memcpy(void *dest, const void *src, int n)
 {
-	int			i;
+	int				i;
 	unsigned char	*destp;
 	unsigned char	*srcp;
 

@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 03:10:34 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/15 15:52:52 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/16 14:54:33 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,32 +73,32 @@ t_node	*simple_cmd(int *i, t_line *line)
 	, L_SIMPLE_COMMAND));
 }
 
-t_node	*check_type(t_line *line, int *i)
+t_node	*check_type(t_line *ln, int *i)
 {
-	if (line->info && line->info[*i] == T_OPERATOR && \
-	(line->data[*i] == '&' && line->data[*i + 1] == '&'))
+	if (ln->info && ln->info[*i] == T_OPERATOR && \
+	(ln->data[*i] == '&' && ln->data[*i + 1] == '&'))
 	{
 		*i = *i + 2;
 		return (create_node("&&", NULL, L_LOGICAL_OPERATOR));
 	}
-	else if (line->info && line->info[*i] == T_OPERATOR && \
-	(line->data[*i] == '|' && line->data[*i + 1] == '|'))
+	else if (ln->info && ln->info[*i] == T_OPERATOR && \
+	(ln->data[*i] == '|' && ln->data[*i + 1] == '|'))
 	{
 		*i = *i + 2;
 		return (create_node("||", NULL, L_LOGICAL_OPERATOR));
 	}
-	else if (line->info && line->info[*i] == T_OPERATOR && \
-	(line->data[*i] == '|' && line->data[(*i)++ + 1] != '|'))
+	else if (ln->info && ln->info[*i] == T_OPERATOR && \
+	(ln->data[*i] == '|' && ln->data[(*i)++ + 1] != '|'))
 		return (create_node("|", NULL, L_PIPELINE));
-	else if (line->info && (line->info[*i] == T_WORD || line->info[*i] == T_LITERAL \
-	|| line->info[*i] == T_DOUBLE_QUOTE || line->info[*i] == T_SINGLE_QUOTE \
-	|| line->info[*i] == T_ENV || line->info[*i] == T_ASTERISK))
-		return (simple_cmd(i, line));
-	else if (line->info && line->info[*i] == T_PARENTHESIS)
-		return (subshell(i, line));
-	else if (line->info && line->info[*i] == T_OPERATOR && \
-		(line->data[*i] == '>' || line->data[*i] == '<'))
-		return (redirection(i, line));
+	else if (ln->info && (ln->info[*i] == T_WORD || ln->info[*i] == T_LITERAL \
+	|| ln->info[*i] == T_DOUBLE_QUOTE || ln->info[*i] == T_SINGLE_QUOTE \
+	|| ln->info[*i] == T_ENV || ln->info[*i] == T_ASTERISK))
+		return (simple_cmd(i, ln));
+	else if (ln->info && ln->info[*i] == T_PARENTHESIS)
+		return (subshell(i, ln));
+	else if (ln->info && ln->info[*i] == T_OPERATOR && \
+		(ln->data[*i] == '>' || ln->data[*i] == '<'))
+		return (redirection(i, ln));
 	return (NULL);
 }
 

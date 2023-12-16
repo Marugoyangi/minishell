@@ -36,8 +36,6 @@ int	check_built_in(t_node *node, t_arg *arg)
 	return (-1);
 }
 
-// echo, 입력한 인수를 그대로 출력
-// -n 옵션 사용시 개행 미출력
 int	built_in_echo(char **argv)
 {
 	int	i;
@@ -61,7 +59,6 @@ int	built_in_echo(char **argv)
 	return (0);
 }
 
-// 현재 작업 디렉토리의 경로를 출력
 int	built_in_pwd(void)
 {
 	char	*current_path;
@@ -77,7 +74,6 @@ int	built_in_pwd(void)
 	return (0);
 }
 
-// 쉘을 종료.
 void	built_in_exit(t_node *node)
 {
 	int	exit_num;

@@ -6,20 +6,20 @@
 #    By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/05 14:27:11 by jeongbpa          #+#    #+#              #
-#    Updated: 2023/12/16 12:27:21 by jeongbpa         ###   ########.fr        #
+#    Updated: 2023/12/16 15:57:43 by jeongbpa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC_DIR = ./srcs/
-BONUS_DIR = ./srcs/
+BONUS_DIR = ./bonus_srcs/
 
 SRCS =	$(addprefix $(SRC_DIR), minishell.c \
 								utils/ascii_art.c utils/node_ctl.c utils/memory_ctl.c utils/general_utils.c \
-								utils/expand_utils.c utils/line_ctl.c utils/line_split.c\
+								utils/expand_utils.c utils/line_ctl.c utils/line_split.c utils/sort_utils.c \
 								parse/tokenize.c parse/lexicize.c parse/parser.c parse/syntax_check.c\
-								parse/syntax_cmd.c parse/parsing_sort.c\
+								parse/syntax_cmd.c parse/parsing_sort.c \
 								expand/expand.c expand/expand_asterisk.c expand/asterisk_filter.c expand/expand_heredoc.c\
-								expand/expand_split.c \
+								expand/expand_split.c expand/asterisk_utils.c \
 								initialize/envp_init.c \
 								initialize/init.c initialize/signal.c\
 								error/error.c \
@@ -28,7 +28,7 @@ SRCS =	$(addprefix $(SRC_DIR), minishell.c \
 								exec/exec_redirection.c exec/exec_redirection_utils.c \
 								exec/exec_simple_command.c exec/exec_simple_command_utils.c \
 								exec/exec_built_in.c exec/exec_built_in_env.c exec/exec_built_in_env_utils.c exec/exec_built_in_cd.c \
-								exec/exec_heredoc.c)
+								exec/exec_heredoc.c exec/exec_heredoc_file.c)
 
 # BONUS_SRCS = $(addprefix $(BONUS_DIR), minishell_bonus.c \
 # 								utils/libft.c utils/ascii_art.c utils/node_ctl.c utils/memory_ctl.c utils/general_utils.c \

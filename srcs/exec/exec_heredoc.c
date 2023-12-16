@@ -6,31 +6,11 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 02:02:43 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/16 04:13:35 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/16 15:49:39 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-char	*set_heredoc_filename(int *i)
-{
-	int		fd;
-	char	*filename;
-
-	while (1)
-	{
-		filename = modified_strjoin(".", ft_itoa(*i), 2);
-		fd = open(filename, O_RDONLY);	// open 성공 = filename 파일 존재
-		if (fd == -1)
-		{
-			(*i)++;
-			return (filename);
-		}
-		close(fd);
-		free(filename);
-		(*i)++;
-	}
-}
 
 char	*find_heredoc_prefix(t_arg *arg, int *i, int *row)
 {
@@ -43,10 +23,20 @@ char	*find_heredoc_prefix(t_arg *arg, int *i, int *row)
 	tmp = modified_strjoin(tmp, "A\033[K", 1);
 	while (k < *i + 1)
 	{
-		tmp = modified_strjoin(tmp, ft_strdup(find_env(arg->envp_head, "PS2")), 0);
+		tmp = modified_strjoin(tmp, ft_strdup(find_env(arg->envp_head, \
+		"PS2")), 0);
 		k++;
 	}
 	return (tmp);
+}
+
+void	init_file_heredoc_iter(int *i, int *row, char *line, int fd)
+{
+	*i = 0;
+	*row = -1;
+	write(fd, line, ft_strlen(line));
+	write(fd, "\n", 1);
+	free (line);
 }
 
 void	init_file_for_heredoc(t_node *node, int *row, int *i, t_arg *arg)
@@ -73,13 +63,7 @@ void	init_file_for_heredoc(t_node *node, int *row, int *i, t_arg *arg)
 			break ;
 		}
 		else
-		{
-			*i = 0;
-			*row = -1;
-			write(fd, line, ft_strlen(line));
-			write(fd, "\n", 1);
-			free (line);
-		}
+			init_file_heredoc_iter(i, row, line, fd);
 	}
 	close(fd);
 }
@@ -99,55 +83,30 @@ void	set_heredoc(t_node *node, t_arg *arg, int *row, int *i)
 	}
 }
 
-void	get_heredoc_filename(t_node *root, int *i, t_arg *arg)
-{
-	t_node	*node;
-
-	if (!root)
-		return ;
-	node = root;
-	if (node->type == L_REDIRECTION)
-	{
-		if (node->data && !ft_strcmp(node->data, "<<"))
-			node->filename = set_heredoc_filename(i);
-	}
-	if (arg->error->code == 2)
-		get_heredoc_filename(node->right, i, arg);
-	else
-	{
-		get_heredoc_filename(node->left, i, arg);
-		get_heredoc_filename(node->right, i, arg);
-	}
-}
-
 void	get_heredoc(t_arg *arg)
 {
 	int	pid;
-	int	row;
-	int	i;
+	int	xy[2];
 	int	status;
 
 	status = 0;
 	pid = 0;
-	row = -1;
-	i = 1;
-	get_heredoc_filename(arg->ast_head, &i, arg);
-	i = 0;
+	xy[1] = -1;
+	xy[0] = 1;
+	get_heredoc_filename(arg->ast_head, &xy[0], arg);
+	xy[0] = 0;
 	pid = fork();
 	if (!pid)
 	{
 		signal(SIGINT, sig_handler_heredoc);
 		signal(SIGQUIT, SIG_IGN);
-		set_heredoc(arg->ast_head, arg, &row, &i);
+		set_heredoc(arg->ast_head, arg, &xy[1], &xy[0]);
 		exit (0);
 	}
-	else
-	{
-		signal(SIGINT, SIG_IGN);
-		signal(SIGQUIT, SIG_IGN);
-		waitpid(pid, &status, 0);
-		if (WIFEXITED(status) == 1)
-			arg->last_exit_status = WEXITSTATUS(status);
-		terminal_interactive(arg);
-	}
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	waitpid(pid, &status, 0);
+	if (WIFEXITED(status) == 1)
+		arg->last_exit_status = WEXITSTATUS(status);
+	terminal_interactive(arg);
 }

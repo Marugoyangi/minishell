@@ -6,45 +6,11 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 20:19:14 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/16 12:44:05 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/16 15:39:43 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	print_preorder(t_node *root)
-{
-	if (root == NULL)
-		return ;
-	if (root->data)
-		printf("data: %s\n", root->data);
-	printf("type: %d\n", root->type);
-	if (root->argv)
-	{
-		int i = 0;
-		printf("argv: ");
-		while (root->argv[i])
-		{
-			printf("[%s]", root->argv[i]);
-			i++;
-		}
-		printf("\n");
-	}
-	if (root->line)
-	{
-		printf("line: %s\n", root->line->data);
-		printf("info: ");
-		int i = 0;
-		while (root->line->info[i])
-		{
-			printf("[%d]", root->line->info[i]);
-			i++;
-		}
-		printf("\n");
-	}
-	print_preorder(root->left);
-	print_preorder(root->right);
-}
 
 int	find_subshell(t_node *root)
 {
@@ -149,5 +115,4 @@ void	parser(t_arg *arg)
 		return ;
 	root = find_operator(arg->ast_head);
 	arg->ast_head = root;
-	print_preorder(arg->ast_head); // delete
 }

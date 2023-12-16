@@ -72,7 +72,6 @@ int	check_syntax_token(t_arg *arg, int flag)
 {
 	if (arg->error->token)
 	{
-		printf("boom\n");
 		if (flag == 1)
 		{
 			if (!ft_strcmp(arg->error->token, "newline"))

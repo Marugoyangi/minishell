@@ -69,19 +69,15 @@ char	*modified_strtrim(char const *s1, char const *set)
 
 	if (set == 0)
 		return ((char *)s1);
-	start = 0;
-	end = ft_strlen(s1);
-	while (s1 && s1[start])
-	{
+	start = -1;
+	end = ft_strlen(s1) + 1;
+	while (s1 && s1[++start])
 		if (!ft_strchr(set, s1[start]))
 			break ;
-		start++;
-	}
-	while (end > 0)
+	while (--end > 0)
 	{
 		if (!ft_strchr(set, s1[end - 1]))
 			break ;
-		end--;
 	}
 	if (start > end)
 		return (NULL);

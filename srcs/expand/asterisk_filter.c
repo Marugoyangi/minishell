@@ -12,40 +12,6 @@
 
 #include "../minishell.h"
 
-int	check_asterisk(char **filter, char *file, int *depth) // line은 규칙, file은 파일 또는 디렉토리
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	while (filter[*depth][i] || file[j])
-	{
-		if (filter[*depth][i] == -T_ASTERISK)
-		{
-			while (filter[*depth][i] == -T_ASTERISK)
-				i++;
-			if (filter[*depth][i] == '\0')
-				return (1);
-			j++;
-			while (file[j] && file[j] != filter[*depth][i])
-				j++;
-			if (file[j] == '\0')
-				return (0);
-		}
-		else if (filter[*depth][i] == file[j])
-		{
-			i++;
-			j++;
-		}
-		else
-			break ;
-	}
-	if (filter[*depth][i] == '\0' && file[j] == '\0')
-		return (1);
-	return (0);
-}
-
 void	filtered_node(struct dirent *file, t_node **result, char *pwd, \
 						char *last_filter)
 {
@@ -74,7 +40,6 @@ void	asterisk_recursive(t_node **result, char **line, char *name, int *depth)
 	char	*pwd;
 	char	*filename;
 	int		i;
-
 
 	(*depth)++;
 	if (*depth == 2)
@@ -105,18 +70,6 @@ int	is_file_or_dir(char **line, int *depth, int is_hidden, struct dirent *file)
 	((is_hidden == 0 && file->d_name[0] != '.') || is_hidden == 1))
 		return (2);
 	return (0);
-}
-
-int	asterisk_exceptions(DIR *dir, char **line, int *depth)
-{
-	if (dir == NULL)
-		return (-2);
-	if (line[*depth][0] != '.')
-		return (0);
-	else if (line[*depth][0] == -T_ASTERISK && line[*depth][1] == '.')
-		return (-1);
-	else
-		return (1);
 }
 
 void	asterisk_subdir(t_node **result, char **line, char *pwd, int *depth)

@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 11:10:03 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/15 16:20:51 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/16 15:54:23 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,7 @@ void	split_expanded(t_node *node)
 			i++;
 	}
 	if (words == 0)
-	{
-		printf("is it here??\n");
 		node->argv = NULL;
-	}
 	else
 		split_allocate(node, words);
 }

@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 12:56:06 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/16 07:43:12 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/16 15:04:58 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	*ft_memset(void *s, int c, int n)
 {
-	int			i;
+	int				i;
 	unsigned char	*p;
 
 	i = 0;

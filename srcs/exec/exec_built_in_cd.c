@@ -14,7 +14,7 @@
 
 void	built_in_cd_set_env(t_env *env);
 int		built_in_cd_oldpwd(t_env *env, char **argv);
-int 	built_in_cd(t_env *env, char **argv);
+int		built_in_cd(t_env *env, char **argv);
 
 void	built_in_cd_set_env(t_env *env)
 {
