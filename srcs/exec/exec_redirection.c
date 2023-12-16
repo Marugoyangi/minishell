@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redirection.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: seungwok <seungwok@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 19:23:09 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/16 07:55:31 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/16 17:03:11 by seungwok         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 int		exec_redirection(t_node *node, t_arg *arg);
+int		check_built_in_redirection(t_node *node);
 void	exec_redirection_child(t_redirection *node, t_arg *arg, int *fd);
 void	exec_redirection_parent(t_arg *arg, pid_t pid, int *status);
 
@@ -33,6 +34,8 @@ int	exec_redirection(t_node *node, t_arg *arg)
 		fd[0] = get_input_fd(redirection_node.input_node);
 	if (redirection_node.output_node)
 		fd[1] = get_output_fd(redirection_node.output_node);
+	if (!check_built_in_redirection(redirection_node.exec_node))
+		return(check_built_in(redirection_node.exec_node, arg));
 	arg->fork_sign++;
 	pid = fork();
 	if (!pid)
@@ -64,4 +67,17 @@ void	exec_redirection_parent(t_arg *arg, pid_t pid, int *status)
 {
 	waitpid(pid, status, 0);
 	arg->fork_sign--;
+}
+
+int	check_built_in_redirection(t_node *node)
+{
+	if (!ft_strcmp(node->data, "echo")
+		|| !ft_strcmp(node->data, "cd")
+		|| !ft_strcmp(node->data, "pwd")
+		|| !ft_strcmp(node->data, "exit")
+		|| !ft_strcmp(node->data, "export")
+		|| !ft_strcmp(node->data, "unset")
+		|| !ft_strcmp(node->data, "env"))
+		return (0);
+	return (1);
 }

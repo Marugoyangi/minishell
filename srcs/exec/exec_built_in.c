@@ -77,8 +77,25 @@ int	built_in_pwd(void)
 void	built_in_exit(t_node *node)
 {
 	int	exit_num;
+	int	i;
 
 	exit_num = 0;
+	i = 0;
+	if (node->argv[1])
+	{
+		while(node->argv[1][i] >= '0' && node->argv[1][i] <= '9')
+			i++;
+		if (node->argv[1][i])
+		{
+			printf("minishell: exit: numeric argument required");
+			exit (255);
+		}
+	}
+	if (node->argv[2])
+	{
+		printf("minishell: exit: too many arguments\n");
+		exit(1);		
+	}
 	if (node->argv[1])
 		exit_num = ft_atoi(node->argv[1]);
 	exit(exit_num);

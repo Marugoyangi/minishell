@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_subshell.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
+/*   By: seungwok <seungwok@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 12:32:45 by woopinbell        #+#    #+#             */
-/*   Updated: 2023/12/16 06:24:21 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/16 16:51:35 by seungwok         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	exec_subshell(t_node *node, t_arg *arg)
 		waitpid(pid, &status, 0);
 		arg->fork_sign--;
 	}
-	return (status);
+	return (WEXITSTATUS(status));
 }
 
 void	set_subshell(t_node *node, t_arg *arg)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_set_start.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
+/*   By: seungwok <seungwok@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 18:25:08 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/15 14:27:51 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/16 16:34:02 by seungwok         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 

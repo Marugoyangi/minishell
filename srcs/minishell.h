@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: seungwok <seungwok@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:35 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/16 16:22:34 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/16 16:57:54 by seungwok         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,6 +248,7 @@ void	exec_pipe_child2(t_node *node, t_arg *arg, int *pipe);
 
 // exec_redirection.c
 int		exec_redirection(t_node *node, t_arg *arg);
+int		check_built_in_redirection(t_node *node);
 void	exec_redirection_child(t_redirection *node, t_arg *arg, int *fd);
 void	exec_redirection_parent(t_arg *arg, pid_t pid, int *status);
 
