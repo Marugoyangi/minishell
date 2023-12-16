@@ -93,7 +93,7 @@ int	main(int argc, char **argv, char **envp)
 				exit (1);
 		}
 		expand_heredoc(&arg);
-		// set_exec(&arg);
+		set_exec(&arg);
 		free_read_line(&arg);
 		if (arg.is_subshell)
 			exit (0);
