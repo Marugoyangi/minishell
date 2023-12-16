@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:37 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/16 04:46:45 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/16 09:41:49 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	free_read_line(t_arg *arg)
 	if (arg->error->token)
 		free(arg->error->token);
 	arg->error->token = NULL;
+	arg->error->code = 0;
 }
 
 int	lex(t_arg *arg)
@@ -74,7 +75,6 @@ int	main(int argc, char **argv, char **envp)
 	terminal_init(&arg, envp, argv);
 	while (1)
 	{
-		arg.error->code = 0;
 		if (!arg.is_subshell)
 		{
 			arg.line.data = readline(find_env(arg.envp_head, "PS1"));
@@ -83,10 +83,10 @@ int	main(int argc, char **argv, char **envp)
 			add_history(arg.line.data);
 			arg.line.data = modified_strtrim(arg.line.data, " \t\n");
 		}
+		else
+			arg.line.data = ft_strdup(argv[2]);
 		if (lex(&arg) && !arg.is_subshell)
 			continue ;
-		else if (arg.is_subshell)
-			exit (E_WRONG_SYNTAX);
 		expand_heredoc(&arg);
 		set_exec(&arg);
 		free_read_line(&arg);

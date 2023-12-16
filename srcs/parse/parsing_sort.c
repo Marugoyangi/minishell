@@ -70,7 +70,7 @@ t_node	**sort_node(t_node *root, int type)
 		return (NULL);
 	node = root;
 	tmp = ft_malloc(sizeof(t_node *) * (node_type_numbers(root, type) + 1));
-	tmp = memset(tmp, 0, sizeof(t_node *) * (node_type_numbers(root, type) + 1));
+	tmp = ft_memset(tmp, 0, sizeof(t_node *) * (node_type_numbers(root, type) + 1));
 	tmp[node_type_numbers(root, type)] = NULL;
 	i = 0;
 	while (node)
@@ -123,7 +123,7 @@ t_node	*append_cmd(t_node *root, int type)
 	node = root;
 	if (node_type_numbers(root, type) == 0)
 		return (NULL);
-	tmp = calloc(sizeof(char *), (node_type_numbers(root, type) + 1));
+	tmp = ft_calloc(sizeof(char *), (node_type_numbers(root, type) + 1));
 	tmp[node_type_numbers(root, type)] = NULL;
 	result = create_node(NULL, NULL, type);
 	i = 0;
@@ -132,16 +132,22 @@ t_node	*append_cmd(t_node *root, int type)
 		if (node->type == type)
 		{
 			j = 0;
-			while (node->argv && node->argv[j])
+			if (!node->argv)
+				tmp[i] = ft_strdup(node->line->data);
+			else
 			{
-				tmp[i] = ft_strdup(node->argv[j]);
-				i++;
-				j++;
+				while (node->argv && node->argv[j])
+				{
+					tmp[i] = ft_strdup(node->argv[j]);
+					i++;
+					j++;
+				}
 			}
 		}
 		node = node->right;
 	}
-	result->data = ft_strdup(tmp[0]);
+	if (tmp[0])
+		result->data = ft_strdup(tmp[0]);
 	result->line = NULL;
 	result->argv = tmp;
 	return (result);

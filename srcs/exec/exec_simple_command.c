@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_simple_command.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
+/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:35:51 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/15 14:21:55 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/16 09:13:29 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,11 @@ int	exec_command(t_node *node, t_arg *arg)
 		path = set_path(arg->envp_head);
 		if (!path)
 		{
-			printf("minishell: %s: 그런 파일이나 디렉터리가 없습니다.\n", node->data);
+			printf("minishell: %s: command not found\n", node->data);
 			return (127);
 		}
 		status = external_command(node, arg, path);
+		free_split(path);
 	}
 	else if (!(status == -1) && arg->fork_sign == 1)
 		exit(status);
@@ -46,7 +47,7 @@ int	external_command(t_node *node, t_arg *arg, char **path)
 	status = 0;
 	if (!arg->fork_sign)
 	{
-		if (ft_strstr(node->data, "./minishell"))
+		if (node->data && ft_strstr(node->data, "./minishell"))
 			g_signal_fork = 1;
 		pid = fork();
 		if (!pid)

@@ -42,7 +42,7 @@ int	built_in_cd_oldpwd(t_env *env, char **argv)
 	if (chdir(cur->value) == -1)
 	{
 		free(tmp);
-		perror("chdir");
+		perror("minishell");
 		return (1);
 	}
 	free(cur->value);
@@ -68,7 +68,7 @@ int	built_in_cd(t_env *env, char **argv)
 	{
 		if (cur)
 			free(cur->value);
-		perror("chdir");
+		perror("minishell");
 		return (1);
 	}
 	cur = env;

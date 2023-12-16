@@ -63,8 +63,8 @@ char	*modified_substr(char *s, int start, int len)
 
 char	*modified_strtrim(char const *s1, char const *set)
 {
-	size_t	start;
-	size_t	end;
+	int		start;
+	int		end;
 	char	*str;
 
 	if (set == 0)

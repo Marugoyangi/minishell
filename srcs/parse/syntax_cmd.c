@@ -38,7 +38,7 @@ int	syntax_subshell(t_node *node, t_arg *arg)
 {
 	t_arg	tmp;
 
-	memset(&tmp, 0, sizeof(t_arg));
+	ft_memset(&tmp, 0, sizeof(t_arg));
 	tmp.line.data = node->data;
 	tmp.line.data = ft_strtrim(tmp.line.data, "()");
 	if (tmp.line.data == NULL)

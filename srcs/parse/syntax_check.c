@@ -92,7 +92,7 @@ int	check_syntax(t_node *head, t_arg *arg, int flag)
 	int		found_type[3];
 
 	tmp = head;
-	memset(found_type, 0, sizeof(found_type)); // memset
+	ft_memset(found_type, 0, sizeof(found_type));
 	arg->error->token = NULL;
 	while (tmp && !arg->error->token)
 	{

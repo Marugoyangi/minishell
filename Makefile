@@ -3,18 +3,18 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+         #
+#    By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/05 14:27:11 by jeongbpa          #+#    #+#              #
-#    Updated: 2023/12/16 06:15:54 by woopinbell       ###   ########.fr        #
+#    Updated: 2023/12/16 08:00:31 by jeongbpa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-#readline 없으면 설치하는 과정이 포함돼야함
-
 SRC_DIR = ./srcs/
+BONUS_DIR = ./srcs/
+
 SRCS =	$(addprefix $(SRC_DIR), minishell.c \
-								utils/libft.c utils/ascii_art.c utils/node_ctl.c utils/memory_ctl.c utils/general_utils.c \
+								utils/ascii_art.c utils/node_ctl.c utils/memory_ctl.c utils/general_utils.c \
 								utils/expand_utils.c utils/line_ctl.c utils/line_split.c\
 								parse/tokenize.c parse/lexicize.c parse/parser.c parse/syntax_check.c\
 								parse/syntax_cmd.c parse/parsing_sort.c\
@@ -23,7 +23,6 @@ SRCS =	$(addprefix $(SRC_DIR), minishell.c \
 								initialize/envp_init.c \
 								initialize/init.c initialize/signal.c\
 								error/error.c \
-								exec/exec_libft.c \
 								exec/exec_set_start.c \
 								exec/exec_logical_operator.c exec/exec_pipeline.c exec/exec_subshell.c \
 								exec/exec_redirection.c exec/exec_redirection_utils.c \
@@ -31,29 +30,62 @@ SRCS =	$(addprefix $(SRC_DIR), minishell.c \
 								exec/exec_built_in.c exec/exec_built_in_env.c exec/exec_built_in_env_utils.c exec/exec_built_in_cd.c \
 								exec/exec_heredoc.c)
 
+# BONUS_SRCS = $(addprefix $(BONUS_DIR), minishell_bonus.c \
+# 								utils/libft.c utils/ascii_art.c utils/node_ctl.c utils/memory_ctl.c utils/general_utils.c \
+# 								utils/expand_utils.c utils/line_ctl.c utils/line_split.c\
+# 								parse/tokenize.c parse/lexicize.c parse/parser.c parse/syntax_check.c\
+# 								parse/syntax_cmd.c parse/parsing_sort.c\
+# 								expand/expand.c expand/expand_asterisk.c expand/asterisk_filter.c expand/expand_heredoc.c\
+# 								expand/expand_split.c \
+# 								initialize/envp_init.c \
+# 								initialize/init.c initialize/signal.c\
+# 								error/error.c \
+# 								exec/exec_libft.c \
+# 								exec/exec_set_start.c \
+# 								exec/exec_logical_operator.c exec/exec_pipeline.c exec/exec_subshell.c \
+# 								exec/exec_redirection.c exec/exec_redirection_utils.c \
+# 								exec/exec_simple_command.c exec/exec_simple_command_utils.c \
+# 								exec/exec_built_in.c exec/exec_built_in_env.c exec/exec_built_in_env_utils.c exec/exec_built_in_cd.c \
+# 								exec/exec_heredoc.c)
 
-							
 OBJS =	$(SRCS:.c=.o)
+BONUS_OBJS = $(BONUS_SRC:.c=.o)
 
 HEADER = minishell.h
+BONUS_HEADER = minishell_bonus.h
 MAKEFILE = Makefile
 NAME = minishell
+LIBFT = ./srcs/libft/libft.a
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -I./srcs/ -gdwarf-4
-%.o: %.c $(HEADER)
+
+ifeq ($(BONUS_FLAG), 42)
+	OBJ_FLAG = $(BONUS_OBJS)
+	OBJ_EXCEPT = $(OBJS)
+	OBJ_HEADER = $(HEADER_BONUS)
+else
+	OBJ_FLAG = $(OBJS)
+	OBJ_EXCEPT = $(BONUS_OBJS)
+	OBJ_HEADER = $(HEADER)
+endif
+
+%.o: %.c $(OBJ_HEADER)
 	 $(CC) $(CFLAGS) -c $< -o $(<:.c=.o)
 
-$(NAME): $(OBJS)
-	$(CC) $^ $(CFLAGS) -lreadline -lncurses -o $(NAME)
+$(NAME): $(OBJ_FLAG) $(LIBFT)
+	@rm -f $(OBJ_EXCEPT)
+	$(CC) $^ $(CFLAGS) -L./srcs/libft -lft -lreadline -lncurses -o $(NAME)
 
-all: $(NAME)
+$(LIBFT):
+	@make -C ./srcs/libft
 
-clean: 
-	rm -f $(OBJS)
+re: fclean all
+
+clean:
+	rm -f $(OBJS) $(BONUS_OBJS)
+	@$(MAKE) -C ./srcs/libft fclean
 
 fclean: clean
 	rm -f $(NAME)
 
-re: fclean all
-
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re bonus

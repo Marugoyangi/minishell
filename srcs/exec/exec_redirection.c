@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redirection.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
+/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 19:23:09 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/15 15:50:34 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/16 07:55:31 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	exec_redirection(t_node *node, t_arg *arg)
 	int				status;
 	pid_t			pid;
 
+	status = 0;
 	redirection_node.exec_node = node->right;
 	redirection_node.input_node = get_input_node(node, fd);
 	redirection_node.output_node = get_output_node(node, fd);

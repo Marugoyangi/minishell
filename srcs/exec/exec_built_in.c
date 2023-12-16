@@ -69,7 +69,7 @@ int	built_in_pwd(void)
 	current_path = getcwd(0, 0);
 	if (!current_path)
 	{
-		perror("getcwd");
+		perror("minishell");
 		return (1);
 	}
 	printf("%s\n", current_path);

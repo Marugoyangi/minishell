@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
+/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:35 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/16 06:15:07 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/16 09:40:04 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include "./libft/libft.h"	// libft
 # include <errno.h>			// perror
 # include <stdio.h>			// printf, strerror
 # include <stdlib.h>		// malloc, free, fork, exit, getenv
@@ -133,7 +134,6 @@ char	*ft_strchr(const char *s, int c);
 void	sig_handler_heredoc(int signo);
 void	sig_handler(int signum);
 void	sig_handler_exec(int signum);
-int		ft_strstr(char *str, char *to_find);
 void	expand_envp(t_line **line, t_arg *arg);
 void	get_heredoc_filename(t_node *root, int *i, t_arg *arg);
 char	*set_heredoc_filename(int *i);
@@ -149,15 +149,10 @@ char	*modified_substr(char *s, int start, int len);
 char	*modified_strjoin(char *s1, char *s2, int free);
 void	set_env(t_env *env_head, char *key, char *value);
 void	append_env(t_env *env, char *key, char *value);
-int 	ft_strlen(const char *str);
-char	*ft_substr(char const *s, int start, int len);
-char	*ft_strdup(char *s1);
-char	*ft_strtrim(char *s, char const *c);
 t_line	*subline(t_line *line, int start, int end);
 void	lexicize(t_arg *arg);
 t_node	*create_node(char *data, t_line *line, int type);
 t_line	*get_line_info(char *env);
-int 	ft_strcmp(const char *s1, const char *s2);
 int		replace_line(t_line *data, t_line **line, int start, int end);
 void	expand_tilde(t_line **line, t_arg *arg);
 void	expand_asterisk(t_line **line, int index);
@@ -168,12 +163,10 @@ void	asterisk_subdir(t_node **result, char **line, char *pwd, int *depth);
 t_node	*last_node(t_node *node);
 void 	expand_vars(t_arg *arg);
 void	remove_quotes(t_line **line);
-int		ft_delete_line(int len, t_line **line, int start);
+int     ft_delete_line(int len, t_line **line, int start);
 int		ft_count_words(char *s, char c);
 int		add_line(t_line *data, t_line *line, int start, int end);
 t_line	*node_to_line(t_node *node);
-char	**ft_split(char *s, char c);
-char	*ft_itoa(int n);
 t_env	*init_envp(char **envp);
 char	*find_env(t_env *envp, char *key);
 void	init_shell_vars(t_arg *arg);
@@ -195,7 +188,6 @@ void 	signal_default(void);
 void 	signal_interactive(void);
 void	expand_heredoc(t_arg *arg);
 void 	get_heredoc(t_arg *arg);
-int		ft_strlcpy(char *dest, const char *src, int size);
 int	filter_utf8(const char	*str);
 int		ps_len(char *ps);
 int		check_double_command(int *found_type, int index);
@@ -213,7 +205,7 @@ void	ft_nbrdup(int n, int digit, char *nbr);
 
 // exec_libft.c
 int	ft_atoi(const char *nptr);
-int	ft_strncmp(const char *s1, const char *s2, size_t n);
+int	ft_strncmp(const char *s1, const char *s2, int n);
 
 // exec_set_start.c
 void	set_exec(t_arg *arg);

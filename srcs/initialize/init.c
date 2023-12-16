@@ -82,7 +82,12 @@ int	ps_len(char *ps1)
 
 void	terminal_init(t_arg *arg, char **envp, char **argv)
 {
-	memset(arg, 0, sizeof(t_arg)); // memset
+	if (argv[1] && argv[1][0] != '\n')
+	{
+		printf("minishell: invalid argument vriables\n");
+		exit (1);
+	}
+	ft_memset(arg, 0, sizeof(t_arg));
 	tcgetattr(STDOUT_FILENO, &arg->term);
 	arg->original_term = arg->term;
 	arg->term.c_lflag &= ~(ECHOCTL);
