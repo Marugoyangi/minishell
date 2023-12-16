@@ -16,23 +16,30 @@ void	error_handler(t_arg *arg, int type)
 {
 	if (type == E_WRONG_SYNTAX)
 	{
-		if (arg->error->token[0] == '$')
-			printf("minishell: %s: ambiguous redirect\n", arg->error->token);
-		else if (arg->error->token[0] == '\'')
-			printf("minishell: No such file or directory\n");
-		else if (arg->error->token[0] == '\0')
-			printf("minishell: ambiguous redirect\n");
-		else
-			printf("minishell: syntax error near unexpected token `%s'\n", \
-			arg->error->token);
-		arg->error->code = 2;
-		printf("error code: %d\n", arg->error->code);
 		if (arg->is_subshell)
 			exit(arg->error->code);
+		if (arg->error->token[0] == '$')
+		{
+			write(2, "minishell: ", 11);
+			write(2, arg->error->token, ft_strlen(arg->error->token));
+			write(2, ": ambiguous redirect\n", 21);
+		}
+		else if (arg->error->token[0] == '\'')
+			write(2, "minishell: No such file or directory\n", 38);
+		else if (arg->error->token[0] == '\0')
+			write(2, "minishell: ambiguous redirect\n", 31);
+		else
+		{
+			write(2, "minishell: syntax error near unexpected token `", 47);
+			write(2, arg->error->token, ft_strlen(arg->error->token));
+			write(2, "\'\n", 2);
+		}
+		arg->error->code = 2;
 	}
 	else if (type == E_UNCLOSED_QUOTES)
 	{
-		write (2, "minishell: syntax error either unclosed quotes or parenthesis found\n", 69);
+		write (2, "minishell: syntax error either unclosed quote ", 46);
+		write (2, "or parenthesis found\n", 21);
 		arg->error->code = 2;
 		if (arg->is_subshell)
 			exit(arg->error->code);

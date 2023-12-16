@@ -19,7 +19,7 @@ char	**make_envp(t_env *envp_head);
 
 int	exec_perror(char *str)
 {
-	perror(str);
+	perror("minishell");
 	if (strcmp(str, "execve"))
 		exit(1);
 	return (1);
@@ -55,7 +55,7 @@ char	*find_path(char **path, char *command)
 		free(try_executable);
 		path++;
 	}
-	return (command_path);
+	return (command);
 }
 
 char	**make_envp(t_env *envp_head)
@@ -79,7 +79,7 @@ char	**make_envp(t_env *envp_head)
 	while (cur)
 	{
 		envp[i] = ft_strjoin(cur->key, "=");
-		envp[i] = ft_strjoin(envp[i], cur->value);
+		envp[i] = modified_strjoin(envp[i], cur->value, 1);
 		cur = cur->next;
 		i++;
 	}

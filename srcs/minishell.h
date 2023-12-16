@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:35 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/16 09:40:04 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/16 12:14:22 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,7 +191,7 @@ void 	get_heredoc(t_arg *arg);
 int	filter_utf8(const char	*str);
 int		ps_len(char *ps);
 int		check_double_command(int *found_type, int index);
-void	check_subshell(t_node *node, t_error *error, t_arg *arg, int *type);
+void	check_subshell(t_node *node, t_error *error, int *type, t_arg *arg);
 void	check_command(t_node *node, t_error *error, int *found_type);
 int		is_not_delimiter(char c);
 int		is_number(char c);

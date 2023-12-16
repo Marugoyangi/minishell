@@ -41,11 +41,12 @@ int	syntax_subshell(t_node *node, t_arg *arg)
 	ft_memset(&tmp, 0, sizeof(t_arg));
 	tmp.line.data = node->data;
 	tmp.line.data = ft_strtrim(tmp.line.data, "()");
+	printf("tmp.line.data = %s\n", tmp.line.data);
 	if (tmp.line.data == NULL)
 		return (1);
 	tokenize(&tmp.line, NULL);
 	lexicize(&tmp);
-	if (check_syntax(tmp.ast_head, arg, 1))
+	if (!check_syntax(tmp.ast_head, arg, 1))
 	{
 		printf("???\n");
 		free(tmp.line.data);
@@ -59,7 +60,7 @@ int	syntax_subshell(t_node *node, t_arg *arg)
 	return (0);
 }
 
-void	check_subshell(t_node *node, t_error *error, t_arg *arg, int *type)
+void	check_subshell(t_node *node, t_error *error, int *type, t_arg *arg)
 {
 	t_node	*right;
 

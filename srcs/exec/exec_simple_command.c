@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:35:51 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/16 09:13:29 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/16 10:08:38 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,9 @@ int	exec_command(t_node *node, t_arg *arg)
 		path = set_path(arg->envp_head);
 		if (!path)
 		{
-			printf("minishell: %s: command not found\n", node->data);
+			write(2, "minishell: ", 11);
+			write(2, node->data, ft_strlen(node->data));
+			write(2, ": command not foudn\n", 20);
 			return (127);
 		}
 		status = external_command(node, arg, path);
@@ -47,7 +49,7 @@ int	external_command(t_node *node, t_arg *arg, char **path)
 	status = 0;
 	if (!arg->fork_sign)
 	{
-		if (node->data && ft_strstr(node->data, "./minishell"))
+		if (node->data && ft_strstr(node->data, "/minishell\0"))
 			g_signal_fork = 1;
 		pid = fork();
 		if (!pid)
@@ -76,7 +78,9 @@ void	external_command_child(t_node *node, t_arg *arg, char **path)
 void	exec_check_path(t_node *node, t_arg *arg, char **path)
 {
 	char	*excutable_path;
+	char	**envp;
 
+	envp = make_envp(arg->envp_head);
 	if (ft_strncmp(node->data, "./", 2)
 		|| ft_strncmp(node->data, "../", 3
 			|| ft_strncmp(node->data, "/", 1)))
@@ -84,16 +88,19 @@ void	exec_check_path(t_node *node, t_arg *arg, char **path)
 		excutable_path = find_path(path, node->data);
 		if (!excutable_path)
 			exec_perror("execve");
-		execve(excutable_path, node->argv, make_envp(arg->envp_head));
+		execve(excutable_path, node->argv, envp);
 		exec_perror("execve");
 	}
 	else
 	{
-		execve(node->argv[0], node->argv, make_envp(arg->envp_head));
+		execve(node->argv[0], node->argv, envp);
 		excutable_path = find_path(path, node->data);
 		if (!excutable_path)
 			exec_perror("execve");
-		execve(excutable_path, node->argv, make_envp(arg->envp_head));
+		execve(excutable_path, node->argv, envp);
 		exec_perror("execve");
 	}
+	if (excutable_path)
+		free(excutable_path);
+	free_split(envp);
 }

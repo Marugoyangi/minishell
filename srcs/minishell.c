@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:37 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/16 09:41:49 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/16 12:54:21 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ int	lex(t_arg *arg)
 	tokenize(&arg->line, arg);
 	lexicize(arg);
 	expand_vars(arg);
-	check_syntax(arg->ast_head, arg, 0);
+	if (!arg->is_subshell)
+		check_syntax(arg->ast_head, arg, 0);
 	parser(arg);
 	get_heredoc(arg);
 	if (arg->error->code)
@@ -71,11 +72,10 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_arg	arg;
 
-	(void)argc;
 	terminal_init(&arg, envp, argv);
 	while (1)
 	{
-		if (!arg.is_subshell)
+		if (!arg.is_subshell && argc)
 		{
 			arg.line.data = readline(find_env(arg.envp_head, "PS1"));
 			if (!arg.line.data)
@@ -85,10 +85,15 @@ int	main(int argc, char **argv, char **envp)
 		}
 		else
 			arg.line.data = ft_strdup(argv[2]);
-		if (lex(&arg) && !arg.is_subshell)
-			continue ;
+		if (lex(&arg))
+		{
+			if (!arg.is_subshell)
+				continue ;
+			if (arg.is_subshell)
+				exit (1);
+		}
 		expand_heredoc(&arg);
-		set_exec(&arg);
+		// set_exec(&arg);
 		free_read_line(&arg);
 		if (arg.is_subshell)
 			exit (0);

@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 05:51:56 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/16 01:42:54 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/16 13:12:54 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,9 +131,10 @@ void	expand_vars(t_arg *arg)
 		if (tmp->type == L_REDIRECTION)
 		{
 			i = 0;
-			while (tmp->line->info[i] == T_OPERATOR)
+			while (tmp->line->info[i] == T_OPERATOR || tmp->line->info[i] == T_SPACE)
 				i++;
 			expand_asterisk(&tmp->line, i);
+			printf("tmp->line->data = %s\n", tmp->line->data);
 		}
 		else
 			expand_asterisk(&tmp->line, 0);

@@ -73,11 +73,14 @@ int	check_syntax_token(t_arg *arg, int flag)
 	if (arg->error->token)
 	{
 		printf("boom\n");
-		if (flag == 1 && !ft_strcmp(arg->error->token, "newline"))
+		if (flag == 1)
 		{
-			free(arg->error->token);
-			arg->error->token = ft_strdup(")");
-			error_handler(arg, E_WRONG_SYNTAX);
+			if (!ft_strcmp(arg->error->token, "newline"))
+			{
+				free(arg->error->token);
+				arg->error->token = ft_strdup(")");
+			}
+			return (0);
 		}
 		else
 			error_handler(arg, E_WRONG_SYNTAX);
@@ -104,7 +107,7 @@ int	check_syntax(t_node *head, t_arg *arg, int flag)
 		else if (tmp->type == L_SIMPLE_COMMAND)
 			check_command(tmp, arg->error, found_type);
 		else if (tmp->type == L_SUBSHELL)
-			check_subshell(tmp, arg->error, arg, found_type);
+			check_subshell(tmp, arg->error, found_type, arg);
 		else if (tmp->type == L_PIPELINE)
 			check_pipeline(tmp, arg->error, found_type);
 		else if (tmp->type == L_LOGICAL_OPERATOR)

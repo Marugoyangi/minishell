@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 20:19:14 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/16 02:32:46 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/16 12:44:05 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ void	print_preorder(t_node *root)
 	if (root == NULL)
 		return ;
 	if (root->data)
-	printf("data: %s\n", root->data);
-	printf("type: %d\n", root->type);
+		printf("data: %s\n", root->data);
+		printf("type: %d\n", root->type);
 	if (root->argv)
 	{
 		int i = 0;
@@ -26,6 +26,18 @@ void	print_preorder(t_node *root)
 		while (root->argv[i])
 		{
 			printf("[%s]", root->argv[i]);
+			i++;
+		}
+		printf("\n");
+	}
+	if (root->line)
+	{
+		printf("line: %s\n", root->line->data);
+		printf("info: ");
+		int i = 0;
+		while (root->line->info[i])
+		{
+			printf("[%d]", root->line->info[i]);
 			i++;
 		}
 		printf("\n");

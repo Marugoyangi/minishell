@@ -24,7 +24,7 @@ int	exec_pipeline(t_node *node, t_arg *arg)
 
 	arg->fork_sign++;
 	if (pipe(pipe_fd) == -1)
-		return (exec_perror("pipe"));
+		return (exec_perror("minishell"));
 	pid[0] = fork();
 	if (!pid[0])
 		exec_pipe_child1(node, arg, pipe_fd);
