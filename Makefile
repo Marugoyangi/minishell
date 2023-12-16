@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+         #
+#    By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/05 14:27:11 by jeongbpa          #+#    #+#              #
-#    Updated: 2023/12/17 02:21:56 by woopinbell       ###   ########.fr        #
+#    Updated: 2023/12/17 05:28:21 by jeongbpa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ SRCS =	$(addprefix $(SRC_DIR), minishell.c \
 								expand/expand.c expand/expand_asterisk.c expand/asterisk_filter.c expand/expand_heredoc.c\
 								expand/expand_split.c expand/asterisk_utils.c \
 								initialize/envp_init.c \
-								initialize/init.c initialize/signal.c\
+								initialize/init.c initialize/signal.c initialize/terminal.c \
 								error/error.c \
 								exec/exec_set_start.c \
 								exec/exec_logical_operator.c exec/exec_pipeline.c exec/exec_subshell.c \
