@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 03:56:07 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/16 14:50:32 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/16 17:05:44 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,10 @@ t_line	*subline(t_line *line, int start, int end)
 	return (sub);
 }
 
-void	replace_line_free(int i, char *new_data, char *new_info, t_line *line)
+void	replace_line_free(int i[], char *new_data, char *new_info, t_line *line)
 {
-	new_data[i] = '\0';
-	new_info[i] = '\0';
+	new_data[i[0]] = '\0';
+	new_info[i[0]] = '\0';
 	free(line->data);
 	free(line->info);
 	line->data = new_data;
@@ -51,7 +51,8 @@ int	replace_alloc(int *i, char *data[], t_line *new, t_line *line)
 {
 	if (new->data == NULL || new->info == NULL)
 		return (1);
-	*i = -1;
+	i[0] = -1;
+	i[1] = 0;
 	data[0] = ft_malloc((ft_strlen(line->data) + ft_strlen(new->data) + 1));
 	data[1] = ft_malloc((ft_strlen(line->info) + ft_strlen(new->info) + 1));
 	return (0);
@@ -82,35 +83,35 @@ int	ft_delete_line(int len, t_line **line, int start)
 		i++;
 		start++;
 	}
-	replace_line_free(i, new_data, new_info, *line);
+	replace_line_free(&i, new_data, new_info, *line);
 	return (len);
 }
 
 int	replace_line(t_line *origin, t_line **line, int start, int end)
 {
-	int		i;
+	int		i[2];
 	char	*data[2];
 
-	if (replace_alloc(&i, data, origin, *line))
+	if (replace_alloc(i, data, origin, *line))
 		return (0);
-	while (++i < start)
+	while (++i[0] < start)
 	{
-		data[0][i] = (*line)->data[i];
-		data[1][i] = (*line)->info[i];
+		data[0][i[0]] = (*line)->data[i[0]];
+		data[1][i[0]] = (*line)->info[i[0]];
 	}
-	while (i - start < ft_strlen(origin->data))
+	while (i[0] - start < ft_strlen(origin->data))
 	{
-		data[0][i] = origin->data[i - start];
-		data[1][i] = origin->info[i - start];
-		i++;
+		data[0][i[0]] = origin->data[i[1]];
+		data[1][i[0]] = origin->info[i[1]];
+		i[0]++;
+		i[1]++;
 	}
 	while ((*line)->data[(++end - 1)])
 	{
-		data[0][i] = (*line)->data[end - 1];
-		data[1][i] = (*line)->info[end - 1];
-		i++;
+		data[0][i[0]] = (*line)->data[end - 1];
+		data[1][i[0]++] = (*line)->info[end - 1];
 	}
 	replace_line_free(i, data[0], data[1], *line);
 	free_line(origin);
-	return (ft_strlen(origin->data) - (end - start));
+	return (i[1]);
 }
