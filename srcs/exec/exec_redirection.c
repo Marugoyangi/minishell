@@ -6,7 +6,7 @@
 /*   By: seungwok <seungwok@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 19:23:09 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/16 17:03:11 by seungwok         ###   ########seoul.kr  */
+/*   Updated: 2023/12/16 17:31:16 by seungwok         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	exec_redirection(t_node *node, t_arg *arg)
 	if (redirection_node.output_node)
 		fd[1] = get_output_fd(redirection_node.output_node);
 	if (!check_built_in_redirection(redirection_node.exec_node))
-		return(check_built_in(redirection_node.exec_node, arg));
+		return (check_built_in(redirection_node.exec_node, arg));
 	arg->fork_sign++;
 	pid = fork();
 	if (!pid)

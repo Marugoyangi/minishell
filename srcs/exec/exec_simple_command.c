@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_simple_command.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: seungwok <seungwok@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:35:51 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/16 10:08:38 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/16 17:32:34 by seungwok         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,8 @@ void	exec_check_path(t_node *node, t_arg *arg, char **path)
 	char	**envp;
 
 	envp = make_envp(arg->envp_head);
-	if (ft_strncmp(node->data, "./", 2)
-		|| ft_strncmp(node->data, "../", 3
-			|| ft_strncmp(node->data, "/", 1)))
+	if (ft_strncmp(node->data, "./", 2) || ft_strncmp(node->data, "../", 3)
+		|| ft_strncmp(node->data, "/", 1))
 	{
 		excutable_path = find_path(path, node->data);
 		if (!excutable_path)

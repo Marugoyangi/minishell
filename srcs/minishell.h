@@ -6,7 +6,7 @@
 /*   By: seungwok <seungwok@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:35 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/16 16:57:54 by seungwok         ###   ########seoul.kr  */
+/*   Updated: 2023/12/16 17:30:02 by seungwok         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 # include <sys/stat.h>		// stat, lstat, fstat
 
 // gloabal variable for signal handler
-extern int g_signal_fork;
+extern int	g_signal_fork;
 
 typedef struct s_line
 {
@@ -218,7 +218,6 @@ int		is_not_delimiter(char c);
 int		node_type_numbers(t_node *root, int type);
 int		check_asterisk(char **filter, char *file, int *depth);
 int		asterisk_exceptions(DIR *dir, char **line, int *depth);
-
 
 //------------------------------//
 //		excution functions		//
