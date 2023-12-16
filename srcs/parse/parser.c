@@ -18,7 +18,7 @@ void	print_preorder(t_node *root)
 		return ;
 	if (root->data)
 		printf("data: %s\n", root->data);
-		printf("type: %d\n", root->type);
+	printf("type: %d\n", root->type);
 	if (root->argv)
 	{
 		int i = 0;
