@@ -1,2 +1,0 @@
-# Seungwok
-mimishell
