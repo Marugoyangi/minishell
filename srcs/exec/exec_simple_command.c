@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_simple_command.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:35:51 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/17 10:53:44 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/17 22:31:05 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@ int	exec_command(t_node *node, t_arg *arg)
 	if (status == -1)
 	{
 		path = set_path(arg->envp_head);
-		if (!path)
+		if (!path && node->data && (!(!ft_strncmp(node->data, "./", 2)
+					|| !ft_strncmp(node->data, "../", 3)
+					|| !ft_strncmp(node->data, "/", 1))))
 		{
 			write(2, "minishell: ", 11);
 			write(2, node->data, ft_strlen(node->data));
@@ -80,9 +82,10 @@ void	exec_check_path(t_node *node, t_arg *arg, char **path)
 	char	**envp;
 
 	envp = make_envp(arg->envp_head);
-	if (ft_strncmp(node->data, "./", 2) || ft_strncmp(node->data, "../", 3)
-		|| ft_strncmp(node->data, "/", 1))
+	if (!ft_strncmp(node->data, "./", 2) || !ft_strncmp(node->data, "../", 3)
+		|| !ft_strncmp(node->data, "/", 1))
 	{
+		execve(node->argv[0], node->argv, envp);
 		excutable_path = find_path(path, node->data);
 		if (!excutable_path)
 			exec_perror("execve");
@@ -91,7 +94,6 @@ void	exec_check_path(t_node *node, t_arg *arg, char **path)
 	}
 	else
 	{
-		execve(node->argv[0], node->argv, envp);
 		excutable_path = find_path(path, node->data);
 		if (!excutable_path)
 			exec_perror("execve");

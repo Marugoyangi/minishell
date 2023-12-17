@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_heredoc_file.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 15:47:48 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/17 10:54:08 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/17 22:20:59 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	get_heredoc_filename(t_node *root, int *i, t_arg *arg)
 	if (arg->error->code == 2)
 		get_heredoc_filename(node->right, i, arg);
 	else
-	{	
+	{
 		get_heredoc_filename(node->left, i, arg);
 		get_heredoc_filename(node->right, i, arg);
 	}
