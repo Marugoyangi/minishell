@@ -40,7 +40,7 @@ void	free_read_line(t_arg *arg)
 	arg->line.data = NULL;
 	free(arg->line.info);
 	arg->line.info = NULL;
-	if (arg->error->code == 2)
+	if (arg->error->code == 2 && arg->ast_head)
 		free_node(arg->ast_head);
 	else
 		free_ast(arg->ast_head);
@@ -55,6 +55,14 @@ void	free_read_line(t_arg *arg)
 int	lex(t_arg *arg)
 {
 	tokenize(&arg->line, arg);
+	if (arg->error->code)
+	{
+		free_read_line(arg);
+		if (!arg->is_subshell)
+			return (1);
+		else if (arg->is_subshell)
+			exit (1);
+	}
 	lexicize(arg);
 	expand_vars(arg);
 	if (!arg->is_subshell)
