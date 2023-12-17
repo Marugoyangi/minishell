@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_built_in_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 10:46:56 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/17 10:56:20 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/17 23:01:55 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,22 +34,28 @@ int	check_built_in(t_node *node, t_arg *arg)
 int	built_in_echo(char **argv)
 {
 	int	i;
+	int	j;
 
 	i = 1;
-	if (!argv)
-		return (0);
-	if (argv[1] && !strcmp(argv[1], "-n"))
-		i = 2;
-	while (argv[i])
+	while (argv[i] && !strncmp(argv[i], "-n", 2))
 	{
-		if (argv[1] && !strcmp(argv[1], "-n") && i > 2)
-			printf(" ");
-		else if (argv[1] && strcmp(argv[1], "-n") && i > 1)
-			printf(" ");
-		printf("%s", argv[i]);
+		j = 1;
+		while (argv[i][j] == 'n')
+			j++;
+		if (argv[i][j])
+			break ;
 		i++;
 	}
-	if (argv[1] && strcmp(argv[1], "-n"))
+	if (i > 1)
+		j = 0;
+	while (argv[i])
+	{
+		printf("%s", argv[i]);
+		if (argv[i + 1])
+			printf(" ");
+		i++;
+	}
+	if (j)
 		printf("\n");
 	return (0);
 }
