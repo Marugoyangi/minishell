@@ -16,6 +16,9 @@ void	set_exec(t_arg *arg)
 {
 	arg->fork_sign = 0;
 	arg->last_exit_status = start_exec(arg->ast_head, arg);
+	if (arg->last_exit_status)
+		arg->error->code = arg->last_exit_status;
+	
 }
 
 int	start_exec(t_node *node, t_arg *arg)
