@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redirection_built_in_bonus.c                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: seungwok <seungwok@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:53:59 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/18 18:31:15 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/18 20:29:23 by seungwok         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	built_in_redirection_fd2(t_redirection *node, t_arg *arg)
 	else if (!ft_strcmp(node->exec_node->data, "pwd"))
 		return (built_in_pwd());
 	else if (!ft_strcmp(node->exec_node->data, "exit"))
-		built_in_exit(node->exec_node);
+		return (built_in_exit(node->exec_node, arg));
 	else if (!ft_strcmp(node->exec_node->data, "export"))
 		return (built_in_export(node->exec_node, arg->envp_head));
 	else if (!ft_strcmp(node->exec_node->data, "unset"))

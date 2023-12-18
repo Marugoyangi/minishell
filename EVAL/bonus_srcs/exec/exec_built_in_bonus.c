@@ -3,14 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   exec_built_in_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: seungwok <seungwok@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/17 10:46:56 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/18 15:53:41 by jeongbpa         ###   ########.fr       */
+/*   Created: 2023/12/18 20:34:44 by seungwok          #+#    #+#             */
+/*   Updated: 2023/12/18 20:57:43 by seungwok         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell_bonus.h"
+#include "minishell.h"
+
+int					check_built_in(t_node *node, t_arg *arg);
+int					built_in_echo(char **argv);
+int					built_in_pwd(void);
+int					built_in_exit(t_node *node, t_arg *arg);
+unsigned long long	check_exit_arg(char **argv);
 
 int	check_built_in(t_node *node, t_arg *arg)
 {
@@ -21,7 +27,7 @@ int	check_built_in(t_node *node, t_arg *arg)
 	else if (!ft_strcmp(node->data, "pwd"))
 		return (built_in_pwd());
 	else if (!ft_strcmp(node->data, "exit"))
-		built_in_exit(node);
+		return (built_in_exit(node, arg));
 	else if (!ft_strcmp(node->data, "export"))
 		return (built_in_export(node, arg->envp_head));
 	else if (!ft_strcmp(node->data, "unset"))
@@ -75,29 +81,46 @@ int	built_in_pwd(void)
 	return (0);
 }
 
-void	built_in_exit(t_node *node)
+int	built_in_exit(t_node *node, t_arg *arg)
 {
-	int	exit_num;
-	int	i;
+	unsigned long long	exit_num;
+	unsigned long long	max;
 
-	exit_num = 0;
-	i = 0;
-	if (node->argv[1])
+	max = 9223372036854775808ULL;
+	if (!node->argv[1])
+		exit (arg->last_exit_status);
+	exit_num = check_exit_arg(node->argv);
+	if (exit_num > max || (exit_num == max && node->argv[1][0] != '-'))
 	{
-		while (node->argv[1][i] >= '0' && node->argv[1][i] <= '9')
-			i++;
-		if (node->argv[1][i])
-		{
-			printf("minishell: exit: numeric argument required");
-			exit (255);
-		}
+		printf("minishell: exit: numeric argument required");
+		exit (255);
 	}
 	if (node->argv[1] && node->argv[2])
 	{
 		printf("minishell: exit: too many arguments\n");
-		exit (1);
+		return (1);
 	}
-	if (node->argv[1])
-		exit_num = ft_atoi(node->argv[1]);
-	exit(exit_num);
+	if (node->argv[1][0] == '-')
+		exit (256 - (exit_num % 256));
+	else
+		exit (exit_num % 256);
+}
+
+unsigned long long	check_exit_arg(char **argv)
+{
+	unsigned long long	return_value;
+	int					i;
+
+	i = 0;
+	if (argv[1][0] == '-')
+		i++;
+	return_value = 0;
+	while ('0' <= argv[1][i] && argv[1][i] <= '9' && i < 20)
+	{
+		return_value = return_value * 10 + (argv[1][i] - '0');
+		i++;
+	}
+	if (argv[1][i] || i == 19)
+		return (9223372036854775809ULL);
+	return (return_value);
 }

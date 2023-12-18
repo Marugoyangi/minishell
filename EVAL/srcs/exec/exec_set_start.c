@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_set_start.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: seungwok <seungwok@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 18:25:08 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/17 10:53:52 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/18 20:45:22 by seungwok         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	set_exec(t_arg *arg)
 	arg->last_exit_status = start_exec(arg->ast_head, arg);
 	if (arg->last_exit_status)
 		arg->error->code = arg->last_exit_status;
-	
 }
 
 int	start_exec(t_node *node, t_arg *arg)

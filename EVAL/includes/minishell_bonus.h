@@ -6,7 +6,7 @@
 /*   By: seungwok <seungwok@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:35 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/18 13:38:23 by seungwok         ###   ########seoul.kr  */
+/*   Updated: 2023/12/18 20:57:05 by seungwok         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -289,7 +289,7 @@ char	**make_envp(t_env *envp_head);
 int		check_built_in(t_node *node, t_arg *arg);
 int		built_in_echo(char **argv);
 int		built_in_pwd(void);
-void	built_in_exit(t_node *node);
+int		built_in_exit(t_node *node, t_arg *arg);
 
 // exec_built_in_cd_bonus.c
 void	built_in_cd_set_env(t_env *env);
