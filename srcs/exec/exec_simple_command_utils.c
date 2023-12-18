@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_simple_command_utils.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:52:02 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/18 15:52:05 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/19 07:57:19 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	**set_path(t_env *env)
 	t_env	*cur;
 
 	cur = env;
-	while (cur && strcmp("PATH", cur->key))
+	while (cur && ft_strcmp("PATH", cur->key))
 		cur = cur->next;
 	if (!cur)
 		return (0);

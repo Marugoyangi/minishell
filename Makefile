@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+         #
+#    By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/05 14:27:11 by jeongbpa          #+#    #+#              #
-#    Updated: 2023/12/19 00:09:28 by jeongbpa         ###   ########.fr        #
+#    Updated: 2023/12/19 07:43:15 by woopinbell       ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,8 @@ SRCS =	$(addprefix $(SRC_DIR), minishell.c \
 								exec/exec_logical_operator.c exec/exec_pipeline.c exec/exec_subshell.c \
 								exec/exec_redirection.c exec/exec_redirection_utils.c exec/exec_redirection_built_in.c \
 								exec/exec_simple_command.c exec/exec_simple_command_utils.c \
-								exec/exec_built_in.c exec/exec_built_in_env.c exec/exec_built_in_env_utils.c exec/exec_built_in_cd.c \
+								exec/exec_built_in.c exec/exec_built_in_cd.c \
+								exec/exec_built_in_env.c exec/exec_built_in_env_utils.c exec/exec_built_in_export.c \
 								exec/exec_heredoc.c exec/exec_heredoc_file.c)
 
 BONUS_SRCS = $(addprefix $(BONUS_DIR), minishell_bonus.c \

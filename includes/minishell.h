@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:35 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/19 01:50:43 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/19 08:18:29 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -304,8 +304,6 @@ int		built_in_cd_oldpwd(t_env *env, char **argv);
 int		built_in_cd(t_env *env, char **argv);
 
 // exec_built_in_env.c
-int		built_in_export(t_node *node, t_env *env);
-int		export_none_arg(t_env *env);
 int		built_in_unset(t_node *node, t_arg *arg);
 void	built_in_unset_iter(t_node *node, t_env	*cur, t_arg *arg, int i);
 int		built_in_env(t_env *env);
@@ -315,6 +313,16 @@ t_env	*dup_list(t_env *env);
 void	sort_list(t_env *env);
 void	free_list(t_env *env);
 void	free_env_node(t_env *env);
+int		check_arg_name(char *str, int *sign);
+
+// exec_built_in_export.c
+int		built_in_export(t_node *node, t_env *env);
+int		export_none_arg(t_env *env);
+int		export_arg(t_node *node, t_env *env, int i, int sign);
+void	export_arg_equal(t_env *env, char **tmp);
+void	export_arg_not_equal(t_env *env, char *arg);
+
+
 
 // exec_heredoc.c
 void	init_file_for_heredoc(t_node *node, int *row, int *i, t_arg *arg);

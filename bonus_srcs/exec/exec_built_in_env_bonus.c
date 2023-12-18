@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_built_in_env_bonus.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:35:44 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/19 03:30:13 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/19 07:57:19 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ int	built_in_export(t_node *node, t_env *env)
 		return (0);
 	}
 	tmp = ft_split(node->argv[1], '=');
-	while (env->next || !strcmp(env->key, tmp[0]))
+	while (env->next || !ft_strcmp(env->key, tmp[0]))
 	{
-		if (!strcmp(env->key, tmp[0]))
+		if (!ft_strcmp(env->key, tmp[0]))
 		{
 			env->value = ft_strtrim(tmp[1], "\"");
 			free_split(tmp);
@@ -78,7 +78,7 @@ void	built_in_unset_iter(t_node *node, t_env	*cur, t_arg *arg, int i)
 {
 	t_env	*tmp;
 
-	if (!strcmp(cur->key, node->argv[i]))
+	if (!ft_strcmp(cur->key, node->argv[i]))
 	{
 		tmp = cur->next;
 		free_env_node(cur);
@@ -88,7 +88,7 @@ void	built_in_unset_iter(t_node *node, t_env	*cur, t_arg *arg, int i)
 	{
 		while (cur->next)
 		{
-			if (!strcmp(cur->next->key, node->argv[i]))
+			if (!ft_strcmp(cur->next->key, node->argv[i]))
 			{
 				tmp = cur->next->next;
 				free_env_node(cur->next);

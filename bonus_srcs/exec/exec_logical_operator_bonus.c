@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_logical_operator_bonus.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 18:54:16 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/19 03:30:29 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/19 07:57:19 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	exec_logical_operator(t_node *node, t_arg *arg)
 {
-	if (!strcmp(node->data, "&&"))
+	if (!ft_strcmp(node->data, "&&"))
 	{
 		if (!start_exec(node->left, arg))
 		{
@@ -26,7 +26,7 @@ int	exec_logical_operator(t_node *node, t_arg *arg)
 		else
 			return (1);
 	}
-	else if (!strcmp(node->data, "||"))
+	else if (!ft_strcmp(node->data, "||"))
 	{
 		if (start_exec(node->left, arg))
 		{

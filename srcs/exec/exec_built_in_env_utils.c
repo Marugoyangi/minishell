@@ -50,7 +50,7 @@ void	sort_list(t_env *env)
 		comparison = cur->next;
 		while (comparison)
 		{
-			if (strcmp(cur->key, comparison->key) > 0)
+			if (ft_strcmp(cur->key, comparison->key) > 0)
 			{
 				tmp = cur->key;
 				cur->key = comparison->key;
@@ -84,4 +84,32 @@ void	free_env_node(t_env *env)
 	free(env->key);
 	free(env->value);
 	free(env);
+}
+
+int	check_arg_name(char *str, int *sign)
+{
+	int	i;
+
+	i = 0;
+	if (!(str[i] >= 'a' && str[i] <= 'z') && !(str[i] >= 'A' && str[i] <= 'Z'))
+	{
+		*sign = 1;
+		return (1);
+	}
+	while (str[++i])
+	{
+		if (i == 256)
+		{
+			*sign = 1;
+			return (1);
+		}
+		if (!(str[i] >= 'a' && str[i] <= 'z')
+			&& !(str[i] >= 'A' && str[i] <= 'Z')
+			&& !(str[i] >= '0' && str[i] <= '9') && str[i] != '_')
+		{
+			*sign = 1;
+			return (1);
+		}
+	}
+	return (0);
 }

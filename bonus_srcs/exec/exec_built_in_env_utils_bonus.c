@@ -50,7 +50,7 @@ void	sort_list(t_env *env)
 		comparison = cur->next;
 		while (comparison)
 		{
-			if (strcmp(cur->key, comparison->key) > 0)
+			if (ft_strcmp(cur->key, comparison->key) > 0)
 			{
 				tmp = cur->key;
 				cur->key = comparison->key;
