@@ -6,7 +6,7 @@
 #    By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/05 14:27:11 by jeongbpa          #+#    #+#              #
-#    Updated: 2023/12/17 11:25:43 by jeongbpa         ###   ########.fr        #
+#    Updated: 2023/12/19 00:09:28 by jeongbpa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,7 +56,7 @@ MAKEFILE = Makefile
 NAME = minishell
 LIBFT = ./libft/libft.a
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I./includes/
+CFLAGS = -Wall -Wextra -Werror -I./includes/ -g
 
 ifeq ($(BONUS_FLAG), 42)
 	OBJ_FLAG = $(BONUS_OBJS)
