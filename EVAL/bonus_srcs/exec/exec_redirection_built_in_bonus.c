@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_redirection_built_in_bonus.c                  :+:      :+:    :+:   */
+/*   exec_redirection_built_in.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/18 15:53:59 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/18 15:54:02 by jeongbpa         ###   ########.fr       */
+/*   Created: 2023/12/17 02:15:38 by woopinbell        #+#    #+#             */
+/*   Updated: 2023/12/18 18:31:30 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell_bonus.h"
+#include "minishell.h"
 
 void	dup_with_close(int fd1, int fd2)
 {
@@ -20,6 +20,8 @@ void	dup_with_close(int fd1, int fd2)
 
 int	check_built_in_redirection(t_node *node)
 {
+	if (!node || !node->data)
+		return (0);
 	if (!ft_strcmp(node->data, "echo")
 		|| !ft_strcmp(node->data, "cd")
 		|| !ft_strcmp(node->data, "pwd")
@@ -62,6 +64,8 @@ int	built_in_redirection_fd(t_redirection *node, t_arg *arg, int *fd)
 
 int	built_in_redirection_fd2(t_redirection *node, t_arg *arg)
 {
+	if (!node->exec_node)
+		return (-1);
 	if (!ft_strcmp(node->exec_node->data, "echo"))
 		return (built_in_echo(node->exec_node->argv));
 	else if (!ft_strcmp(node->exec_node->data, "cd"))
