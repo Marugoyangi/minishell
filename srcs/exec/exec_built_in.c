@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_built_in.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 20:34:44 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/19 01:47:54 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/19 21:21:27 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int					check_built_in(t_node *node, t_arg *arg);
 int					built_in_echo(char **argv);
-int					built_in_pwd(void);
+int					built_in_pwd(t_arg *arg);
 int					built_in_exit(t_node *node, t_arg *arg);
 unsigned long long	check_exit_arg(char **argv);
 
@@ -23,9 +23,9 @@ int	check_built_in(t_node *node, t_arg *arg)
 	if (!ft_strcmp(node->data, "echo"))
 		return (built_in_echo(node->argv));
 	else if (!ft_strcmp(node->data, "cd"))
-		return (built_in_cd(arg->envp_head, node->argv));
+		return (built_in_cd(node, arg, node->argv));
 	else if (!ft_strcmp(node->data, "pwd"))
-		return (built_in_pwd());
+		return (built_in_pwd(arg));
 	else if (!ft_strcmp(node->data, "exit"))
 		return (built_in_exit(node, arg));
 	else if (!ft_strcmp(node->data, "export"))
@@ -66,18 +66,18 @@ int	built_in_echo(char **argv)
 	return (0);
 }
 
-int	built_in_pwd(void)
+int	built_in_pwd(t_arg *arg)
 {
 	char	*current_path;
 
 	current_path = getcwd(0, 0);
 	if (!current_path)
+		printf("%s\n", arg->pwd);
+	else
 	{
-		perror("minishell");
-		return (1);
+		printf("%s\n", current_path);
+		free(current_path);
 	}
-	printf("%s\n", current_path);
-	free(current_path);
 	return (0);
 }
 

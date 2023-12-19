@@ -6,11 +6,16 @@
 /*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:35:44 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/19 07:57:19 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/19 19:41:22 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int		built_in_unset(t_node *node, t_arg *arg);
+void	built_in_unset_iter(t_node *node, t_env	*cur, t_arg *arg, int i);
+int		built_in_env(t_env *env);
+int		built_in_export(t_node *node, t_env *env);
 
 int	built_in_unset(t_node *node, t_arg *arg)
 {
@@ -68,4 +73,11 @@ int	built_in_env(t_env *env)
 		cur = cur->next;
 	}
 	return (0);
+}
+
+int	built_in_export(t_node *node, t_env *env)
+{
+	if (!node->argv[1])
+		return (export_none_arg(env));
+	return (export_arg(node, env, 0, 0));
 }

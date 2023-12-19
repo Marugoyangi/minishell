@@ -12,6 +12,23 @@
 
 #include "minishell.h"
 
+t_env	*find_env_node(t_env *env, char *key);
+t_env	*dup_list(t_env *env);
+void	sort_list(t_env *env);
+void	free_list(t_env *env);
+void	free_env_node(t_env *env);
+
+t_env	*find_env_node(t_env *env, char *key)
+{
+	while (env)
+	{
+		if (!ft_strcmp(env->key, key))
+			return (env);
+		env = env->next;
+	}
+	return (0);
+}
+
 t_env	*dup_list(t_env *env)
 {
 	t_env	*head;
@@ -84,32 +101,4 @@ void	free_env_node(t_env *env)
 	free(env->key);
 	free(env->value);
 	free(env);
-}
-
-int	check_arg_name(char *str, int *sign)
-{
-	int	i;
-
-	i = 0;
-	if (!(str[i] >= 'a' && str[i] <= 'z') && !(str[i] >= 'A' && str[i] <= 'Z'))
-	{
-		*sign = 1;
-		return (1);
-	}
-	while (str[++i])
-	{
-		if (i == 256)
-		{
-			*sign = 1;
-			return (1);
-		}
-		if (!(str[i] >= 'a' && str[i] <= 'z')
-			&& !(str[i] >= 'A' && str[i] <= 'Z')
-			&& !(str[i] >= '0' && str[i] <= '9') && str[i] != '_')
-		{
-			*sign = 1;
-			return (1);
-		}
-	}
-	return (0);
 }

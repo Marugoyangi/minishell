@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redirection_built_in.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 02:15:38 by woopinbell        #+#    #+#             */
-/*   Updated: 2023/12/19 01:48:32 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/19 21:19:49 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,9 @@ int	built_in_redirection_fd2(t_redirection *node, t_arg *arg)
 	if (!ft_strcmp(node->exec_node->data, "echo"))
 		return (built_in_echo(node->exec_node->argv));
 	else if (!ft_strcmp(node->exec_node->data, "cd"))
-		return (built_in_cd(arg->envp_head, node->exec_node->argv));
+		return (built_in_cd(node->exec_node, arg, node->exec_node->argv));
 	else if (!ft_strcmp(node->exec_node->data, "pwd"))
-		return (built_in_pwd());
+		return (built_in_pwd(arg));
 	else if (!ft_strcmp(node->exec_node->data, "exit"))
 		return (built_in_exit(node->exec_node, arg));
 	else if (!ft_strcmp(node->exec_node->data, "export"))

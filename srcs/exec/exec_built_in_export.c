@@ -6,17 +6,44 @@
 /*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 08:14:04 by woopinbell        #+#    #+#             */
-/*   Updated: 2023/12/19 10:05:18 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/19 19:42:16 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	built_in_export(t_node *node, t_env *env)
+int		check_arg_name(char *str, int *sign);
+int		export_none_arg(t_env *env);
+int		export_arg(t_node *node, t_env *env, int i, int sign);
+void	export_arg_equal(t_env *env, char **tmp);
+void	export_arg_not_equal(t_env *env, char *arg);
+
+int	check_arg_name(char *str, int *sign)
 {
-	if (!node->argv[1])
-		return (export_none_arg(env));
-	return (export_arg(node, env, 0, 0));
+	int	i;
+
+	i = 0;
+	if (!(str[i] >= 'a' && str[i] <= 'z') && !(str[i] >= 'A' && str[i] <= 'Z'))
+	{
+		*sign = 1;
+		return (1);
+	}
+	while (str[++i])
+	{
+		if (i == 256)
+		{
+			*sign = 1;
+			return (1);
+		}
+		if (!(str[i] >= 'a' && str[i] <= 'z')
+			&& !(str[i] >= 'A' && str[i] <= 'Z')
+			&& !(str[i] >= '0' && str[i] <= '9') && str[i] != '_')
+		{
+			*sign = 1;
+			return (1);
+		}
+	}
+	return (0);
 }
 
 int	export_none_arg(t_env *env)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:37 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/19 02:55:21 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/19 18:52:14 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	set_minishell_path(t_arg *arg, char *path)
 	char	*tmp2;
 	char	*tmp3;
 
+	arg->pwd = getcwd(NULL, 0);
 	tmp1 = ft_strdup(path);
 	if (tmp1[0] == '~' || tmp1[0] == '/')
 		arg->minishell_path = tmp1;

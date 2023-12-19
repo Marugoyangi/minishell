@@ -6,7 +6,7 @@
 /*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:35 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/19 10:37:31 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/19 21:23:50 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ typedef struct s_arg
 	int				is_subshell;
 	int				fork_sign;
 	char			*minishell_path;
+	char			*pwd;
+	char			*oldpwd;
 	char			*tilde;
 	char			*ps[2];
 }					t_arg;
@@ -296,28 +298,29 @@ char	**make_envp(t_env *envp_head);
 // exec_built_in.c
 int		check_built_in(t_node *node, t_arg *arg);
 int		built_in_echo(char **argv);
-int		built_in_pwd(void);
+int		built_in_pwd(t_arg *arg);
 int		built_in_exit(t_node *node, t_arg *arg);
 
 // exec_built_in_cd.c
-void	built_in_cd_set_env(t_env *env);
-int		built_in_cd_oldpwd(t_env *env, char **argv);
-int		built_in_cd(t_env *env, char **argv);
+void	built_in_cd_set_pwd(t_node *node, t_arg *arg);
+int		built_in_cd_oldpwd(t_node *node, t_arg *arg);
+int		built_in_cd(t_node *node, t_arg *arg, char **argv);
 
 // exec_built_in_env.c
 int		built_in_unset(t_node *node, t_arg *arg);
 void	built_in_unset_iter(t_node *node, t_env	*cur, t_arg *arg, int i);
 int		built_in_env(t_env *env);
+int		built_in_export(t_node *node, t_env *env);
 
 // exec_built_in_env_utils.c
+t_env	*find_env_node(t_env *env, char *key);
 t_env	*dup_list(t_env *env);
 void	sort_list(t_env *env);
 void	free_list(t_env *env);
 void	free_env_node(t_env *env);
-int		check_arg_name(char *str, int *sign);
 
 // exec_built_in_export.c
-int		built_in_export(t_node *node, t_env *env);
+int		check_arg_name(char *str, int *sign);
 int		export_none_arg(t_env *env);
 int		export_arg(t_node *node, t_env *env, int i, int sign);
 void	export_arg_equal(t_env *env, char **tmp);
