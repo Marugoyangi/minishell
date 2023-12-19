@@ -6,7 +6,7 @@
 #    By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/05 14:27:11 by jeongbpa          #+#    #+#              #
-#    Updated: 2023/12/19 22:41:03 by jeongbpa         ###   ########.fr        #
+#    Updated: 2023/12/20 04:27:38 by jeongbpa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ SRCS =	$(addprefix $(SRC_DIR), minishell.c \
 
 BONUS_SRCS = $(addprefix $(BONUS_DIR), minishell_bonus.c \
 								utils/ascii_art_bonus.c utils/node_ctl_bonus.c utils/memory_ctl_bonus.c utils/general_utils_bonus.c \
-								utils/expand_utils_bonus.c utils/line_ctl_bonus.c utils/line_split_bonus.c utils/sort_utils_bonus.c \
+								utils/expand_utils_bonus.c utils/line_ctl_bonus.c utils/line_split_bonus.c utils/sort_utils_bonus.c utils/heredoc_utils_bonus.c\
 								parse/tokenize_bonus.c parse/lexicize_bonus.c parse/parser_bonus.c parse/syntax_check_bonus.c\
 								parse/syntax_cmd_bonus.c parse/parsing_sort_bonus.c \
 								expand/expand_bonus.c expand/expand_asterisk_bonus.c expand/asterisk_filter_bonus.c expand/expand_heredoc_bonus.c\
@@ -45,7 +45,8 @@ BONUS_SRCS = $(addprefix $(BONUS_DIR), minishell_bonus.c \
 								exec/exec_logical_operator_bonus.c exec/exec_pipeline_bonus.c exec/exec_subshell_bonus.c \
 								exec/exec_redirection_bonus.c exec/exec_redirection_utils_bonus.c exec/exec_redirection_built_in_bonus.c \
 								exec/exec_simple_command_bonus.c exec/exec_simple_command_utils_bonus.c \
-								exec/exec_built_in_bonus.c exec/exec_built_in_env_bonus.c exec/exec_built_in_env_utils_bonus.c exec/exec_built_in_cd_bonus.c \
+								exec/exec_built_in_bonus.c exec/exec_built_in_cd_bonus.c \
+								exec/exec_built_in_env_bonus.c exec/exec_built_in_env_utils_bonus.c exec/exec_built_in_export_bonus.c \
 								exec/exec_heredoc_bonus.c exec/exec_heredoc_file_bonus.c)
 
 OBJS =	$(SRCS:.c=.o)
