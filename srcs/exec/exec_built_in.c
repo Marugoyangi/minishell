@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_built_in.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
+/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 20:34:44 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/19 21:21:27 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/19 23:05:54 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,15 @@ int	built_in_echo(char **argv)
 	int	i;
 	int	j;
 
-	i = 1;
-	while (argv[i] && !strncmp(argv[i], "-n", 2))
+	i = 0;
+	j = 1;
+	while (argv[++i] && !strncmp(argv[i], "-n", 2))
 	{
 		j = 1;
 		while (argv[i][j] == 'n')
 			j++;
 		if (argv[i][j])
 			break ;
-		i++;
 	}
 	if (i > 1)
 		j = 0;

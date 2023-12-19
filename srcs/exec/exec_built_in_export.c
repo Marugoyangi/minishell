@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_built_in_export.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
+/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 08:14:04 by woopinbell        #+#    #+#             */
-/*   Updated: 2023/12/19 19:42:16 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/20 00:32:27 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,12 @@ int	check_arg_name(char *str, int *sign)
 int	export_none_arg(t_env *env)
 {
 	t_env	*dup;
+	t_env	*tmp;
 
+	if (!env)
+		return (0);
 	dup = dup_list(env);
+	tmp = dup;
 	sort_list(dup);
 	while (dup)
 	{
@@ -60,7 +64,7 @@ int	export_none_arg(t_env *env)
 			printf("declare -x %s\n", dup->key);
 		dup = dup->next;
 	}
-	free_list(dup);
+	free_list(tmp);
 	return (0);
 }
 
@@ -94,10 +98,14 @@ int	export_arg(t_node *node, t_env *env, int i, int sign)
 
 void	export_arg_equal(t_env *env, char **tmp)
 {
+	if (!env)
+		return ;
 	while (env)
 	{
 		if (!ft_strcmp(env->key, tmp[0]))
 		{
+			if (env->value)
+				free(env->value);
 			env->value = ft_strtrim(tmp[1], "\"");
 			return ;
 		}
@@ -114,10 +122,14 @@ void	export_arg_equal(t_env *env, char **tmp)
 
 void	export_arg_not_equal(t_env *env, char *arg)
 {
+	if (!env)
+		return ;
 	while (env)
 	{
 		if (!ft_strcmp(env->key, arg))
 		{
+			if (env->value)
+				free(env->value);
 			env->value = NULL;
 			return ;
 		}

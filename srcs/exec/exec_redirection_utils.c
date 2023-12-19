@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:51:44 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/19 03:00:37 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/19 23:46:39 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_node	*get_input_node(t_node *node, int *fd)
 			input_node = node;
 			if (!ft_strcmp(node->data, "<"))
 				fd[0] = open(node->argv[0], O_RDONLY);
-			else if (!ft_strcmp(node->data, "<<"))
+			else if (!ft_strcmp(node->data, "<<") && node->filename)
 				fd[0] = open(node->filename, O_RDONLY);
 			if (fd[0] == -1)
 				return (input_node);
@@ -46,12 +46,14 @@ t_node	*get_output_node(t_node *node, int *fd)
 	{
 		if (!ft_strcmp(node->data, ">") || !ft_strcmp(node->data, ">>"))
 		{
+			output_node = node;
 			if (!ft_strcmp(node->data, ">"))
 				fd[1] = open(node->argv[0], O_WRONLY | O_CREAT | O_TRUNC, 0666);
 			else if (!ft_strcmp(node->data, ">>"))
-				fd[1] = open(node->filename, O_WRONLY | \
+				fd[1] = open(node->argv[0], O_WRONLY | \
 				O_CREAT | O_APPEND, 0666);
-			output_node = node;
+			if (fd[1] == -1)
+				return (output_node);
 			close (fd[1]);
 		}
 		node = node->left;
@@ -63,7 +65,7 @@ int	get_input_fd(t_node *node)
 {
 	if (!ft_strcmp(node->data, "<"))
 		return (open(node->argv[0], O_RDONLY));
-	else if (!ft_strcmp(node->data, "<<"))
+	else if (!ft_strcmp(node->data, "<<") && node->filename)
 		return (open(node->filename, O_RDONLY));
 	return (1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_simple_command_utils.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
+/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:52:02 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/19 10:10:07 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/20 00:49:31 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int	exec_perror(char *str, int sign)
 {
-	write(2, "minishell: ", 11);
 	if (sign == 1)
 	{
+		write(2, "minishell: ", 11);
 		write(2, str, ft_strlen(str));
 		write(2, ": command not found\n", 20);
 		exit(127);

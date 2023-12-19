@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+         #
+#    By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/05 14:27:11 by jeongbpa          #+#    #+#              #
-#    Updated: 2023/12/19 07:43:15 by woopinbell       ###   ########.fr        #
+#    Updated: 2023/12/19 22:41:03 by jeongbpa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ BONUS_DIR = ./bonus_srcs/
 
 SRCS =	$(addprefix $(SRC_DIR), minishell.c \
 								utils/ascii_art.c utils/node_ctl.c utils/memory_ctl.c utils/general_utils.c \
-								utils/expand_utils.c utils/line_ctl.c utils/line_split.c utils/sort_utils.c \
+								utils/expand_utils.c utils/line_ctl.c utils/line_split.c utils/sort_utils.c utils/heredoc_utils.c\
 								parse/tokenize.c parse/lexicize.c parse/parser.c parse/syntax_check.c\
 								parse/syntax_cmd.c parse/parsing_sort.c \
 								expand/expand.c expand/expand_asterisk.c expand/asterisk_filter.c expand/expand_heredoc.c\

@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 20:19:14 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/19 00:55:16 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/19 23:39:05 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void	parser(t_arg *arg)
 {
 	t_node	*root;
 
-	if (arg->error->code == 2)
+	if (arg->error->code)
 		return ;
 	root = find_operator(arg->ast_head);
 	arg->ast_head = root;

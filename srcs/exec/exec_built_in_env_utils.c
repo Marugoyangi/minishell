@@ -91,14 +91,18 @@ void	free_list(t_env *env)
 	while (cur)
 	{
 		tmp = cur->next;
-		free_env_node(cur);
+		free(cur);
 		cur = tmp;
 	}
 }
 
 void	free_env_node(t_env *env)
 {
-	free(env->key);
-	free(env->value);
+	if (!env)
+		return ;
+	if (env->key)
+		free(env->key);
+	if (env->value)
+		free(env->value);
 	free(env);
 }

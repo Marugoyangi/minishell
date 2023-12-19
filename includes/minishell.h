@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
+/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:35 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/19 21:23:50 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/19 22:40:27 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,6 +216,7 @@ void	signal_ignore(void);
 void	expand_heredoc(t_arg *arg);
 void	get_heredoc(t_arg *arg);
 void	get_heredoc_filename(t_node *root, int *i, t_arg *arg);
+void	heredoc_variables_init(int *status, int *pid, int *xy);
 
 // Miscellaneous
 void	check_subshell(t_node *node, t_error *error, int *type, t_arg *arg);

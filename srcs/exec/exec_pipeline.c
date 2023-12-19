@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipeline.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
+/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:51:18 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/19 10:33:51 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/20 01:24:15 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,11 @@ int	exec_parent(t_arg *arg, int *pid, int *pipe)
 
 	close(pipe[0]);
 	close(pipe[1]);
+	signal(SIGINT, sig_handler_exec);
+	signal(SIGQUIT, sig_handler_exec);
 	waitpid(pid[0], 0, 0);
 	waitpid(pid[1], &status, 0);
+	terminal_interactive(arg);
 	arg->fork_sign--;
 	return (WEXITSTATUS(status));
 }
@@ -64,6 +67,10 @@ void	exec_pipe_child1(t_node *node, t_arg *arg, int *pipe)
 	close(pipe[0]);
 	dup2(pipe[1], 1);
 	close(pipe[1]);
+	arg->term.c_lflag |= ECHOCTL;
+	tcsetattr(STDOUT_FILENO, TCSANOW, &arg->term);
+	signal(SIGINT, sig_handler_waiting);
+	signal(SIGQUIT, sig_handler_waiting);
 	if (start_exec(node->left, arg))
 		exit (1);
 	else
@@ -75,6 +82,10 @@ void	exec_pipe_child2(t_node *node, t_arg *arg, int *pipe)
 	close(pipe[1]);
 	dup2(pipe[0], 0);
 	close(pipe[0]);
+	arg->term.c_lflag |= ECHOCTL;
+	tcsetattr(STDOUT_FILENO, TCSANOW, &arg->term);
+	signal(SIGINT, sig_handler_waiting);
+	signal(SIGQUIT, sig_handler_waiting);
 	if (start_exec(node->right, arg))
 		exit (1);
 	else

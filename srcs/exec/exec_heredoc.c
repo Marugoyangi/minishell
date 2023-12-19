@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 02:02:43 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/19 02:24:07 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/20 01:30:13 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,7 @@ void	get_heredoc(t_arg *arg)
 	int	xy[2];
 	int	status;
 
-	status = 0;
-	pid = 0;
-	xy[1] = -1;
-	xy[0] = 1;
+	heredoc_variables_init(&status, &pid, xy);
 	get_heredoc_filename(arg->ast_head, &xy[0], arg);
 	xy[0] = 0;
 	pid = fork();
@@ -99,7 +96,7 @@ void	get_heredoc(t_arg *arg)
 	signal(SIGINT, sig_handler_heredoc);
 	signal(SIGQUIT, sig_handler_heredoc);
 	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
+	if (WEXITSTATUS(status) != 0)
 		arg->error->code = WEXITSTATUS(status);
 	terminal_interactive(arg);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
+/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:37 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/19 18:52:14 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/20 01:30:10 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ void	free_read_line(t_arg *arg)
 	arg->line.data = NULL;
 	free(arg->line.info);
 	arg->line.info = NULL;
-	if (arg->error->code == 2 && arg->ast_head)
+	if (arg->error->code == 2 || arg->error->code == 130 \
+	|| arg->error->code == 131)
 		free_node(arg->ast_head);
 	else
 		free_ast(arg->ast_head);
