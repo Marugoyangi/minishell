@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_simple_command_utils.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:52:02 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/20 00:49:31 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/20 03:43:57 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,28 @@
 
 int	exec_perror(char *str, int sign)
 {
+	struct stat file_info;
+
 	if (sign == 1)
 	{
 		write(2, "minishell: ", 11);
+		stat(str, &file_info);
 		write(2, str, ft_strlen(str));
-		write(2, ": command not found\n", 20);
-		exit(127);
+		if (S_ISDIR(file_info.st_mode))
+		{
+			write(2, ": Is a directory\n", 17);
+			exit (126);
+		}
+		else
+		{
+			write(2, ": No such file or directory\n", 28);
+			while (*(str + 1))
+				str++;
+			if (*str == '/')
+				exit (126);
+			else
+				exit (127);
+		}
 	}
 	perror(str);
 	return (1);

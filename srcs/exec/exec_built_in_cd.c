@@ -3,14 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   exec_built_in_cd.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:50:29 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/20 01:54:08 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/20 03:24:36 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	built_in_cd(t_node *node, t_arg *arg, char **argv)
+{
+	if (!argv[1])
+		return (0);
+	if (argv[2])
+	{
+		write(2, "minishell: cd: too many arguments\n", 35);
+		return (1);
+	}
+	if (!ft_strcmp(argv[1], "-"))
+		return (built_in_cd_oldpwd(node, arg));
+	if (chdir(argv[1]) == -1)
+		exec_perror("cd", 0);
+	if (arg->oldpwd)
+		free(arg->oldpwd);
+	arg->oldpwd = ft_strdup(arg->pwd);
+	built_in_cd_set_pwd(node, arg);
+	return (0);
+}
 
 void	cd_get_pwd(char *tmp, t_env *cur, t_arg *arg, t_node *node)
 {
@@ -71,24 +91,6 @@ int	built_in_cd_oldpwd(t_node *node, t_arg *arg)
 	free(arg->oldpwd);
 	cur->value = tmp;
 	arg->oldpwd = ft_strdup(tmp);
-	built_in_cd_set_pwd(node, arg);
-	return (0);
-}
-
-int	built_in_cd(t_node *node, t_arg *arg, char **argv)
-{
-	if (argv[2])
-	{
-		write(2, "minishell: cd: too many arguments\n", 35);
-		return (1);
-	}
-	if (!ft_strcmp(argv[1], "-"))
-		return (built_in_cd_oldpwd(node, arg));
-	if (chdir(argv[1]) == -1)
-		exec_perror("cd", 0);
-	if (arg->oldpwd)
-		free(arg->oldpwd);
-	arg->oldpwd = ft_strdup(arg->pwd);
 	built_in_cd_set_pwd(node, arg);
 	return (0);
 }
