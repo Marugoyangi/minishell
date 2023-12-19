@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_simple_command.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:35:51 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/19 00:54:53 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/19 10:33:17 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ int	external_command(t_node *node, t_arg *arg, char **path)
 	if (!arg->fork_sign)
 	{
 		pid = fork();
+		if (pid == -1)
+			return (fail_to_fork(arg, 0));
 		if (!pid)
 			external_command_child(node, arg, path);
 		else if (node->data && ft_strstr(node->data, "/minishell\0"))
@@ -86,16 +88,16 @@ void	exec_check_path(t_node *node, t_arg *arg, char **path)
 		|| !ft_strncmp(node->data, "/", 1))
 	{
 		execve(node->argv[0], node->argv, envp);
-		exec_perror("execve");
+		exec_perror(node->data, 1);
 	}
 	else
 	{
 		excutable_path = find_path(path, node->data);
 		if (!excutable_path)
-			exec_perror("execve");
+			exec_perror(node->data, 1);
 		execve(excutable_path, node->argv, envp);
 		free(excutable_path);
-		exec_perror("execve");
+		exec_perror(node->data, 1);
 	}
 	free_split(envp);
 }

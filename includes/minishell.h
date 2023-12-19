@@ -6,7 +6,7 @@
 /*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:35 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/19 08:18:29 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/19 10:37:31 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,6 +252,7 @@ int		exec_logical_operator(t_node *node, t_arg *arg);
 
 // exec_pipeline.c
 int		exec_pipeline(t_node *node, t_arg *arg);
+int		fail_to_fork(t_arg *arg, int pid);
 int		exec_parent(t_arg *arg, int *pid, int *pipe);
 void	exec_pipe_child1(t_node *node, t_arg *arg, int *pipe);
 void	exec_pipe_child2(t_node *node, t_arg *arg, int *pipe);
@@ -287,7 +288,7 @@ void	external_command_child(t_node *node, t_arg *arg, char **path);
 void	exec_check_path(t_node *node, t_arg *arg, char **path);
 
 // exec_simplecommand_utils.c
-int		exec_perror(char *str);
+int		exec_perror(char *str, int sign);
 char	**set_path(t_env *env);
 char	*find_path(char **path, char *command);
 char	**make_envp(t_env *envp_head);
@@ -321,8 +322,6 @@ int		export_none_arg(t_env *env);
 int		export_arg(t_node *node, t_env *env, int i, int sign);
 void	export_arg_equal(t_env *env, char **tmp);
 void	export_arg_not_equal(t_env *env, char *arg);
-
-
 
 // exec_heredoc.c
 void	init_file_for_heredoc(t_node *node, int *row, int *i, t_arg *arg);

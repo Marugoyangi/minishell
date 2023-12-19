@@ -6,7 +6,7 @@
 /*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 08:14:04 by woopinbell        #+#    #+#             */
-/*   Updated: 2023/12/19 08:19:58 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/19 10:05:18 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,16 @@ int	export_none_arg(t_env *env)
 int	export_arg(t_node *node, t_env *env, int i, int sign)
 {
 	char	**tmp;
+	char	*str;
 
+	str = "not a valid identifier\n";
 	while (node->argv[++i])
 	{
 		if (ft_strchr(node->argv[i], '='))
 		{
 			tmp = ft_split(node->argv[i], '=');
 			if (check_arg_name(tmp[0], &sign))
-				printf("minishell: export: `%s': not a valid identifier\n", node->argv[i]);
+				printf("minishell: export: `%s': %s", node->argv[i], str);
 			else
 				export_arg_equal(env, tmp);
 			free_split(tmp);
@@ -55,7 +57,7 @@ int	export_arg(t_node *node, t_env *env, int i, int sign)
 		else
 		{
 			if (check_arg_name(node->argv[i], &sign))
-				printf("minishell: export: `%s': not a valid identifier\n", node->argv[i]);
+				printf("minishell: export: `%s': %s", node->argv[i], str);
 			else
 				export_arg_not_equal(env, node->argv[i]);
 		}

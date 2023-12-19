@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_subshell.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:52:12 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/18 15:52:14 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/19 10:35:19 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ int	exec_subshell(t_node *node, t_arg *arg)
 	status = 0;
 	arg->fork_sign++;
 	pid = fork();
+	if (pid == -1)
+		return (fail_to_fork(arg, 0));
 	if (!pid)
 	{
 		path = set_path(arg->envp_head);

@@ -6,17 +6,22 @@
 /*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:52:02 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/19 07:57:19 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/19 10:10:07 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	exec_perror(char *str)
+int	exec_perror(char *str, int sign)
 {
-	perror("minishell");
-	if (!ft_strcmp(str, "execve"))
-		exit(1);
+	write(2, "minishell: ", 11);
+	if (sign == 1)
+	{
+		write(2, str, ft_strlen(str));
+		write(2, ": command not found\n", 20);
+		exit(127);
+	}
+	perror(str);
 	return (1);
 }
 

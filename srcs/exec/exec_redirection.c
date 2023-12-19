@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redirection.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:51:54 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/19 00:19:52 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/19 10:36:56 by woopinbell       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void	exec_redirection_fork(t_redirection *node, \
 	pid = 0;
 	arg->fork_sign++;
 	pid = fork();
+	if (pid == -1)
+		return (fail_to_fork(arg, 0));
 	if (!pid)
 		exec_redirection_child(node, arg, fd);
 	else
