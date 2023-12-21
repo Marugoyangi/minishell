@@ -65,6 +65,8 @@ int	ft_delete_line(int len, t_line **line, int start)
 	char	*new_info;
 
 	i = -1;
+	if (len <= 0)
+		return (0);
 	new_data = (char *)ft_malloc(sizeof(char) * \
 	(ft_strlen((*line)->data) - len + 1));
 	new_info = (char *)ft_malloc(sizeof(char) * \
