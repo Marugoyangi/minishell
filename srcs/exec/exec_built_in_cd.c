@@ -6,7 +6,7 @@
 /*   By: seungwok <seungwok@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:50:29 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/21 09:50:17 by seungwok         ###   ########seoul.kr  */
+/*   Updated: 2023/12/21 18:47:17 by seungwok         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,9 @@ void	built_in_cd_set_pwd_env(t_node *node, t_arg *arg)
 		if (cur->value)
 			free(cur->value);
 		cur->value = getcwd(0, 0);
-		if (!cur->value)
-			exec_perror("cd", 0);
 	}
 	tmp = getcwd(0, 0);
 	built_in_cd_set_pwd_arg(tmp, arg, node);
+	if (!cur->value)
+		cur->value = ft_strdup(arg->pwd);
 }
