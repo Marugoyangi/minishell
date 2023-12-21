@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_bonus.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: seungwok <seungwok@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:35 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/20 04:28:46 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/21 08:53:08 by seungwok         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -303,7 +303,7 @@ int		built_in_pwd(t_arg *arg);
 int		built_in_exit(t_node *node, t_arg *arg);
 
 // exec_built_in_cd.c
-void	built_in_cd_set_pwd(t_node *node, t_arg *arg);
+void	built_in_cd_set_pwd_env(t_node *node, t_arg *arg);
 int		built_in_cd_oldpwd(t_node *node, t_arg *arg);
 int		built_in_cd(t_node *node, t_arg *arg, char **argv);
 

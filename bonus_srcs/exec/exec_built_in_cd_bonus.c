@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_built_in_cd_bonus.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: seungwok <seungwok@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:50:29 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/20 04:41:57 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/21 08:49:42 by seungwok         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ int	built_in_cd(t_node *node, t_arg *arg, char **argv)
 	if (arg->oldpwd)
 		free(arg->oldpwd);
 	arg->oldpwd = ft_strdup(arg->pwd);
-	built_in_cd_set_pwd(node, arg);
+	built_in_cd_set_pwd_env(node, arg);
 	return (0);
 }
 
-void	cd_get_pwd(char *tmp, t_env *cur, t_arg *arg, t_node *node)
+void	built_in_cd_set_pwd_arg(char *tmp, t_env *cur, t_arg *arg, t_node *node)
 {
 	if (!tmp)
 	{
@@ -48,7 +48,7 @@ void	cd_get_pwd(char *tmp, t_env *cur, t_arg *arg, t_node *node)
 	}
 }
 
-void	built_in_cd_set_pwd(t_node *node, t_arg *arg)
+void	built_in_cd_set_pwd_env(t_node *node, t_arg *arg)
 {
 	char	*tmp;
 	t_env	*cur;
@@ -65,7 +65,7 @@ void	built_in_cd_set_pwd(t_node *node, t_arg *arg)
 		}
 	}
 	tmp = getcwd(0, 0);
-	cd_get_pwd(tmp, cur, arg, node);
+	built_in_cd_set_pwd_arg(tmp, cur, arg, node);
 }
 
 int	built_in_cd_oldpwd(t_node *node, t_arg *arg)
@@ -91,19 +91,6 @@ int	built_in_cd_oldpwd(t_node *node, t_arg *arg)
 	free(arg->oldpwd);
 	cur->value = tmp;
 	arg->oldpwd = ft_strdup(tmp);
-	built_in_cd_set_pwd(node, arg);
+	built_in_cd_set_pwd_env(node, arg);
 	return (0);
-}
-
-int	error_getcwd(t_env *env, char **argv)
-{
-	t_env	*cur;
-
-	cur = env;
-	while (cur && ft_strcmp(cur->key, "PWD"))
-		cur = cur->next;
-	cur->value = modified_strjoin(cur->value, "/", 1);
-	cur->value = modified_strjoin(cur->value, argv[1], 1);
-	chdir(argv[1]);
-	return (exec_perror("getcwd", 0));
 }
