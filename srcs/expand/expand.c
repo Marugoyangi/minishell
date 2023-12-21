@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 05:51:56 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/18 23:57:56 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/21 17:46:49 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	expand_node(t_line **line, t_arg *arg, int *i, int *start)
 		free(tmp);
 		if (!env)
 		{
-			ft_delete_line(*i - *start, line, *i);
+			ft_delete_line(*i - *start, line, *i, 1);
 			*i -= *i - *start;
 		}
 		else

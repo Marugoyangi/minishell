@@ -95,7 +95,7 @@ void	append_cmd_iter(t_node *node, char **tmp, int type)
 		if (node->type == type)
 		{
 			j = 0;
-			if (!node->argv)
+			if (!node->argv && node->line)
 				tmp[i] = ft_strdup(node->line->data);
 			else
 			{
