@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_built_in.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: seungwok <seungwok@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 20:34:44 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/20 04:46:38 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/21 17:52:53 by seungwok         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	check_built_in(t_node *node, t_arg *arg)
 	else if (!ft_strcmp(node->data, "unset"))
 		return (built_in_unset(node, arg));
 	else if (!ft_strcmp(node->data, "env"))
-		return (built_in_env(arg->envp_head));
+		return (built_in_env(node, arg->envp_head));
 	return (-1);
 }
 

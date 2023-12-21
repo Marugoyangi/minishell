@@ -6,7 +6,7 @@
 /*   By: seungwok <seungwok@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:35 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/21 08:53:30 by seungwok         ###   ########seoul.kr  */
+/*   Updated: 2023/12/21 17:54:45 by seungwok         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -311,7 +311,7 @@ void	built_in_cd_set_pwd_env(t_node *node, t_arg *arg);
 // exec_built_in_env.c
 int		built_in_unset(t_node *node, t_arg *arg);
 void	built_in_unset_iter(t_node *node, t_env	*cur, t_arg *arg, int i);
-int		built_in_env(t_env *env);
+int		built_in_env(t_node *node, t_env *env);
 int		built_in_export(t_node *node, t_env *env);
 
 // exec_built_in_env_utils.c

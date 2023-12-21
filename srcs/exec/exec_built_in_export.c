@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_built_in_export.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: seungwok <seungwok@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 08:14:04 by woopinbell        #+#    #+#             */
-/*   Updated: 2023/12/20 04:45:12 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/21 17:59:42 by seungwok         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,18 @@ int	check_arg_name(char *str, int *sign)
 	i = 0;
 	if (!(str[i] >= 'a' && str[i] <= 'z') && !(str[i] >= 'A' && str[i] <= 'Z'))
 	{
-		*sign = 1;
+		if (sign)
+			*sign = 1;
 		return (1);
 	}
 	while (str[++i])
 	{
-		if (i == 256)
+		if (i == 256 || (!(str[i] >= 'a' && str[i] <= 'z')
+				&& !(str[i] >= 'A' && str[i] <= 'Z')
+				&& !(str[i] >= '0' && str[i] <= '9') && str[i] != '_'))
 		{
-			*sign = 1;
-			return (1);
-		}
-		if (!(str[i] >= 'a' && str[i] <= 'z')
-			&& !(str[i] >= 'A' && str[i] <= 'Z')
-			&& !(str[i] >= '0' && str[i] <= '9') && str[i] != '_')
-		{
-			*sign = 1;
+			if (sign)
+				*sign = 1;
 			return (1);
 		}
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redirection_built_in.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: woopinbell <woopinbell@student.42.fr>      +#+  +:+       +#+        */
+/*   By: seungwok <seungwok@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 02:15:38 by woopinbell        #+#    #+#             */
-/*   Updated: 2023/12/19 21:19:49 by woopinbell       ###   ########.fr       */
+/*   Updated: 2023/12/21 17:55:21 by seungwok         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,6 @@ int	built_in_redirection_fd2(t_redirection *node, t_arg *arg)
 	else if (!ft_strcmp(node->exec_node->data, "unset"))
 		return (built_in_unset(node->exec_node, arg));
 	else if (!ft_strcmp(node->exec_node->data, "env"))
-		return (built_in_env(arg->envp_head));
+		return (built_in_env(node->exec_node, arg->envp_head));
 	return (-1);
 }
