@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seungwok <seungwok@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:35 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/21 08:53:30 by seungwok         ###   ########seoul.kr  */
+/*   Updated: 2023/12/21 17:47:05 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,8 +178,9 @@ void	expand_envp(t_line **line, t_arg *arg);
 void	expand_tilde(t_line **line, t_arg *arg);
 void	expand_asterisk(t_line **line, int index);
 void	asterisk_subdir(t_node **result, char **line, char *pwd, int *depth);
-int		ft_delete_line(int len, t_line **line, int start);
+int		ft_delete_line(int len, t_line **line, int start, int flag);
 int		ft_count_words(char *s, char c);
+int		ft_delete_line_free(t_line **line);
 
 // Environment Initialization
 t_env	*init_envp(char **envp);

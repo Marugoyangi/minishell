@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 11:10:03 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/19 00:30:28 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/21 17:35:04 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	alloc_expanded(t_node *node, char **argv, int i)
 	int		word;
 
 	word = 0;
-	while (node->line && node->line->info[i])
+	while (node->line && node->line->info && node->line->info[i])
 	{
 		while (node->line->info[i] == T_SPACE && node->line->info[i] != '\0')
 			i++;
