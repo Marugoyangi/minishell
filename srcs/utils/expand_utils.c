@@ -29,7 +29,7 @@ void	remove_quotes(t_line **line)
 		T_DOUBLE_QUOTE))
 		{
 			i++;
-			ft_delete_line(i - start + 1, line, i, 0);
+			ft_delete_line(i - start, line, i, 0);
 			i -= i - start;
 		}
 	}
