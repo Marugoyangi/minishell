@@ -12,6 +12,15 @@
 
 #include "minishell.h"
 
+void	waitpid_signal(t_arg *arg, int *status)
+{
+	if (WIFEXITED(*status))
+		*status = WEXITSTATUS(*status);
+	else if (WIFSIGNALED(*status))
+		*status = WTERMSIG(*status) + 128;
+	terminal_interactive(arg);
+}
+
 int	ft_delete_line_free(t_line **line)
 {
 	if ((*line)->data)

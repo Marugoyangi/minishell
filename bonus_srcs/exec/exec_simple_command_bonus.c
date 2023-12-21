@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:35:51 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/20 04:42:37 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/21 22:28:06 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ int	external_command(t_node *node, t_arg *arg, char **path)
 			signal(SIGQUIT, sig_handler_exec);
 		}
 		waitpid(pid, &status, 0);
-		terminal_interactive(arg);
-		return (WEXITSTATUS(status));
+		waitpid_signal(arg, &status);
+		return (status);
 	}
 	else
 		exec_check_path(node, arg, path);
@@ -75,7 +75,6 @@ void	external_command_child(t_node *node, t_arg *arg, char **path)
 	signal(SIGINT, sig_handler_waiting);
 	signal(SIGQUIT, sig_handler_waiting);
 	exec_check_path(node, arg, path);
-	exit (0);
 }
 
 void	exec_check_path(t_node *node, t_arg *arg, char **path)
@@ -84,8 +83,8 @@ void	exec_check_path(t_node *node, t_arg *arg, char **path)
 	char	**envp;
 
 	envp = make_envp(arg->envp_head);
-	if (!ft_strncmp(node->data, "./", 2) || !ft_strncmp(node->data, "../", 3)
-		|| !ft_strncmp(node->data, "/", 1))
+	if (node->data && (!ft_strncmp(node->data, "./", 2) || \
+	!ft_strncmp(node->data, "../", 3) || !ft_strncmp(node->data, "/", 1)))
 	{
 		execve(node->argv[0], node->argv, envp);
 		exec_perror(node->data, 1);
@@ -97,7 +96,10 @@ void	exec_check_path(t_node *node, t_arg *arg, char **path)
 			exec_perror(node->data, 1);
 		execve(excutable_path, node->argv, envp);
 		free(excutable_path);
-		exec_perror(node->data, 1);
+		if (node->data)
+			exec_perror(node->data, 1);
+		else
+			exit (0);
 	}
 	free_split(envp);
 }

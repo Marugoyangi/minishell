@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 07:12:27 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/20 01:16:09 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/21 21:28:57 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ void	sig_handler_waiting(int signum)
 {
 	(void)signum;
 	if (g_recived_signal == SIGINT)
-		exit (130);
+		exit (2);
 	else if (g_recived_signal == SIGQUIT)
-		exit (131);
+		exit (3);
 }
 
 void	sig_handler_exec(int signum)

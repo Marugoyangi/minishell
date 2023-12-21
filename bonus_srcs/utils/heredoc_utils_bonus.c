@@ -5,12 +5,21 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/21 18:15:45 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/21 18:15:45 by jeongbpa         ###   ########.fr       */
+/*   Created: 2023/12/21 22:21:40 by jeongbpa          #+#    #+#             */
+/*   Updated: 2023/12/21 22:21:40 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_bonus.h"
+
+void	waitpid_signal(t_arg *arg, int *status)
+{
+	if (WIFEXITED(*status))
+		*status = WEXITSTATUS(*status);
+	else if (WIFSIGNALED(*status))
+		*status = WTERMSIG(*status) + 128;
+	terminal_interactive(arg);
+}
 
 int	ft_delete_line_free(t_line **line)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_simple_command_utils.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seungwok <seungwok@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:52:02 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/21 17:49:48 by seungwok         ###   ########seoul.kr  */
+/*   Updated: 2023/12/21 22:21:02 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	exec_perror(char *str, int sign)
 			write(2, ": Is a directory\n", 17);
 			exit (126);
 		}
-		else
+		else if (str)
 		{
 			write(2, ": No such file or directory\n", 28);
 			while (*(str + 1))

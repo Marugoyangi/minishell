@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:35 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/21 18:16:54 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/21 21:39:36 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,6 +212,7 @@ void	sig_handler(int signum);
 void	sig_handler_exec(int signum);
 void	sig_handler_waiting(int signum);
 void	signal_ignore(void);
+void	waitpid_signal(t_arg *arg, int *status);
 
 // Heredoc Expansion
 void	expand_heredoc(t_arg *arg);
