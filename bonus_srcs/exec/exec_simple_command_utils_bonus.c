@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:52:02 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/20 04:42:40 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/21 18:19:47 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ int	exec_perror(char *str, int sign)
 	struct stat	file_info;
 
 	file_info = (struct stat){0};
+	write(2, "minishell: ", 11);
 	if (sign == 1)
 	{
-		write(2, "minishell: ", 11);
 		stat(str, &file_info);
 		write(2, str, ft_strlen(str));
 		if (S_ISDIR(file_info.st_mode))

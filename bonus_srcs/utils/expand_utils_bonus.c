@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 11:07:36 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/20 04:36:15 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/21 18:15:29 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ void	remove_quotes(t_line **line)
 		(*line)->info[i] != T_DOUBLE_QUOTE)
 			i++;
 		start = i;
-		while ((*line)->info && (*line)->info[i] && \
+		while ((*line) && (*line)->info && (*line)->info[i] && \
 		((*line)->info[i] == T_SINGLE_QUOTE || (*line)->info[i] == \
 		T_DOUBLE_QUOTE))
 		{
 			i++;
-			ft_delete_line(i - start, line, i);
+			ft_delete_line(i - start + 1, line, i, 0);
 			i -= i - start;
 		}
 	}

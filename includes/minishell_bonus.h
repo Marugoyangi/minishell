@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_bonus.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seungwok <seungwok@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:35 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/21 08:53:08 by seungwok         ###   ########seoul.kr  */
+/*   Updated: 2023/12/21 18:16:54 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,8 +178,9 @@ void	expand_envp(t_line **line, t_arg *arg);
 void	expand_tilde(t_line **line, t_arg *arg);
 void	expand_asterisk(t_line **line, int index);
 void	asterisk_subdir(t_node **result, char **line, char *pwd, int *depth);
-int		ft_delete_line(int len, t_line **line, int start);
+int		ft_delete_line(int len, t_line **line, int start, int flag);
 int		ft_count_words(char *s, char c);
+int		ft_delete_line_free(t_line **line);
 
 // Environment Initialization
 t_env	*init_envp(char **envp);
@@ -303,14 +304,15 @@ int		built_in_pwd(t_arg *arg);
 int		built_in_exit(t_node *node, t_arg *arg);
 
 // exec_built_in_cd.c
-void	built_in_cd_set_pwd_env(t_node *node, t_arg *arg);
-int		built_in_cd_oldpwd(t_node *node, t_arg *arg);
 int		built_in_cd(t_node *node, t_arg *arg, char **argv);
+int		built_in_cd_oldpwd(t_node *node, t_arg *arg);
+void	built_in_cd_set_pwd_arg(char *tmp, t_arg *arg, t_node *node);
+void	built_in_cd_set_pwd_env(t_node *node, t_arg *arg);
 
 // exec_built_in_env.c
 int		built_in_unset(t_node *node, t_arg *arg);
 void	built_in_unset_iter(t_node *node, t_env	*cur, t_arg *arg, int i);
-int		built_in_env(t_env *env);
+int		built_in_env(t_node *node, t_env *env);
 int		built_in_export(t_node *node, t_env *env);
 
 // exec_built_in_env_utils.c

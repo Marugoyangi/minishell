@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 03:56:07 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/20 04:36:15 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/21 18:15:14 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,10 @@ void	replace_line_free(int i[], char *new_data, char *new_info, t_line *line)
 {
 	new_data[i[0]] = '\0';
 	new_info[i[0]] = '\0';
-	free(line->data);
-	free(line->info);
+	if (line->data)
+		free(line->data);
+	if (line->info)
+		free(line->info);
 	line->data = new_data;
 	line->info = new_info;
 }
@@ -58,15 +60,15 @@ int	replace_alloc(int *i, char *data[], t_line *new, t_line *line)
 	return (0);
 }
 
-int	ft_delete_line(int len, t_line **line, int start)
+int	ft_delete_line(int len, t_line **line, int start, int flag)
 {
 	int		i;
 	char	*new_data;
 	char	*new_info;
 
 	i = -1;
-	if (len <= 0)
-		return (0);
+	if (ft_strlen((*line)->data) <= len && flag == 1)
+		return (ft_delete_line_free(line));
 	new_data = (char *)ft_malloc(sizeof(char) * \
 	(ft_strlen((*line)->data) - len + 1));
 	new_info = (char *)ft_malloc(sizeof(char) * \
