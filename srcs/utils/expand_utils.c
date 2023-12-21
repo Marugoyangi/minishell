@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 11:07:36 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/21 17:54:38 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2023/12/21 18:07:40 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	remove_quotes(t_line **line)
 		T_DOUBLE_QUOTE))
 		{
 			i++;
-			ft_delete_line(i - start + 1, line, start - 1, 0);
+			ft_delete_line(i - start + 1, line, i, 0);
 			i -= i - start;
 		}
 	}
