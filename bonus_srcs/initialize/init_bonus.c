@@ -90,7 +90,7 @@ void	init_ps(t_arg *arg)
 		arg->ps[0] = ft_strjoin("\001\033[32m➜\002"\
 		, "\001\033[36m\002  minishell ");
 		arg->ps[0] = modified_strjoin (arg->ps[0], \
-		"\001\033[33m✗\002 \001\033[0m\002", 1);
+		"\001\033[33m\002✗ \001\033[0m\002", 1);
 	}
 	else
 		arg->ps[0] = ft_strdup("\001➜\002  minishell \001✗\002 ");
