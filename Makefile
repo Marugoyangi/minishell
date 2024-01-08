@@ -58,7 +58,7 @@ MAKEFILE = Makefile
 NAME = minishell
 LIBFT = ./libft/libft.a
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I./includes/ -gdwarf-4
+CFLAGS = -Wall -Wextra -Werror -I./includes/
 
 ifeq ($(BONUS_FLAG), 42)
 	OBJ_FLAG = $(BONUS_OBJS)
