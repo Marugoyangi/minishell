@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:35 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/21 21:39:36 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2024/01/08 20:21:58 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ void	free_ast(t_node *node);
 void	free_line(t_line *line);
 
 // String Manipulation
-char	*modified_strtrim(char const *s1, char const *set);
+char	*modified_strtrim(char *s1, char const *set);
 char	*modified_strdup(char *s1);
 char	*modified_substr(char *s, int start, int len);
 char	*modified_strjoin(char *s1, char *s2, int free);

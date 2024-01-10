@@ -104,10 +104,8 @@ void	terminal_init(t_arg *arg, char **envp, char **argv)
 		printf("minishell: invalid argument vriables\n");
 		exit (1);
 	}
-	tgetflag ("am");
-	tgetflag ("xn");
 	ft_memset(arg, 0, sizeof(t_arg));
-	g_recived_signal = 2;
+	g_recived_signal = 3;
 	tcgetattr(STDOUT_FILENO, &arg->term);
 	arg->original_term = arg->term;
 	arg->term.c_lflag &= ~(ECHOCTL);

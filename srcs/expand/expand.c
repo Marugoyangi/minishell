@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 05:51:56 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/21 21:48:21 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2024/01/10 05:31:19 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,10 @@ void	expand_node(t_line **line, t_arg *arg, int *i, int *start)
 		else
 			env = ft_strdup(find_env(arg->envp_head, tmp));
 		free(tmp);
-		if (!env)
+		if (!env || (env && !ft_strlen(env)))
 		{
+			if (!ft_strlen(env) && env)
+				free(env);
 			ft_delete_line(*i - *start, line, *i, 1);
 			*i -= *i - *start;
 		}

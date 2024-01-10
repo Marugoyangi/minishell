@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 02:02:43 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/20 01:30:13 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2024/01/10 11:13:59 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,6 @@ void	get_heredoc(t_arg *arg)
 	signal(SIGQUIT, sig_handler_heredoc);
 	waitpid(pid, &status, 0);
 	if (WEXITSTATUS(status) != 0)
-		arg->error->code = WEXITSTATUS(status);
+		arg->error->code = 1;
 	terminal_interactive(arg);
 }

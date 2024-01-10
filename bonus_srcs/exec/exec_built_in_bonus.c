@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 20:34:44 by seungwok          #+#    #+#             */
-/*   Updated: 2023/12/21 18:18:37 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2024/01/10 11:27:01 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,22 @@
 
 unsigned long long	check_exit_arg(char **argv)
 {
-	unsigned long long	return_value;
+	unsigned long long	rv;
 	int					i;
 
 	i = 0;
 	if (argv[1][0] == '-')
 		i++;
-	return_value = 0;
+	rv = 0;
 	while ('0' <= argv[1][i] && argv[1][i] <= '9' && i < 20)
 	{
-		return_value = return_value * 10 + (argv[1][i] - '0');
+		rv = rv * 10 + (argv[1][i] - '0');
 		i++;
 	}
-	if (argv[1][i] || i == 19)
+	if (argv[1][i] || (argv[1][0] == '-' && rv > 9223372036854775808ULL) \
+	|| (argv[1][0] != '-' && rv > 9223372036854775807ULL))
 		return (9223372036854775809ULL);
-	return (return_value);
+	return (rv);
 }
 
 int	check_built_in(t_node *node, t_arg *arg)
@@ -105,7 +106,7 @@ int	built_in_exit(t_node *node, t_arg *arg)
 	exit_num = check_exit_arg(node->argv);
 	if (exit_num > max || (exit_num == max && node->argv[1][0] != '-'))
 	{
-		printf("minishell: exit: numeric argument required");
+		printf("minishell: exit: numeric argument required\n");
 		exit (255);
 	}
 	if (node->argv[1] && node->argv[2])

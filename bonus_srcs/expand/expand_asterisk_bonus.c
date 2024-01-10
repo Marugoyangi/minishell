@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/20 04:30:54 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/20 04:30:54 by jeongbpa         ###   ########.fr       */
+/*   Created: 2024/01/10 11:25:21 by jeongbpa          #+#    #+#             */
+/*   Updated: 2024/01/10 11:25:21 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ int	asterisk_to_line(t_line **line, int start, int *end, int index)
 			free(*result);
 			*result = tmp;
 		}
-		free(result);
 	}
+	free(result);
 	return (0);
 }
 

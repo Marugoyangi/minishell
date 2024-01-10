@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 05:00:25 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/15 06:56:59 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2024/01/10 08:56:22 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,10 @@ int	get_prefix_pwd(char *line, char c)
 		if (line[i] == -T_ASTERISK)
 		{
 			check_point = i;
-			while (line[i] != c && check_point != 0)
-			{
+			while (check_point > 0 && line[check_point] != c)
 				check_point--;
-				i--;
-			}
-			if (line[i] == c)
-				return (check_point);
+			if (line[check_point] == c)
+				return (check_point + 1);
 			else
 				return (0);
 		}
@@ -112,10 +109,9 @@ char	**line_split(char *line, char c)
 		p[0] = NULL;
 		return (p);
 	}
+	p[0] = NULL;
 	if (prefix != 0)
 		p[0] = ft_substr(line, 0, prefix);
-	else
-		p[0] = NULL;
 	i = ft_alloc_words(p + 2, &line[prefix], c, words);
 	if (i != -1)
 		p[1] = ft_strdup(&line[prefix + i]);

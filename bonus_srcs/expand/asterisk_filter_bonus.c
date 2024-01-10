@@ -5,28 +5,28 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/20 04:30:41 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/20 04:30:41 by jeongbpa         ###   ########.fr       */
+/*   Created: 2024/01/10 11:25:31 by jeongbpa          #+#    #+#             */
+/*   Updated: 2024/01/10 11:25:31 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_bonus.h"
 
 void	filtered_node(struct dirent *file, t_node **result, char *pwd, \
-						char *last_filter)
+						char **line)
 {
 	t_node	*tmp;
 	char	*tmp_pwd;
 
 	tmp_pwd = NULL;
-	if (last_filter[0] != '\0' && file->d_type == DT_REG)
+	if (line[1][0] != '\0' && file->d_type == DT_REG)
 	{
 		free(pwd);
 		return ;
 	}
 	tmp = last_node(*result);
 	tmp_pwd = modified_strjoin(pwd, ft_strjoin("/", file->d_name), 0);
-	if (last_filter[0] != '\0')
+	if (line[1][0] != '\0')
 		tmp_pwd = modified_strjoin(tmp_pwd, "/", 1);
 	if (tmp == NULL)
 		*result = create_node(ft_strdup(tmp_pwd), NULL, L_SIMPLE_COMMAND);
@@ -81,7 +81,7 @@ void	asterisk_subdir(t_node **result, char **line, char *pwd, int *depth)
 	dir = opendir(pwd);
 	is_hidden = asterisk_exceptions(dir, line, depth);
 	if (is_hidden == -1 || is_hidden == -2)
-		return ;
+		return (free(pwd));
 	while (1)
 	{
 		file = readdir(dir);
@@ -90,10 +90,10 @@ void	asterisk_subdir(t_node **result, char **line, char *pwd, int *depth)
 		else if (is_file_or_dir(line, depth, is_hidden, file) == -2)
 			continue ;
 		else if (is_file_or_dir(line, depth, is_hidden, file) == 1)
-			filtered_node(file, result, ft_strdup(pwd), line[1]);
+			filtered_node(file, result, ft_strdup(pwd), line);
 		else if (is_file_or_dir(line, depth, is_hidden, file) == 2)
-			asterisk_recursive(result, line, \
-			modified_strjoin(pwd, ft_strjoin("/", file->d_name), 2), depth);
+			asterisk_recursive(result, line, modified_strjoin(pwd, \
+			ft_strjoin("/", file->d_name), 2), depth);
 	}
 	free(pwd);
 	closedir(dir);
@@ -119,9 +119,10 @@ t_node	**filter_asterisk(char **line)
 	tmp = *result;
 	while (tmp)
 	{
-		if (is_current_pwd == 1)
-			tmp->data = modified_substr(tmp->data, ft_strlen(line[0]) + 1, \
-			ft_strlen(tmp->data) - ft_strlen(line[0]) - 1);
+		tmp->data = modified_substr(tmp->data, ft_strlen(line[0]) + 1, \
+		ft_strlen(tmp->data) - ft_strlen(line[0]) - 1);
+		if (is_current_pwd != 1)
+			tmp->data = modified_strjoin(line[0], tmp->data, 2);
 		tmp = tmp->right;
 	}
 	return (result);

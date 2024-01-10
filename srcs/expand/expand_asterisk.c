@@ -51,8 +51,8 @@ int	asterisk_to_line(t_line **line, int start, int *end, int index)
 			free(*result);
 			*result = tmp;
 		}
-		free(result);
 	}
+	free(result);
 	return (0);
 }
 

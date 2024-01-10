@@ -64,7 +64,7 @@ char	*modified_substr(char *s, int start, int len)
 	return (str);
 }
 
-char	*modified_strtrim(char const *s1, char const *set)
+char	*modified_strtrim(char *s1, char const *set)
 {
 	int		start;
 	int		end;
@@ -78,16 +78,16 @@ char	*modified_strtrim(char const *s1, char const *set)
 		if (!ft_strchr(set, s1[start]))
 			break ;
 	while (--end > 0)
-	{
 		if (!ft_strchr(set, s1[end - 1]))
 			break ;
-	}
 	if (start > end)
+	{
+		free(s1);
 		return (NULL);
+	}
 	str = ft_malloc(end - start + 1);
-	if (str != 0)
-		ft_strlcpy(str, s1 + start, end - start + 1);
-	free((char *)s1);
+	ft_strlcpy(str, s1 + start, end - start + 1);
+	free(s1);
 	return (str);
 }
 

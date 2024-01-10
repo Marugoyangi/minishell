@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:52:02 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/21 18:19:47 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2024/01/10 11:26:24 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	exec_perror(char *str, int sign)
 			write(2, ": Is a directory\n", 17);
 			exit (126);
 		}
-		else
+		else if (str)
 		{
 			write(2, ": No such file or directory\n", 28);
 			while (*(str + 1))

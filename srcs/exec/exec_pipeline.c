@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:51:18 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/20 01:24:15 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2024/01/10 10:05:39 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ void	exec_pipe_child2(t_node *node, t_arg *arg, int *pipe)
 	dup2(pipe[0], 0);
 	close(pipe[0]);
 	arg->term.c_lflag |= ECHOCTL;
+	arg->last_exit_status = 0;
 	tcsetattr(STDOUT_FILENO, TCSANOW, &arg->term);
 	signal(SIGINT, sig_handler_waiting);
 	signal(SIGQUIT, sig_handler_waiting);

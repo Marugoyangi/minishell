@@ -6,7 +6,7 @@
 /*   By: jeongbpa <jeongbpa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:18:37 by jeongbpa          #+#    #+#             */
-/*   Updated: 2023/12/20 04:36:15 by jeongbpa         ###   ########.fr       */
+/*   Updated: 2024/01/10 11:20:45 by jeongbpa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	free_read_line(t_arg *arg)
 	free(arg->line.info);
 	arg->line.info = NULL;
 	if (arg->error->code == 2 || arg->error->code == 130 \
-	|| arg->error->code == 131)
+	|| arg->error->code == 131 || arg->error->code == 1)
 		free_node(arg->ast_head);
 	else
 		free_ast(arg->ast_head);
@@ -65,6 +65,9 @@ void	free_read_line(t_arg *arg)
 	arg->error->token = NULL;
 	arg->last_exit_status = arg->error->code;
 	arg->error->code = 0;
+	g_recived_signal = 3;
+	if (arg->is_subshell)
+		exit (0);
 }
 
 int	lex(t_arg *arg)
@@ -108,6 +111,8 @@ int	main(int argc, char **argv, char **envp)
 			arg.line.data = readline(get_ps(&arg, 1));
 			if (!arg.line.data)
 				terminal_default(&arg);
+			if (g_recived_signal == 2)
+				arg.last_exit_status = 1;
 			if (is_history(arg.line.data))
 				add_history(arg.line.data);
 			arg.line.data = modified_strtrim(arg.line.data, " \t\n");
@@ -119,7 +124,5 @@ int	main(int argc, char **argv, char **envp)
 		expand_heredoc(&arg);
 		set_exec(&arg);
 		free_read_line(&arg);
-		if (arg.is_subshell)
-			exit (0);
 	}
 }
